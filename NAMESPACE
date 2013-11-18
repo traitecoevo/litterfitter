@@ -1,0 +1,2 @@
+export(decompFit)
+export(plot.litFit)

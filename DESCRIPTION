@@ -1,0 +1,18 @@
+Package: litterFitter
+Type: Package
+Title: Fit a collection of models to single cohort decomposition data
+Version: 1.0
+Date: 2013-11-15
+Author: Will Cornwell, James Weedon, Liu Guofang 
+Maintainer: Will Cornwell <wcornwell@gmail.com>
+Description: 
+License: GPL-2 | GPL-3
+Depends:
+    nlme
+Suggests:
+    ggplot2
+Collate:
+    'optim-fxns.R'
+    'litterFitter-package.R'
+    'internal.R'
+    'plotting-fxns.R'
