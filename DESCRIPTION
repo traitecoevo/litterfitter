@@ -8,9 +8,7 @@ Maintainer: Will Cornwell <wcornwell@gmail.com>
 Description: 
 License: GPL-2 | GPL-3
 Depends:
-    nlme
 Suggests:
-    ggplot2
 Collate:
     'optim-fxns.R'
     'litterFitter-package.R'

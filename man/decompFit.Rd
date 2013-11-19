@@ -2,7 +2,7 @@
 \alias{decompFit}
 \title{fit different models to decomposition data}
 \usage{
-  decompFit(time, mass.remaining, model=c("neg.exp","wei","discrete.parallel","discrete.series","cont.quality.1","cont.quality.2"),iters=200,...)
+  decompFit(time, mass.remaining, model=c("neg.exp","weibull","discrete.parallel","discrete.series","cont.quality.1","cont.quality.2"),iters=200,...)
 }
 \arguments{
   \item{time}{time since decomposition began $t_{i}-t_{0}$}
@@ -21,6 +21,6 @@
   This function is an example of a help file
 }
 \examples{
-fit<-decompFit(time=c(0,1,2,3,4,5,6),mass.remaining=c(1,0.9,1.01,0.4,0.6,0.2,0.01),"discrete.parallel",iters=250)
+fit<-decompFit(time=c(0,1,2,3,4,5,6),mass.remaining=c(1,0.9,1.01,0.4,0.6,0.2,0.01),"weibull",iters=250)
 }
 
