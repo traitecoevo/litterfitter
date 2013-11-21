@@ -1,3 +1,6 @@
 export(decompFit)
 export(plot.litFit)
 export(params.litFit)
+export(steadyState.litFit)
+export(steadyState)
+export(params)

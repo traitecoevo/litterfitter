@@ -31,11 +31,15 @@ predict.from.fit <- function(model_fn, params, target_time){
 }
 
 # Functions for steady state calculation (according to Reviewer 2)
-wei.steadystate <- function(beta, alpha) { beta/alpha * gamma(1/alpha)}
+weibull.steadystate <- function(beta, alpha) { beta/alpha * gamma(1/alpha)}
+
 negexp.steadystate <- function(k) { 1/k}
-D2.steadystate <- function(R, K1, K2) { (1/K1) + (1-R)/K2 }
-D3.steadystate <- function(A, K1, K2) { (A/K1) + (1-A)/K2}
-agren.C1.steadystate <- function(b, a) {1/b * 1/(a-1)}
+
+discrete.series.steadystate <- function(R, K1, K2) { (1/K1) + (1-R)/K2 }
+
+discrete.parallel.steadystate <- function(A, K1, K2) { (A/K1) + (1-A)/K2}
+
+cont.quality.2.steadystate <- function(b, a) {1/b * 1/(a-1)}
 
 
 obj_func <- function(x, ind, dep, curve){
