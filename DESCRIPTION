@@ -13,4 +13,4 @@ Collate:
     'optim-fxns.R'
     'litterFitter-package.R'
     'internal.R'
-    'plotting-fxns.R'
+    'output-fxns.R'
