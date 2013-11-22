@@ -1,4 +1,4 @@
-export(decompFit)
+export(litterFitter)
 export(plot.litFit)
 export(params.litFit)
 export(steadyState.litFit)

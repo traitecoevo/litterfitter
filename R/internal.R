@@ -1,5 +1,5 @@
 ## internal functions 
-## base functions for models in Manzoni 2012 Table A1
+## see base functions for models in Manzoni 2012 Table A1
 
 discrete.parallel <- function(x,R,K1,K2,upper=c((1-1e-4),1000,1000), lower=c(0.0001,0.0001,0.0001)){
   (((1-R)*K1*exp(-K2*x)) - ((K2-K1*R)*exp(-K1*x)))/(K1-K2)
@@ -79,7 +79,6 @@ multioptimFit <- function(time_data, mass_data, model, iters=200,...){
     warning("May not have found global best fit; increase iterations") 
   }
   best.one<-which.min(likes[likes>0])
-  #cat(paste("Best one index", best.one, "\n"))
   return(s.fit[[best.one]])
 }
 

@@ -1,6 +1,6 @@
 
 
-decompFit <- function(time, mass.remaining, model=c("neg.exp","weibull","discrete.parallel","discrete.series","cont.quality.1","cont.quality.2"),iters=200,...){
+litterFitter <- function(time, mass.remaining, model=c("neg.exp","weibull","discrete.parallel","discrete.series","cont.quality.1","cont.quality.2"),iters=200,...){
   if (length(time)!=length(mass.remaining)){
     print("time vector must match mass remaining vector")
     return(NULL)
