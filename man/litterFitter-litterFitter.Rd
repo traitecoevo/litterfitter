@@ -1,13 +1,13 @@
 \docType{package}
-\name{litterfitter}
-\alias{litterfitter}
-\alias{litterfitter-litterfitter}
-\alias{litterfitter-package}
-\title{litterfitter: fit models of decomposition to single cohort litter data}
+\name{litterFitter}
+\alias{litterFitter}
+\alias{litterFitter-litterFitter}
+\alias{litterFitter-package}
+\title{litterFitter: fit models of decomposition to single cohort litter data}
 \description{
   
 
-  litterfitter fits different models of decomposition to single cohort mass loss data.
+  litterFitter fits different models of decomposition to single cohort mass loss data.
 }
 \references{
   Cornwell, W. K., & Weedon, J. T. (2013). Decomposition trajectories of diverse litter types: a model selection analysis. Methods in Ecology and Evolution.

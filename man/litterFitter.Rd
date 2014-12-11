@@ -1,6 +1,6 @@
 \name{litterFitter}
 \alias{litterFitter}
-\title{fit different models to decomposition data}
+\title{Fit different models to single cohort decomposition data}
 \usage{
 litterFitter(time, mass.remaining, model=c("neg.exp","weibull","discrete.parallel","discrete.series","cont.quality.1","cont.quality.2"),iters=200,...)
 }
@@ -80,6 +80,6 @@ Olson, J.S. (1963) Energy storage and the balance of producers and decomposers i
 }
 
 \examples{
-fit<-litterFitter(time=c(0,1,2,3,4,5,6),mass.remaining=c(1,0.9,1.01,0.4,0.6,0.2,0.01),model="weibull",iters=250)
+fit<-litterFitter(time=c(0,1,2,3,4,5,6),mass.remaining=c(1,0.9,1.01,0.4,0.6,0.2,0.01),model="weibull",iters=1000)
 }
 
