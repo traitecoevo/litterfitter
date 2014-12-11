@@ -69,13 +69,12 @@ multioptimFit <- function(time_data, mass_data, model, iters=200,...){
   successes<-unlist(sapply(fit,function(x) {ifelse(is.null(x), return(FALSE), return(x$convergence==0))}))
   cat(paste("Number of successful fits: ", sum(successes)," out of", iters, "\n"))
   if(sum(successes)==0) {
-    print("All attempts failed to converge") 
-    return(NULL)
-  }
+    stop("All attempts failed to converge") 
+      }
   s.fit<-subset(fit,successes)
   likes<-unlist(sapply(s.fit,function(x)x$value))
   likes[likes==0]<-NA
-  if(sd(sort(likes,, decreasing = TRUE)[1:5])>0.01) {
+  if(sd(sort(likes, decreasing = TRUE)[1:5])>0.01) {
     warning("May not have found global best fit; increase iterations") 
   }
   best.one<-which.min(likes[likes>0])

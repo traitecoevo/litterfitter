@@ -2,12 +2,10 @@
 
 litterFitter <- function(time, mass.remaining, model=c("neg.exp","weibull","discrete.parallel","discrete.series","cont.quality.1","cont.quality.2"),iters=200,...){
   if (length(time)!=length(mass.remaining)){
-    print("time vector must match mass remaining vector")
-    return(NULL)
+    stop("Time vector must have the same length and correspond to the mass remaining vector")
   }
   if (min(mass.remaining)>1|max(mass.remaining)>2){
-    print("check mass remaining vector; must be in proportional mass remaining.")
-    return(NULL)
+    stop("Check mass remaining vector; must be in proportional mass remaining.")
   }
   fit <- multioptimFit(time, mass.remaining, model,iters=iters,...)
   if(is.null(fit)) return(NULL)
