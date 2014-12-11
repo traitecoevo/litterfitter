@@ -2,16 +2,11 @@ Package: litterFitter
 Type: Package
 Title: Fit a collection of models to single cohort decomposition data
 Version: 0.1
-Date: 2013-11-15
+Date: 2014-12-10
 Author: Will Cornwell, James Weedon, Liu Guofang 
 Maintainer: Will Cornwell <wcornwell@gmail.com>
 Description: Fitting curves litterbag data--single cohort mass loss through time  
 License: GPL-2 | GPL-3
-Depends: 
-	stats
+Depends: stats
+LazyData: true
 Suggests:
-Collate:
-    'optim-fxns.R'
-    'litterFitter-package.R'
-    'internal.R'
-    'output-fxns.R'
