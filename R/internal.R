@@ -59,6 +59,9 @@ calculateLL <- function(predicted, observed, sigma){
   return(sum(dnorm(observed, mean=predicted, sd=sigma, log=T)))
 }
 
+calculateAIC <- function(LL, nparams){
+  return(-2 * LL + 2*nparams)
+}
 
 multioptimFit <- function(time_data, mass_data, model, iters=200,...){
   nArgs <- length(formals(model)) - 3 
