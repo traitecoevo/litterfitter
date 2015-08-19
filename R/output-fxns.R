@@ -21,6 +21,16 @@ fitted.litFit<-function(x,...){
   return(x$predicted)
 }
 
+summary.litFit <- function(x,...){
+  # prototype, to be expanded and improved
+  cat("Summary of litFit object\n")
+  cat(paste("Model type:", x$model,"\n"))
+  cat(paste("Number of observations: ", length(x$time),"\n"))
+  cat(paste("AIC: ", round(x$fitAIC,4), "\n"))
+  cat(paste("AICc: ", round(x$fitAICc,4), "\n"))
+  cat(paste("BIC: ", round(x$fitBIC,4), "\n"))
+}
+
 #WKC: I am a bit confused about whether to do this S3 or not; not a standard R function, but does exist in other packages
 steadyState <- function (x, ...) {
   UseMethod("steadyState", x)
