@@ -17,7 +17,13 @@ neg.exp<-function(x,k,upper=c(5),lower=c(0.0001)){
   exp(-k*x)
 }
 
-cont.quality.1<-function(x,b,a, upper=c(10^10,10^4)){
+#function from greg freschet for testing purposes
+neg.exp.limit<-function(x,k,A,B,upper=c(5,100,1),lower=c(0.000001,0.000001,0.000001)){  
+  A*exp(-k*x) + B
+}
+
+
+cont.quality.1<-function(x,b,a, upper=c(10^10,100),lower=c(0.0001,0.0001)){
   (b^a)/(b+x)^a
 }
 

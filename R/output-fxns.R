@@ -33,7 +33,8 @@ steadyState.litFit<-function(x,...){
          discrete.parallel=discrete.parallel.steadystate(x$optimFit$par[1],x$optimFit$par[2],x$optimFit$par[3]),
          discrete.series=discrete.series.steadystate(x$optimFit$par[1],x$optimFit$par[2],x$optimFit$par[3]),
          cont.quality.2=cont.quality.2.steadystate(x$optimFit$par[1],x$optimFit$par[2]),
-         cont.quality.1="not implemented")
+         cont.quality.1="not yet implemented",
+         neg.exp.limit="not yet implemented")
   names(out)<-x$model
   return(out)
 }

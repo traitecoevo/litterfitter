@@ -1,6 +1,6 @@
 
 
-litterFitter <- function(time, mass.remaining, model=c("neg.exp","weibull","discrete.parallel","discrete.series","cont.quality.1","cont.quality.2"),iters=200,...){
+litterFitter <- function(time, mass.remaining, model=c("neg.exp","weibull","discrete.parallel","discrete.series","cont.quality.1","cont.quality.2","neg.exp.limit"),iters=500,...){
   if (length(time)!=length(mass.remaining)){
     stop("Time vector must have the same length and correspond to the mass remaining vector")
   }
