@@ -13,7 +13,10 @@ litterFitter <- function(time, mass.remaining, model=c("neg.exp","weibull","disc
   LL <- calculateLL(predicted_vals, mass.remaining, sqrt(fit$value/length(time)))
   nps <- length(fit$par)
   model.AIC <- calculateAIC(LL, nps)
-  fit.out<-list(optimFit = fit, logLik=LL, fitAIC=model.AIC, time=time, mass=mass.remaining, predicted=predicted_vals, model=model,nparams = nps)
+  model.AICc <- calculateAICc(LL,nps, length(mass.remaining))
+  model.BIC <- calculateBIC(LL, nps, length(mass.remaining))
+  fit.out<-list(optimFit = fit, logLik=LL, fitAIC=model.AIC, fitAICc = model.AICc, fitBIC = model.BIC,
+                time=time, mass=mass.remaining, predicted=predicted_vals, model=model,nparams = nps)
   class(fit.out)<-"litFit"
   return(fit.out)
 }

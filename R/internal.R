@@ -63,6 +63,16 @@ calculateAIC <- function(LL, nparams){
   return(-2 * LL + 2*nparams)
 }
 
+calculateAICc <- function(LL, nparams, samplesize){
+  AIC <- calculateAIC(LL,nparams)
+  AICc <- AIC + (2*nparams*(nparams+1))/(samplesize-nparams-1)
+  return(AICc)
+}
+
+calculateBIC <- function(LL, nparams, samplesize){
+  return(-2 * LL + nparams*log(samplesize))
+}
+
 multioptimFit <- function(time_data, mass_data, model, iters=200,...){
   nArgs <- length(formals(model)) - 3 
   # need this to allow variation in number of parameters (changed to 3 because "upper" and "lower" are now  formal arguments)
