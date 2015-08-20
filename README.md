@@ -1,7 +1,8 @@
-litterFitter
-============
+## litterFitter: a package for fitting and testing alternative models for single cohort litter decomposition data
 
-Package for fitting and testing alternative models for single cohort litter decomposition data
+
+[![Build Status](https://travis-ci.org/wcornwell/taxonlookup.png?branch=master)](https://travis-ci.org/wcornwell/taxonlookup)
+
 
 To install run:
 
