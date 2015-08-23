@@ -82,8 +82,8 @@ Olson, J.S. (1963) Energy storage and the balance of producers and decomposers i
 \examples{
 fit<-litterFitter(time=c(0,1,2,3,4,5,6),mass.remaining=c(1,0.9,1.01,0.4,0.6,0.2,0.01),model="weibull",iters=1000)
 
-data(pineleaves)
-fit2 <- litterFitter(pineleaves$Years, pineleaves$Mass.remaining, model="neg.exp",iters=100)
+data(pineneedles)
+fit2 <- litterFitter(pineneedles$Years, pineneedles$Mass.remaining, model="neg.exp",iters=100)
 plot(fit2)
 }
 
