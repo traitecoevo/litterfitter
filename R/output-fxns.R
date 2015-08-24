@@ -36,6 +36,7 @@ fitted.litfit<-function(object, ...){
   return(object$predicted)
 }
 
+##' @export
 summary.litfit <- function(x,...){
   # prototype, to be expanded and improved
   cat("Summary of litFit object\n")
