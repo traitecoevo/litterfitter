@@ -83,7 +83,7 @@ multioptimFit <- function(time_data, mass_data, model, iters=200,...){
     starter <- runif(nArgs, min=lower_bounds, max=lower_bounds+0.9998) 
     #always start near lower bound--empirically works better
     fit[[i]]<-tryCatch(optim(starter,obj_func, ind=time_data, dep=mass_data, curve = model,
-                             method="L-BFGS-B",lower=lower_bounds,upper=upper_bounds),error=function(e) NULL) 
+                             method="L-BFGS-B",lower=lower_bounds,upper=upper_bounds,...),error=function(e) NULL) 
   }
   successes<-unlist(sapply(fit,function(x) {ifelse(is.null(x), return(FALSE), return(x$convergence==0))}))
   cat(paste("Number of successful fits: ", sum(successes)," out of", iters, "\n"))
