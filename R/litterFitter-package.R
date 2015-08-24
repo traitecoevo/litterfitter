@@ -1,6 +1,6 @@
-#' LitterFitter: Evaluate model adequacy for phylogenetic models of continuous character evolution
+#' litterfitter: Evaluate model adequacy for phylogenetic models of continuous character evolution
 #'
-#' @description Fitting decomosition curves to single cohort litter studies
+#' @description Fitting decomposition curves to single cohort litter studies
 #'
 #'
 #'
@@ -11,7 +11,7 @@
 #' 
 #' @docType package
 #' @import stats
-#' @name litterFitter
-#' @aliases litterFitter-litterFitter litterFitter
+#' @name litterfitter
+#' @aliases litterfitter-litterfitter litterfitter
 #'
 NULL
