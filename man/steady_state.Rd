@@ -2,14 +2,14 @@
 % Please edit documentation in R/output-fxns.R
 \name{steady_state}
 \alias{steady_state}
-\title{Steady-state biomass}
+\title{Steady-state estimating from a lit fit object}
 \usage{
-\method{steady_state}{litFit}(x,...)
+steady_state(x,...)
 }
 \arguments{
 \item{x}{litfit object}
 
-\item{...}{additional parameters (remove?)}
+\item{...}{additional parameters}
 }
 \description{
 Estimate the steady state biomass as a proportion of the annual input,

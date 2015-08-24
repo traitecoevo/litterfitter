@@ -26,29 +26,15 @@ plot.litfit<-function(x,...){
 }
 
 
-
-##' 
-##' @title coef.litfit
-##' 
-##' 
-##' @export coef.litfit
-coef.litfit<-function(x,...){
+coef.litfit<-function(object, ...){
   #add names of parameters to output
-  return(x$optimFit$par)
+  return(object$optimFit$par)
 }
 
 
-
-##' 
-##' @title fitted.litfit
-##' 
-##' 
-##' @export fitted.litfit
-fitted.litfit<-function(x,...){
-  return(x$predicted)
+fitted.litfit<-function(object, ...){
+  return(object$predicted)
 }
-
-
 
 summary.litfit <- function(x,...){
   # prototype, to be expanded and improved
@@ -64,13 +50,13 @@ summary.litfit <- function(x,...){
 ##' Estimate the steady state biomass as a proportion of the annual input,
 ##' based on the particular model fit.
 ##' 
-##' @title Steady-state biomass
+##' @title Steady-state estimating from a lit fit object
 ##' 
-##' @usage \method{steady_state}{litFit}(x,...)
+##' @usage steady_state(x,...)
 ##' 
 ##' @param x litfit object
 ##' 
-##' @param ... additional parameters (remove?)
+##' @param ... additional parameters
 ##' 
 ##' @details Right now only implemented for a subset of models.  More coming soon...
 ##' 
@@ -83,35 +69,11 @@ summary.litfit <- function(x,...){
 ##' 
 ##' 
 ##' @export steady_state
-
-steady_state <- function (x, ...) {
-  UseMethod("steady_state", x)
-}
-
-
-##' Estimate the steady state biomass as a proportion of the annual input,
-##' based on the particular model fit.
-##' 
-##' @title Steady-state biomass
-##' 
-##' @usage \method{steady_state}{litFit}(x,...)
-##' 
-##' @param x litfit object
-##' 
-##' @param ... additional parameters (remove?)
-##' 
-##' @details Right now only implemented for a subset of models.  More coming soon...
-##' 
-##' @seealso \code{\link{fit_litter}}
-##' 
-##' @author Will Cornwell
-##' 
-##' @examples data(pineneedles)
-##' fit<-fit_litter(time=pineneedles$Year,mass.remaining=pineneedles$Mass.remaining,model="neg.exp",iters=1000)
-##' steady_state(fit)
-##' 
-##' @export steady_state.litfit
-steady_state.litfit<-function(x,...){
+steady_state<-function(x,...){
+  if (class(fit)!="litfit"){
+    message("Something went wrong -- litterfitter::steady_state takes a 'litfit' object")
+    return(NULL)
+  }
   out<-switch(x$model,
          neg.exp=negexp.steadystate(x$optimFit$par),
          weibull=weibull.steadystate(x$optimFit$par[1],x$optimFit$par[2]),
@@ -122,10 +84,6 @@ steady_state.litfit<-function(x,...){
          neg.exp.limit="not yet implemented")
   names(out)<-x$model
   return(out)
-}
-
-steady_state.default = function(x, ...) {
-  message("Something went wrong -- litterfitter::steady_state takes a 'litfit' object")
 }
 
 
