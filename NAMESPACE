@@ -3,4 +3,3 @@
 S3method(plot,litfit)
 export(fit_litter)
 export(steady_state)
-import(stats)
