@@ -38,25 +38,27 @@ fitted.litfit<-function(object, ...){
 
 #' @export
 
-summary.litfit <- function(x,...){
+summary.litfit <- function(object,...){
   # prototype, to be expanded and improved
   cat("Summary of litFit object\n")
-  cat(paste("Model type:", x$model,"\n"))
-  cat(paste("Number of observations: ", length(x$time),"\n"))
-  cat(paste("AIC: ", round(x$fitAIC,4), "\n"))
-  cat(paste("AICc: ", round(x$fitAICc,4), "\n"))
-  cat(paste("BIC: ", round(x$fitBIC,4), "\n"))
+  cat(paste("Model type:", object$model,"\n"))
+  cat(paste("Number of observations: ", length(object$time),"\n"))
+  cat(paste("AIC: ", round(object$fitAIC,4), "\n"))
+  cat(paste("AICc: ", round(object$fitAICc,4), "\n"))
+  cat(paste("BIC: ", round(object$fitBIC,4), "\n"))
 }
 
 ##' Generated predicted values for (new) time points from a litfit model fit
 ##' 
 ##' @title Predict method for litfit objects
 ##' 
-##' @usage \method{predict}{litfit}(object,newdata=NULL)
+##' @usage \method{predict}{litfit}(object,newdata=NULL,...)
 ##' 
 ##' @param object litfit object
 ##' 
 ##' @param newdata optional vector of new Time points at which to predict mass remaining. If not specified, Time points from the original fit are used.
+##' 
+##' @param ... further arguments passed to or from other methods.
 ##' 
 ##' @details to do
 ##' 
@@ -69,7 +71,7 @@ summary.litfit <- function(x,...){
 ##' predict(fit, newdata=1:10)
 ##' 
 ##' @export
-predict.litfit <- function(object, newdata=NULL){
+predict.litfit <- function(object, newdata=NULL,...){
   if(is.null(newdata)){
     X <- object$time
   }

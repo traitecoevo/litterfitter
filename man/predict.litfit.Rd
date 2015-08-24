@@ -4,12 +4,14 @@
 \alias{predict.litfit}
 \title{Predict method for litfit objects}
 \usage{
-\method{predict}{litfit}(object,newdata=NULL)
+\method{predict}{litfit}(object,newdata=NULL,...)
 }
 \arguments{
 \item{object}{litfit object}
 
 \item{newdata}{optional vector of new Time points at which to predict mass remaining. If not specified, Time points from the original fit are used.}
+
+\item{...}{further arguments passed to or from other methods.}
 }
 \description{
 Generated predicted values for (new) time points from a litfit model fit
