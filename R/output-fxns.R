@@ -25,18 +25,19 @@ plot.litfit<-function(x,...){
   lines(seq(0,max(x$time),0.01),do.call(mod, c(list(seq(0,max(x$time),0.01)), as.list(x$optimFit$par))))
 }
 
-
+#' @export
 coef.litfit<-function(object, ...){
   #add names of parameters to output
   return(object$optimFit$par)
 }
 
-
+#' @export
 fitted.litfit<-function(object, ...){
   return(object$predicted)
 }
 
-##' @export
+#' @export
+
 summary.litfit <- function(x,...){
   # prototype, to be expanded and improved
   cat("Summary of litFit object\n")
