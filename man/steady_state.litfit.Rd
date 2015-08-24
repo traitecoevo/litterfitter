@@ -8,6 +8,8 @@
 }
 \arguments{
 \item{x}{litfit object}
+
+\item{...}{additional parameters (remove?)}
 }
 \description{
 Estimate the steady state biomass as a proportion of the annual input,

@@ -58,8 +58,7 @@
 ##' 
 ##' @seealso \code{\link{optim}},
 ##' \code{\link{steady_state}},
-##' \code{\link{plot.litfit}},
-##' \code{\link{params.litfit}}
+##' \code{\link{plot.litfit}}
 ##' 
 ##' @examples 
 ##' 

@@ -64,6 +64,7 @@ summary.litfit <- function(x,...){
 ##' 
 ##' @param x litfit object
 ##' 
+##' @param ... additional parameters (remove?)
 ##' 
 ##' @details Right now only implemented for a subset of models.  More coming soon...
 ##' 
@@ -91,6 +92,7 @@ steady_state <- function (x, ...) {
 ##' 
 ##' @param x litfit object
 ##' 
+##' @param ... additional parameters (remove?)
 ##' 
 ##' @details Right now only implemented for a subset of models.  More coming soon...
 ##' 
