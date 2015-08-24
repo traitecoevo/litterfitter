@@ -75,8 +75,8 @@ summary.litfit <- function(x,...){
 ##' @examples fit<-fit_litter(time=c(0,1,2,3,4,5,6),mass.remaining=c(1,0.9,1.01,0.4,0.6,0.2,0.01),"neg.exp",iters=250)
 ##' steady_state(fit)
 ##' 
-##' @export
 ##' 
+##' @export steady_state
 
 steady_state <- function (x, ...) {
   UseMethod("steady_state", x)
@@ -103,8 +103,8 @@ steady_state <- function (x, ...) {
 ##' @examples fit<-fit_litter(time=c(0,1,2,3,4,5,6),mass.remaining=c(1,0.9,1.01,0.4,0.6,0.2,0.01),"neg.exp",iters=250)
 ##' steady_state(fit)
 ##' 
-##' @export
 ##' 
+##' @export steady_state.litfit
 steady_state.litfit<-function(x,...){
   out<-switch(x$model,
          neg.exp=negexp.steadystate(x$optimFit$par),
@@ -119,6 +119,14 @@ steady_state.litfit<-function(x,...){
 }
 
 
+##' 
+##' @title steady_state.default
+##' 
+##' 
+##' @export steady_state.default
+steady_state.default = function(x, ...) {
+  message("Something went wrong -- litterfitter::steady_state takes a 'litfit' object")
+}
 
 
 
