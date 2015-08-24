@@ -55,8 +55,6 @@ he model likelihood is maximized using methods available in \code{\link[stats]{o
 likelihood space (which is both data- and model-dependent) as well as the optimization methods.  There is can never be a guarantee that the optimal solution is found, but using many random starting points will increase these odds.  It should be noted that there is significant variation among models in identifiability, with some models inherently less identifiable likely due to a tendency to form for flat ridges in likelihood space.  The confidence in the fit should be very low in these cases (see Cornwell and Weedon 2013).   A number of random starting points are used in optimization and are given through the iters.  The function checks whether the the top 10 optimizations have converged on the same likelihood, and if they have not this function will return a warning.
 }
 \examples{
-fit<-fit_litter(time=c(0,1,2,3,4,5,6),mass.remaining=c(1,0.9,1.01,0.4,0.6,0.2,0.01),model="weibull",iters=1000)
-
 data(pineneedles)
 fit<-fit_litter(time=pineneedles$Year,mass.remaining=pineneedles$Mass.remaining,model="neg.exp",iters=1000)
 }

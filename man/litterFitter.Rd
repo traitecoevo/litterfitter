@@ -3,7 +3,6 @@
 \docType{package}
 \name{litterfitter}
 \alias{litterfitter}
-\alias{litterfitter-litterfitter}
 \alias{litterfitter-package}
 \title{litterfitter: Evaluate model adequacy for phylogenetic models of continuous character evolution}
 \description{

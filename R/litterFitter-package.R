@@ -12,6 +12,5 @@
 #' @docType package
 #' @import stats
 #' @name litterfitter
-#' @aliases litterfitter-litterfitter litterfitter
 #'
 NULL

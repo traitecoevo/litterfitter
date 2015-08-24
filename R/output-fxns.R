@@ -25,19 +25,25 @@ plot.litfit<-function(x,...){
   lines(seq(0,max(x$time),0.01),do.call(mod, c(list(seq(0,max(x$time),0.01)), as.list(x$optimFit$par))))
 }
 
-params <- function (x, ...) {
-  UseMethod("params", x)
-}
 
-params.litfit<-function(x,...){
+
+##' 
+##' @title coef.litfit
+##' 
+##' 
+##' @export coef.litfit
+coef.litfit<-function(x,...){
   #add names of parameters to output
   return(x$optimFit$par)
 }
 
-fitted <- function (x, ...) {
-  UseMethod("fitted", x)
-}
 
+
+##' 
+##' @title fitted.litfit
+##' 
+##' 
+##' @export fitted.litfit
 fitted.litfit<-function(x,...){
   return(x$predicted)
 }
@@ -100,9 +106,9 @@ steady_state <- function (x, ...) {
 ##' 
 ##' @author Will Cornwell
 ##' 
-##' @examples fit<-fit_litter(time=c(0,1,2,3,4,5,6),mass.remaining=c(1,0.9,1.01,0.4,0.6,0.2,0.01),"neg.exp",iters=250)
+##' @examples data(pineneedles)
+##' fit<-fit_litter(time=pineneedles$Year,mass.remaining=pineneedles$Mass.remaining,model="neg.exp",iters=1000)
 ##' steady_state(fit)
-##' 
 ##' 
 ##' @export steady_state.litfit
 steady_state.litfit<-function(x,...){
@@ -118,12 +124,6 @@ steady_state.litfit<-function(x,...){
   return(out)
 }
 
-
-##' 
-##' @title steady_state.default
-##' 
-##' 
-##' @export steady_state.default
 steady_state.default = function(x, ...) {
   message("Something went wrong -- litterfitter::steady_state takes a 'litfit' object")
 }
