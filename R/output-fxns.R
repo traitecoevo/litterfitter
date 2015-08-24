@@ -48,6 +48,38 @@ summary.litfit <- function(x,...){
   cat(paste("BIC: ", round(x$fitBIC,4), "\n"))
 }
 
+##' Generated predicted values for (new) time points from a litfit model fit
+##' 
+##' @title Predict method for litfit objects
+##' 
+##' @usage \method{predict}{litfit}(object,newdata=NULL)
+##' 
+##' @param object litfit object
+##' 
+##' @param newdata optional vector of new Time points at which to predict mass remaining. If not specified, Time points from the original fit are used.
+##' 
+##' @details to do
+##' 
+##' @seealso \code{\link{fit_litter}}
+##' 
+##' @author Will Cornwell
+##' @author James Weedon
+##' 
+##' @examples fit<-fit_litter(time=c(0,1,2,3,4,5,6),mass.remaining=c(1,0.9,1.01,0.4,0.6,0.2,0.01),"neg.exp",iters=250)
+##' predict(fit, newdata=1:10)
+##' 
+##' @export
+predict.litfit <- function(object, newdata=NULL){
+  if(is.null(newdata)){
+    X <- object$time
+  }
+  else X <- newdata
+  
+  mod<-eval(parse(text=paste("litterfitter:::",object$model,sep="")))
+  predicted_values <- do.call(mod, c(list(X), as.list(object$optimFit$par)))
+  return(predicted_values)
+}
+
 
 ##' Estimate the steady state biomass as a proportion of the annual input,
 ##' based on the particular model fit.
