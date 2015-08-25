@@ -14,38 +14,40 @@
 ##' 
 ##' @author Will Cornwell
 ##' 
-##' @examples fit<-fit_litter(time=c(0,1,2,3,4,5,6),mass.remaining=c(1,0.9,1.01,0.4,0.6,0.2,0.01),"neg.exp",iters=250)
+##' @examples fit<-fit_litter(time=c(0,1,2,3,4,5,6),mass.remaining=c(1,0.9,1.01,0.4,0.6,0.2,0.01),'neg.exp',iters=250)
 ##' plot(fit)
 ##' 
 ##' @export
 
-plot.litfit<-function(x,...){
-  plot(x$mass~x$time,pch=16,xlab="Time",ylab="Propotion mass remaining",xlim=c(0,max(x$time)),main=x$model,...)
-  mod<-eval(parse(text=paste("litterfitter:::",x$model,sep="")))
-  lines(seq(0,max(x$time),0.01),do.call(mod, c(list(seq(0,max(x$time),0.01)), as.list(x$optimFit$par))))
+plot.litfit <- function(x, ...) {
+    plot(x$mass ~ x$time, pch = 16, xlab = "Time", ylab = "Propotion mass remaining", 
+        xlim = c(0, max(x$time)), main = x$model, ...)
+    mod <- eval(parse(text = paste("litterfitter:::", x$model, sep = "")))
+    lines(seq(0, max(x$time), 0.01), do.call(mod, c(list(seq(0, max(x$time), 0.01)), 
+        as.list(x$optimFit$par))))
 }
 
 #' @export
-coef.litfit<-function(object, ...){
-  #add names of parameters to output
-  return(object$optimFit$par)
+coef.litfit <- function(object, ...) {
+    # add names of parameters to output
+    return(object$optimFit$par)
 }
 
 #' @export
-fitted.litfit<-function(object, ...){
-  return(object$predicted)
+fitted.litfit <- function(object, ...) {
+    return(object$predicted)
 }
 
 #' @export
 
-summary.litfit <- function(object,...){
-  # prototype, to be expanded and improved
-  cat("Summary of litFit object\n")
-  cat(paste("Model type:", object$model,"\n"))
-  cat(paste("Number of observations: ", length(object$time),"\n"))
-  cat(paste("AIC: ", round(object$fitAIC,4), "\n"))
-  cat(paste("AICc: ", round(object$fitAICc,4), "\n"))
-  cat(paste("BIC: ", round(object$fitBIC,4), "\n"))
+summary.litfit <- function(object, ...) {
+    # prototype, to be expanded and improved
+    cat("Summary of litFit object\n")
+    cat(paste("Model type:", object$model, "\n"))
+    cat(paste("Number of observations: ", length(object$time), "\n"))
+    cat(paste("AIC: ", round(object$fitAIC, 4), "\n"))
+    cat(paste("AICc: ", round(object$fitAICc, 4), "\n"))
+    cat(paste("BIC: ", round(object$fitBIC, 4), "\n"))
 }
 
 ##' Generated predicted values for (new) time points from a litfit model fit
@@ -67,19 +69,18 @@ summary.litfit <- function(object,...){
 ##' @author Will Cornwell
 ##' @author James Weedon
 ##' 
-##' @examples fit<-fit_litter(time=c(0,1,2,3,4,5,6),mass.remaining=c(1,0.9,1.01,0.4,0.6,0.2,0.01),"neg.exp",iters=250)
+##' @examples fit<-fit_litter(time=c(0,1,2,3,4,5,6),mass.remaining=c(1,0.9,1.01,0.4,0.6,0.2,0.01),'neg.exp',iters=250)
 ##' predict(fit, newdata=1:10)
 ##' 
 ##' @export
-predict.litfit <- function(object, newdata=NULL,...){
-  if(is.null(newdata)){
-    X <- object$time
-  }
-  else X <- newdata
-  
-  mod<-eval(parse(text=paste("litterfitter:::",object$model,sep="")))
-  predicted_values <- do.call(mod, c(list(X), as.list(object$optimFit$par)))
-  return(predicted_values)
+predict.litfit <- function(object, newdata = NULL, ...) {
+    if (is.null(newdata)) {
+        X <- object$time
+    } else X <- newdata
+    
+    mod <- eval(parse(text = paste("litterfitter:::", object$model, sep = "")))
+    predicted_values <- do.call(mod, c(list(X), as.list(object$optimFit$par)))
+    return(predicted_values)
 }
 
 
@@ -100,30 +101,27 @@ predict.litfit <- function(object, newdata=NULL,...){
 ##' 
 ##' @author Will Cornwell
 ##' 
-##' @examples fit<-fit_litter(time=c(0,1,2,3,4,5,6),mass.remaining=c(1,0.9,1.01,0.4,0.6,0.2,0.01),"neg.exp",iters=250)
+##' @examples fit<-fit_litter(time=c(0,1,2,3,4,5,6),mass.remaining=c(1,0.9,1.01,0.4,0.6,0.2,0.01),'neg.exp',iters=250)
 ##' steady_state(fit)
 ##' 
 ##' 
 ##' @export steady_state
-steady_state<-function(x,...){
-  if (class(fit)!="litfit"){
-    message("Something went wrong -- litterfitter::steady_state takes a 'litfit' object")
-    return(NULL)
-  }
-  out<-switch(x$model,
-         neg.exp=negexp.steadystate(x$optimFit$par),
-         weibull=weibull.steadystate(x$optimFit$par[1],x$optimFit$par[2]),
-         discrete.parallel=discrete.parallel.steadystate(x$optimFit$par[1],x$optimFit$par[2],x$optimFit$par[3]),
-         discrete.series=discrete.series.steadystate(x$optimFit$par[1],x$optimFit$par[2],x$optimFit$par[3]),
-         cont.quality.2=cont.quality.2.steadystate(x$optimFit$par[1],x$optimFit$par[2]),
-         cont.quality.1="not yet implemented",
-         neg.exp.limit="not yet implemented")
-  names(out)<-x$model
-  return(out)
+steady_state <- function(x, ...) {
+    if (class(fit) != "litfit") {
+        message("Something went wrong -- litterfitter::steady_state takes a 'litfit' object")
+        return(NULL)
+    }
+    out <- switch(x$model, neg.exp = negexp.steadystate(x$optimFit$par), weibull = weibull.steadystate(x$optimFit$par[1], 
+        x$optimFit$par[2]), discrete.parallel = discrete.parallel.steadystate(x$optimFit$par[1], 
+        x$optimFit$par[2], x$optimFit$par[3]), discrete.series = discrete.series.steadystate(x$optimFit$par[1], 
+        x$optimFit$par[2], x$optimFit$par[3]), cont.quality.2 = cont.quality.2.steadystate(x$optimFit$par[1], 
+        x$optimFit$par[2]), cont.quality.1 = "not yet implemented", neg.exp.limit = "not yet implemented")
+    names(out) <- x$model
+    return(out)
 }
 
 
 
 
 
-
+ 

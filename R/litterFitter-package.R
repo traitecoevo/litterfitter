@@ -11,4 +11,4 @@
 #' 
 #' @docType package
 #' @name litterfitter
-NULL
+NULL 
