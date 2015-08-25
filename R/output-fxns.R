@@ -22,7 +22,7 @@
 plot.litfit <- function(x, ...) {
     plot(x$mass ~ x$time, pch = 16, xlab = "Time", ylab = "Propotion mass remaining", 
         xlim = c(0, max(x$time)), main = x$model, ...)
-    mod <- eval(parse(text = paste("litterfitter:::", x$model, sep = "")))
+    mod <- get(x$model)
     lines(seq(0, max(x$time), 0.01), do.call(mod, c(list(seq(0, max(x$time), 0.01)), 
         as.list(x$optimFit$par))))
 }
@@ -78,10 +78,12 @@ predict.litfit <- function(object, newdata = NULL, ...) {
         X <- object$time
     } else X <- newdata
     
-    mod <- eval(parse(text = paste("litterfitter:::", object$model, sep = "")))
+    mod <- get(object$model)
+    
     predicted_values <- do.call(mod, c(list(X), as.list(object$optimFit$par)))
     return(predicted_values)
 }
+
 
 
 ##' Estimate the steady state biomass as a proportion of the annual input,
