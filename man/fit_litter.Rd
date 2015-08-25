@@ -38,7 +38,7 @@ returns a litfit object with the following elements:
 }
 \description{
 Non-linear fits of different models to the decomposition trajectory
-of one cohort (as in typical litterbag studies) data
+of one cohort (as in typical litterbag studies) data.
 Models range from very simple (and easy to fit with limited data)
 to more complex.
 }
@@ -56,7 +56,7 @@ likelihood space (which is both data- and model-dependent) as well as the optimi
 }
 \examples{
 data(pineneedles)
-fit<-fit_litter(time=pineneedles$Year,mass.remaining=pineneedles$Mass.remaining,model="neg.exp",iters=1000)
+fit<-fit_litter(time=pineneedles$Year,mass.remaining=pineneedles$Mass.remaining,model='neg.exp',iters=1000)
 }
 \author{
 Will Cornwell and James Weedon

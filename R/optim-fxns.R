@@ -1,5 +1,5 @@
 ##' Non-linear fits of different models to the decomposition trajectory
-##' of one cohort (as in typical litterbag studies) data
+##' of one cohort (as in typical litterbag studies) data.
 ##' Models range from very simple (and easy to fit with limited data)
 ##' to more complex.
 ##' 
