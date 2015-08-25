@@ -56,7 +56,8 @@ likelihood space (which is both data- and model-dependent) as well as the optimi
 }
 \examples{
 data(pineneedles)
-fit<-fit_litter(time=pineneedles$Year,mass.remaining=pineneedles$Mass.remaining,model='neg.exp',iters=1000)
+fit<-fit_litter(time=pineneedles$Year,mass.remaining=pineneedles$Mass.remaining,
+model='neg.exp',iters=1000)
 }
 \author{
 Will Cornwell and James Weedon

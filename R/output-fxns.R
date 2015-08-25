@@ -14,7 +14,8 @@
 ##' 
 ##' @author Will Cornwell
 ##' 
-##' @examples fit<-fit_litter(time=c(0,1,2,3,4,5,6),mass.remaining=c(1,0.9,1.01,0.4,0.6,0.2,0.01),'neg.exp',iters=250)
+##' @examples fit<-fit_litter(time=c(0,1,2,3,4,5,6),mass.remaining=c(1,0.9,1.01,0.4,0.6,0.2,0.01),
+##' 'neg.exp',iters=250)
 ##' plot(fit)
 ##' 
 ##' @export
@@ -69,7 +70,8 @@ summary.litfit <- function(object, ...) {
 ##' @author Will Cornwell
 ##' @author James Weedon
 ##' 
-##' @examples fit<-fit_litter(time=c(0,1,2,3,4,5,6),mass.remaining=c(1,0.9,1.01,0.4,0.6,0.2,0.01),'neg.exp',iters=250)
+##' @examples fit<-fit_litter(time=c(0,1,2,3,4,5,6),mass.remaining=c(1,0.9,1.01,0.4,0.6,0.2,0.01),
+##' 'neg.exp',iters=250)
 ##' predict(fit, newdata=1:10)
 ##' 
 ##' @export
@@ -103,7 +105,8 @@ predict.litfit <- function(object, newdata = NULL, ...) {
 ##' 
 ##' @author Will Cornwell
 ##' 
-##' @examples fit<-fit_litter(time=c(0,1,2,3,4,5,6),mass.remaining=c(1,0.9,1.01,0.4,0.6,0.2,0.01),'neg.exp',iters=250)
+##' @examples fit<-fit_litter(time=c(0,1,2,3,4,5,6),mass.remaining=c(1,0.9,1.01,0.4,0.6,0.2,0.01),
+##' 'neg.exp',iters=250)
 ##' steady_state(fit)
 ##' 
 ##' 

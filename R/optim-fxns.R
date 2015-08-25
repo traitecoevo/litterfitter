@@ -63,7 +63,8 @@
 ##' @examples 
 ##' 
 ##' data(pineneedles)
-##' fit<-fit_litter(time=pineneedles$Year,mass.remaining=pineneedles$Mass.remaining,model='neg.exp',iters=1000)
+##' fit<-fit_litter(time=pineneedles$Year,mass.remaining=pineneedles$Mass.remaining,
+##' model='neg.exp',iters=1000)
 ##' 
 
 fit_litter <- function(time, mass.remaining, model = c("neg.exp", "weibull", "discrete.parallel", 

@@ -19,7 +19,8 @@ based on the particular model fit.
 Right now only implemented for a subset of models.  More coming soon...
 }
 \examples{
-fit<-fit_litter(time=c(0,1,2,3,4,5,6),mass.remaining=c(1,0.9,1.01,0.4,0.6,0.2,0.01),"neg.exp",iters=250)
+fit<-fit_litter(time=c(0,1,2,3,4,5,6),mass.remaining=c(1,0.9,1.01,0.4,0.6,0.2,0.01),
+'neg.exp',iters=250)
 steady_state(fit)
 }
 \author{
