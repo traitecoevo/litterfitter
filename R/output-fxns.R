@@ -21,11 +21,10 @@
 ##' @export
 
 plot.litfit <- function(x, ...) {
-    plot(x$mass ~ x$time, pch = 16, xlab = "Time", ylab = "Propotion mass remaining", 
-        xlim = c(0, max(x$time)), main = x$model, ...)
+    plot(x$mass ~ x$time, pch = 16, xlab = "Time", ylab = "Propotion mass remaining", xlim = c(0, max(x$time)), 
+        main = x$model, ...)
     mod <- get(x$model)
-    lines(seq(0, max(x$time), 0.01), do.call(mod, c(list(seq(0, max(x$time), 0.01)), 
-        as.list(x$optimFit$par))))
+    lines(seq(0, max(x$time), 0.01), do.call(mod, c(list(seq(0, max(x$time), 0.01)), as.list(x$optimFit$par))))
 }
 
 #' @export
@@ -112,21 +111,15 @@ predict.litfit <- function(object, newdata = NULL, ...) {
 ##' 
 ##' @export steady_state
 steady_state <- function(x, ...) {
-    if (class(fit) != "litfit") {
+    if (class(x) != "litfit") {
         message("Something went wrong -- litterfitter::steady_state takes a 'litfit' object")
         return(NULL)
     }
     out <- switch(x$model, neg.exp = negexp.steadystate(x$optimFit$par), weibull = weibull.steadystate(x$optimFit$par[1], 
-        x$optimFit$par[2]), discrete.parallel = discrete.parallel.steadystate(x$optimFit$par[1], 
-        x$optimFit$par[2], x$optimFit$par[3]), discrete.series = discrete.series.steadystate(x$optimFit$par[1], 
-        x$optimFit$par[2], x$optimFit$par[3]), cont.quality.2 = cont.quality.2.steadystate(x$optimFit$par[1], 
-        x$optimFit$par[2]), cont.quality.1 = "not yet implemented", neg.exp.limit = "not yet implemented")
+        x$optimFit$par[2]), discrete.parallel = discrete.parallel.steadystate(x$optimFit$par[1], x$optimFit$par[2], 
+        x$optimFit$par[3]), discrete.series = discrete.series.steadystate(x$optimFit$par[1], x$optimFit$par[2], 
+        x$optimFit$par[3]), cont.quality.2 = cont.quality.2.steadystate(x$optimFit$par[1], x$optimFit$par[2]), 
+        cont.quality.1 = "not yet implemented", neg.exp.limit = "not yet implemented")
     names(out) <- x$model
     return(out)
-}
-
-
-
-
-
- 
+} 

@@ -1,12 +1,10 @@
 ## internal functions see base functions for models in Manzoni 2012 Table A1
 
-discrete.parallel <- function(x, R, K1, K2, upper = c((1 - 1e-04), 1000, 1000), 
-    lower = c(1e-04, 1e-04, 1e-04)) {
+discrete.parallel <- function(x, R, K1, K2, upper = c((1 - 1e-04), 1000, 1000), lower = c(1e-04, 1e-04, 1e-04)) {
     (((1 - R) * K1 * exp(-K2 * x)) - ((K2 - K1 * R) * exp(-K1 * x)))/(K1 - K2)
 }
 
-discrete.series <- function(t, A, K1, K2, upper = c((1 - 1e-04), 100, 100), lower = c(1e-04, 
-    1e-04, 1e-04)) {
+discrete.series <- function(t, A, K1, K2, upper = c((1 - 1e-04), 100, 100), lower = c(1e-04, 1e-04, 1e-04)) {
     A * exp(-K1 * t) + (1 - A) * exp(-K2 * t)
 }
 
@@ -19,8 +17,7 @@ neg.exp <- function(x, k, upper = c(5), lower = c(1e-04)) {
 }
 
 # function from greg freschet for testing purposes
-neg.exp.limit <- function(x, k, A, B, upper = c(5, 100, 1), lower = c(1e-06, 1e-06, 
-    1e-06)) {
+neg.exp.limit <- function(x, k, A, B, upper = c(5, 100, 1), lower = c(1e-06, 1e-06, 1e-06)) {
     A * exp(-k * x) + B
 }
 
@@ -87,17 +84,16 @@ calculateBIC <- function(LL, nparams, samplesize) {
 
 multioptimFit <- function(time_data, mass_data, model, iters = 200, ...) {
     nArgs <- length(formals(model)) - 3
-    # need this to allow variation in number of parameters (changed to 3 because
-    # 'upper' and 'lower' are now formal arguments)
+    # need this to allow variation in number of parameters (changed to 3 because 'upper' and 'lower' are now
+    # formal arguments)
     fit <- list()
     upper_bounds <- eval(as.list(formals(model))$upper)
     lower_bounds <- eval(as.list(formals(model))$lower)
     for (i in 1:iters) {
         starter <- runif(nArgs, min = lower_bounds, max = lower_bounds + 0.9998)
         # always start near lower bound--empirically works better
-        fit[[i]] <- tryCatch(optim(starter, obj_func, ind = time_data, dep = mass_data, 
-            curve = model, method = "L-BFGS-B", lower = lower_bounds, upper = upper_bounds, 
-            ...), error = function(e) NULL)
+        fit[[i]] <- tryCatch(optim(starter, obj_func, ind = time_data, dep = mass_data, curve = model, method = "L-BFGS-B", 
+            lower = lower_bounds, upper = upper_bounds, ...), error = function(e) NULL)
     }
     successes <- unlist(sapply(fit, function(x) {
         ifelse(is.null(x), return(FALSE), return(x$convergence == 0))
@@ -116,5 +112,12 @@ multioptimFit <- function(time_data, mass_data, model, iters = 200, ...) {
     return(s.fit[[best.one]])
 }
 
+simulate.decomposition.with.error <- function(fit, sigma) {
+    mass.remaining <- predict(fit) + rnorm(length(predict(fit)), 0, sigma)
+    time <- fit$time
+    return(data.frame(mass.remaining = mass.remaining, time = time))
+}
 
- 
+are.within.ten.percent.of <- function(x, y) {
+    return(y < 1.1 * x & y > 0.9 * x)
+} 
