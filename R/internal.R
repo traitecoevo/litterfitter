@@ -122,3 +122,7 @@ simulate.decomposition.with.error <- function(fit, sigma) {
 are.within.ten.percent.of <- function(x, y) {
     return(y < 1.1 * x & y > 0.9 * x)
 } 
+
+rnd.to.text <- function(x, digits=4){
+  format(round(x,digits), scientific = F)
+}
