@@ -23,7 +23,7 @@
 ##' @export
 
 plot.litfit <- function(x, formulae.cex = 1, ...) {
-    plot(x$mass ~ x$time, pch = 16, xlab = "Time", ylab = "Propotion mass remaining", xlim = c(0, max(x$time)), 
+    plot(x$mass ~ x$time, pch = 16, xlab = "Time", ylab = "Proportion mass remaining", xlim = c(0, max(x$time)), 
         main = x$model, ...)
     mod <- eval(parse(text = paste("litterfitter:::", x$model, sep = "")))
 
@@ -37,9 +37,9 @@ plot.litfit <- function(x, formulae.cex = 1, ...) {
                            
                            weibull = substitute(paste(y==e^A^B), list(A = paste("-( t / ",round(x$optimFit$par[1], 3),")",sep=""),B=round(x$optimFit$par[2],3))),
                            
-                           discrete.parallel = substitute(paste(y==A*e^B+C*e^D), list(A=rnd.to.text(x$optimFit$par[1],4),B=paste("-", rnd.to.text(x$optimFit$par[2],3),"t", sep=""),C=rnd.to.text(1-x$optimFit$par[1],4),D=paste("-", rnd.to.text(x$optimFit$par[3],3),"t",sep=""))),
+                           discrete.parallel = substitute(paste(y==A*e^{B*t}+C*e^{D*t}), list(A=rnd.to.text(x$optimFit$par[1],4),B=rnd.to.text(-1*x$optimFit$par[2],4),C=rnd.to.text(1-x$optimFit$par[1],4),D=rnd.to.text(-1*x$optimFit$par[3],4))),
                            
-                           discrete.series = NULL,
+                           discrete.series = substitute(paste(y==frac(A*e^{C*t}-D*e^{F*t},G)), list(A=rnd.to.text((1-x$optimFit$par[1])*x$optimFit$par[2]),C=rnd.to.text(-1*x$optimFit$par[3]),D=rnd.to.text(x$optimFit$par[3]-x$optimFit$par[2]*x$optimFit$par[1]),F=rnd.to.text(-1*x$optimFit$par[2]),G=x$optimFit$par[2] - x$optimFit$par[3])),
                            
                            cont.quality.1 = NULL,
                            
@@ -69,7 +69,6 @@ plot.litfit <- function(x, formulae.cex = 1, ...) {
 #     writeLines(tmp, "abcdefg.r")
 #     source("abcdefg.r")
 } 
->>>>>>> making skeleton for changes to equation plotting function
 
 #' @export
 coef.litfit <- function(object, ...) {
