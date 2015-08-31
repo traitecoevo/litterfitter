@@ -45,8 +45,9 @@ plot.litfit <- function(x, formulae.cex = 1, ...) {
         pt.pos[1], pt.pos[2], x$optimFit$par[2], x$optimFit$par[1], ifelse(x$optimFit$par[3] > 
             0, "+", "-"), abs(x$optimFit$par[3]), formulae.cex))
     
-    #writeLines(tmp, "abcdefg.r")
-    #source("abcdefg.r")
+    writeLines(tmp, "abcdefg.r")
+    source("abcdefg.r")
+    invisible(file.remove("abcdefg.r"))
 }
 
 #' @export
