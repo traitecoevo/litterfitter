@@ -26,29 +26,51 @@ plot.litfit <- function(x, formulae.cex = 1, ...) {
     plot(x$mass ~ x$time, pch = 16, xlab = "Time", ylab = "Propotion mass remaining", xlim = c(0, max(x$time)), 
         main = x$model, ...)
     mod <- eval(parse(text = paste("litterfitter:::", x$model, sep = "")))
-    lines(seq(0, max(x$time), 0.01), do.call(mod, c(list(seq(0, max(x$time), 0.01)), as.list(x$optimFit$par))))
-    pt.pos = c(grconvertX(0.5, from = "npc"), grconvertY(0.95, from = "npc"))
+
+    lines(seq(0, max(x$time), 0.01), do.call(mod, c(list(seq(0, max(x$time), 0.01)), 
+        as.list(x$optimFit$par))))
+    pt.pos <- c(grconvertX(0.5, from = "npc"), grconvertY(0.95, from = "npc"))
     
-    tmp = switch(x$model, neg.exp = sprintf("text(%f,%f, expression(paste(y==e^\"-%.4f t\")),cex=%f)", 
-        pt.pos[1], pt.pos[2], x$optimFit$par, formulae.cex), weibull = sprintf("text(%f,%f, expression(paste(y==e^-(t/%.4f)^%.4f)),cex=%f)", 
-        pt.pos[1], pt.pos[2], x$optimFit$par[1], x$optimFit$par[2], formulae.cex), discrete.parallel = sprintf("text(%f,%f, expression(paste(y==%s(\"%.4fe\"^-'%.4f t'%s\"%.4fe\"^-'%.4f t')/%.4f)),cex=%f)", 
-        pt.p = pt.pos[1], pt.pos[2], ifelse(x$optimFit$par[2] - x$optimFit$par[3] > 0, "", "-"), (1 - 
-            x$optimFit$par[1]) * x$optimFit$par[2], x$optimFit$par[3], ifelse(x$optimFit$par[3] - x$optimFit$par[2] < 
-            0, "+", "-"), abs(x$optimFit$par[3] - x$optimFit$par[2] * x$optimFit$par[1]), x$optimFit$par[2], 
-        abs(x$optimFit$par[2] - x$optimFit$par[3]), formulae.cex), discrete.series = sprintf("text(%f,%f, expression(paste(y==\"%.4fe\"^-'%.4f t'+\"%.4fe\"^-'%.4f t')),cex=%f)", 
-        pt.pos[1], pt.pos[2], x$optimFit$par[1], x$optimFit$par[2], 1 - x$optimFit$par[1], x$optimFit$par[3], 
-        formulae.cex), cont.quality.1 = sprintf("text(%f,%f, expression(paste(y==%.4f^%.4f*(%.4f+t)^%.4f)),cex=%f)", 
-        pt.pos[1], pt.pos[2], x$optimFit$par[1], x$optimFit$par[2], x$optimFit$par[1], x$optimFit$par[2] * 
-            (-1), formulae.cex), cont.quality.2 = sprintf("text(%f,%f, expression(paste(y==\"(1%s%.4f t)\"^%.4f)),cex=%f)", 
-        pt.pos[1], pt.pos[2], ifelse(x$optimFit$par[1] > 0, "+", "-"), abs(x$optimFit$par[1]), x$optimFit$par[2] * 
-            (-1), formulae.cex), neg.exp.limit = sprintf("text(%f,%f, expression(paste(y==\"%.4fe\"^-'%.4f t' %s %.4f)),cex=%f)", 
-        pt.pos[1], pt.pos[2], x$optimFit$par[2], x$optimFit$par[1], ifelse(x$optimFit$par[3] > 
-            0, "+", "-"), abs(x$optimFit$par[3]), formulae.cex))
+    formula.text <- switch(x$model,
+                           
+                           neg.exp = NULL,
+                           
+                           weibull = NULL,
+                           
+                           discrete.parallel = NULL,
+                           
+                           discrete.series = NULL,
+                           
+                           cont.quality.1 = NULL,
+                           
+                           cont.quality.2 = NULL,
+                           
+                           neg.exp.limit = NULL)
     
-    writeLines(tmp, "abcdefg.r")
-    source("abcdefg.r")
-    invisible(file.remove("abcdefg.r"))
-}
+    text(pt.pos[1], pt.pos[2], label = formula.text)
+    
+#     tmp = switch(x$model, neg.exp = sprintf("text(%f,%f, expression(paste(y==e^\"-%.4f t\")),cex=%f)", 
+#         pt.pos[1], pt.pos[2], x$optimFit$par, formulae.cex), weibull = sprintf("text(%f,%f, expression(paste(y==e^-(t/%.4f)^%.4f)),cex=%f)", 
+#         pt.pos[1], pt.pos[2], x$optimFit$par[1], x$optimFit$par[2], formulae.cex), 
+#         discrete.parallel = sprintf("text(%f,%f, expression(paste(y==%s(\"%.4fe\"^-'%.4f t'%s\"%.4fe\"^-'%.4f t')/%.4f)),cex=%f)", 
+#             pt.p = pt.pos[1], pt.pos[2], ifelse(x$optimFit$par[2] - x$optimFit$par[3] > 
+#                 0, "", "-"), (1 - x$optimFit$par[1]) * x$optimFit$par[2], x$optimFit$par[3], 
+#             ifelse(x$optimFit$par[3] - x$optimFit$par[2] < 0, "+", "-"), abs(x$optimFit$par[3] - 
+#                 x$optimFit$par[2] * x$optimFit$par[1]), x$optimFit$par[2], abs(x$optimFit$par[2] - 
+#                 x$optimFit$par[3]), formulae.cex), discrete.series = sprintf("text(%f,%f, expression(paste(y==\"%.4fe\"^-'%.4f t'+\"%.4fe\"^-'%.4f t')),cex=%f)", 
+#             pt.pos[1], pt.pos[2], x$optimFit$par[1], x$optimFit$par[2], 1 - x$optimFit$par[1], 
+#             x$optimFit$par[3], formulae.cex), cont.quality.1 = sprintf("text(%f,%f, expression(paste(y==%.4f^%.4f*(%.4f+t)^%.4f)),cex=%f)", 
+#             pt.pos[1], pt.pos[2], fit$optimFit$par[1], fit$optimFit$par[2], fit$optimFit$par[1], 
+#             fit$optimFit$par[2] * (-1), formulae.cex), cont.quality.2 = sprintf("text(%f,%f, expression(paste(y==\"(1%s%.4f t)\"^%.4f)),cex=%f)", 
+#             pt.pos[1], pt.pos[2], ifelse(fit$optimFit$par[1] > 0, "+", "-"), abs(fit$optimFit$par[1]), 
+#             fit$optimFit$par[2] * (-1), formulae.cex), neg.exp.limit = sprintf("text(%f,%f, expression(paste(y==\"%.4fe\"^-'%.4f t' %s %.4f)),cex=%f)", 
+#             pt.pos[1], pt.pos[2], fit$optimFit$par[2], fit$optimFit$par[1], ifelse(fit$optimFit$par[3] > 
+#                 0, "+", "-"), abs(fit$optimFit$par[3]), formulae.cex))
+#     
+#     writeLines(tmp, "abcdefg.r")
+#     source("abcdefg.r")
+} 
+>>>>>>> making skeleton for changes to equation plotting function
 
 #' @export
 coef.litfit <- function(object, ...) {
