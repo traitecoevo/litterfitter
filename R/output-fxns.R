@@ -35,9 +35,9 @@ plot.litfit <- function(x, formulae.cex = 1, ...) {
                            
                            neg.exp = substitute(paste(y==e^A), list(A = paste("-",round(x$optimFit$par, 3),"t",sep=""))),
                            
-                           weibull = substitute(paste(y==e^A^B), list(A = paste("( t / ",round(x$optimFit$par[1], 3),")",sep=""),B=round(x$optimFit$par[2],3))),
+                           weibull = substitute(paste(y==e^A^B), list(A = paste("-( t / ",round(x$optimFit$par[1], 3),")",sep=""),B=round(x$optimFit$par[2],3))),
                            
-                           discrete.parallel = NULL,
+                           discrete.parallel = substitute(paste(y==A*e^B+C*e^D), list(A=round(x$optimFit$par[1],3),B=paste("-", round(x$optimFit$par[2],3),"t", sep=""),C=1-round(x$optimFit$par[1],2),D=paste("-", round(x$optimFit$par[3],3),"t",sep=""))),
                            
                            discrete.series = NULL,
                            
@@ -47,7 +47,7 @@ plot.litfit <- function(x, formulae.cex = 1, ...) {
                            
                            neg.exp.limit = NULL)
     
-    text(pt.pos[1], pt.pos[2], label = formula.text)
+    text(pt.pos[1], pt.pos[2], label = formula.text, cex=formulae.cex)
     
 #     tmp = switch(x$model, 
 #         discrete.parallel = sprintf("text(%f,%f, expression(paste(y==%s(\"%.4fe\"^-'%.4f t'%s\"%.4fe\"^-'%.4f t')/%.4f)),cex=%f)", 
