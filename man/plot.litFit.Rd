@@ -4,10 +4,12 @@
 \alias{plot.litfit}
 \title{Plot decomposition trajectory and curve fit}
 \usage{
-\method{plot}{litfit}(x,...)
+\method{plot}{litfit}(x,formulae.cex,...)
 }
 \arguments{
 \item{x}{litfit object}
+
+\item{formulae.cex}{how big do you want your formula?}
 
 \item{...}{additional arguments passed to plot.default}
 }

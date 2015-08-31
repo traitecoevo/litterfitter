@@ -11,3 +11,4 @@ License: MIT + file LICENSE
 Maintainer: Will Cornwell <wcornwell@gmail.com>
 LazyData: true
 Suggests: testthat
+Imports: plyr

@@ -26,8 +26,7 @@ Then you can do some (useful but limited) things with the `litfit` object like:
 plot(fit)
 ```
 
-![weibull.png](weibull.png)
-![neg.exp.png](neg.exp.png)
+![example_plot.png](example_plot.png)
 
 `summary(fit)` is also useful
 
