@@ -1,11 +1,11 @@
 ## internal functions see base functions for models in Manzoni 2012 Table A1
 
-discrete.parallel <- function(x, R, K1, K2, upper = c((1 - 1e-04), 1000, 1000), lower = c(1e-04, 1e-04, 
+discrete.series<- function(x, R, K1, K2, upper = c((1 - 1e-04), 1000, 1000), lower = c(1e-04, 1e-04, 
     1e-04)) {
     (((1 - R) * K1 * exp(-K2 * x)) - ((K2 - K1 * R) * exp(-K1 * x)))/(K1 - K2)
 }
 
-discrete.series <- function(t, A, K1, K2, upper = c((1 - 1e-04), 100, 100), lower = c(1e-04, 1e-04, 1e-04)) {
+discrete.parallel <- function(t, A, K1, K2, upper = c((1 - 1e-04), 100, 100), lower = c(1e-04, 1e-04, 1e-04)) {
     A * exp(-K1 * t) + (1 - A) * exp(-K2 * t)
 }
 
