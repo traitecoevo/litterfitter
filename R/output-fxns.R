@@ -46,12 +46,16 @@ plot.litfit <- function(x, formulae.cex = 1, ...) {
                                                                C=rnd.to.text(1-x$optimFit$par[1],4),
                                                                D=rnd.to.text(-1*x$optimFit$par[3],4))),
                            
-                           discrete.series = substitute(paste(y==frac(A*e^{C*t}-D*e^{F*t},G)),
+                           discrete.series = substitute(paste(y==frac(A*e^{C*t}*sign*D*e^{F*t},G)),
                                                         list(A=rnd.to.text((1-x$optimFit$par[1])*x$optimFit$par[2]),
                                                              C=rnd.to.text(-1*x$optimFit$par[3]),
                                                              D=rnd.to.text(x$optimFit$par[3]-x$optimFit$par[2]*x$optimFit$par[1]),
                                                              F=rnd.to.text(-1*x$optimFit$par[2]),
-                                                             G=x$optimFit$par[2] - x$optimFit$par[3])),
+                                                             G=x$optimFit$par[2] - x$optimFit$par[3],
+                                                             sign=ifelse(x$optimFit$par[3]-x$optimFit$par[2]*x$optimFit$par[1] > 0,
+                                                                         "-",
+                                                                         "")
+                                                             )),
                            
                            cont.quality.1 = substitute(paste(y==frac((B^A), (B+t)^A)),
                                                        list(A=rnd.to.text(x$optimFit$par[2]),
