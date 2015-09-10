@@ -86,5 +86,9 @@ fit_litter <- function(time, mass.remaining, model = c("neg.exp", "weibull", "di
     fit.out <- list(optimFit = fit, logLik = LL, fitAIC = model.AIC, fitAICc = model.AICc, fitBIC = model.BIC, 
         time = time, mass = mass.remaining, predicted = predicted_vals, model = model, nparams = nps)
     class(fit.out) <- "litfit"
+    if(any(fit.out$optimFit$par == eval(formals(get(model))$lower) |
+       fit.out$optimFit$par == eval(formals(get(model))$upper))) {
+      warning("one or more parameters fit on the boundary, check fit closely")
+    }
     return(fit.out)
 } 
