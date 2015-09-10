@@ -7,7 +7,7 @@
 \usage{
 fit_litter(time, mass.remaining, model = c("neg.exp", "weibull",
   "discrete.parallel", "discrete.series", "cont.quality.1", "cont.quality.2",
-  "neg.exp.limit"), iters = 500, ...)
+  "neg.exp.limit"), iters = 500, upper = NULL, lower = NULL, ...)
 }
 \arguments{
 \item{time}{time since decomposition began, that is, ti-t0}
@@ -17,6 +17,10 @@ fit_litter(time, mass.remaining, model = c("neg.exp", "weibull",
 \item{model}{there are five models currently implemented (see below)}
 
 \item{iters}{Number of random starts for the fitting.  Use higher numbers for models with larger numbers of parameters and for models that inherently tend to be less identifiable.}
+
+\item{upper,lower}{\bold{Optional} user specified values for the upper and lower bounds used by
+\code{optim} in the fitting procedure. Use with care, only minimal sanity checking is currently
+ implemented.}
 
 \item{...}{Additional arguments passed to \code{\link{optim}}}
 }
