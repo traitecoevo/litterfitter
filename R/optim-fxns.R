@@ -15,6 +15,10 @@
 ##' 
 ##' @param iters Number of random starts for the fitting.  Use higher numbers for models with larger numbers of parameters and for models that inherently tend to be less identifiable.
 ##' 
+##' @param upper,lower \bold{Optional} user specified values for the upper and lower bounds used by
+##' \code{optim} in the fitting procedure. Use with care, only minimal sanity checking is currently
+##'  implemented.
+##' 
 ##' @param ...  Additional arguments passed to \code{\link{optim}}
 ##' 
 ##' @return returns a litfit object with the following elements: 
@@ -67,14 +71,32 @@
 ##' 
 
 fit_litter <- function(time, mass.remaining, model = c("neg.exp", "weibull", "discrete.parallel", "discrete.series", 
-    "cont.quality.1", "cont.quality.2", "neg.exp.limit"), iters = 500, ...) {
+    "cont.quality.1", "cont.quality.2", "neg.exp.limit"), iters = 500, upper=NULL, lower=NULL, ...) {
     if (length(time) != length(mass.remaining)) {
         stop("Time vector must have the same length and correspond to the mass remaining vector")
     }
     if (min(mass.remaining) > 1 | max(mass.remaining) > 2) {
         stop("Check mass remaining vector; must be in proportional mass remaining.")
     }
-    fit <- multioptimFit(time, mass.remaining, model, iters = iters, ...)
+  
+  # test that if user supplied bounds, there are enough of them
+  
+  if(!is.null(upper)) { 
+    if(length(upper) != length(eval(formals(get(model))$upper))){
+      stop(paste("Incorrect number of upper bounds supplied, should be:",
+                 length(eval(formals(get(model))$upper))))}
+  
+  }
+  if(!is.null(lower)) { 
+    if(length(lower) != length(eval(formals(get(model))$lower))){
+      stop(paste("Incorrect number of lower bounds supplied, should be:",
+                 length(eval(formals(get(model))$lower))))}
+  }
+  
+  
+  
+  
+    fit <- multioptimFit(time, mass.remaining, model, iters = iters, upper=upper,lower=lower,...)
     if (is.null(fit)) 
         return(NULL)
     predicted_vals <- do.call(model, c(list(time), as.list(fit$par)))
@@ -86,8 +108,8 @@ fit_litter <- function(time, mass.remaining, model = c("neg.exp", "weibull", "di
     fit.out <- list(optimFit = fit, logLik = LL, fitAIC = model.AIC, fitAICc = model.AICc, fitBIC = model.BIC, 
         time = time, mass = mass.remaining, predicted = predicted_vals, model = model, nparams = nps)
     class(fit.out) <- "litfit"
-    if(any(fit.out$optimFit$par == eval(formals(get(model))$lower) |
-       fit.out$optimFit$par == eval(formals(get(model))$upper))) {
+    if(any(fit.out$optimFit$par == ifelse(is.null(lower),eval(formals(get(model))$lower),lower) |
+       fit.out$optimFit$par == ifelse(is.null(upper),eval(formals(get(model))$upper),upper))) {
       warning("one or more parameters fit on the boundary, check fit closely")
     }
     return(fit.out)

@@ -83,13 +83,19 @@ calculateBIC <- function(LL, nparams, samplesize) {
     return(-2 * LL + nparams * log(samplesize))
 }
 
-multioptimFit <- function(time_data, mass_data, model, iters = 200, ...) {
+multioptimFit <- function(time_data, mass_data, model, iters = 200,upper=NULL,lower=NULL, ...) {
     nArgs <- length(formals(model)) - 3
     # need this to allow variation in number of parameters (changed to 3 because 'upper' and 'lower' are
     # now formal arguments)
     fit <- list()
-    upper_bounds <- eval(as.list(formals(model))$upper)
-    lower_bounds <- eval(as.list(formals(model))$lower)
+    ifelse(!is.null(upper),
+           upper_bounds <- upper,
+           upper_bounds <- eval(as.list(formals(model))$upper))
+           
+    ifelse(!is.null(lower),
+           lower_bounds <- lower,
+           lower_bounds <- eval(as.list(formals(model))$lower))
+
     for (i in 1:iters) {
         starter <- runif(nArgs, min = lower_bounds, max = lower_bounds + 0.9998)
         # always start near lower bound--empirically works better
