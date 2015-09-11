@@ -17,5 +17,4 @@ data from Hobbie et al means of pine needle decomposition
 \author{
 Will Cornwell
 }
-\keyword{datasets}
 
