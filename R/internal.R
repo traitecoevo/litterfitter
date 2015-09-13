@@ -134,11 +134,12 @@ rnd.to.text <- function(x, digits=4){
 }
 
 simulate.and.check<-function(model){
-  fit <- fit_litter(time = c(0, 1, 2, 3, 4, 5, 6), mass.remaining = c(1, 0.9, 1.01, 0.4, 0.6, 0.2, 0.01),
-                    model = model, iters = 1000)
+  data("pineneedles")
+  fit <- fit_litter(time = pineneedles$Year, mass.remaining = pineneedles$Mass.remaining,
+                    model = model, iters = 2000)
   simulated.data <- simulate.decomposition.with.error(fit, sigma = 0.01)
   simulated.fit <- fit_litter(time = simulated.data$time, mass.remaining = simulated.data$mass.remaining,
-                              model = model, iters = 1000)
+                              model = model, iters = 2000)
   return(are.within.ten.percent.of(steady_state(fit), steady_state(simulated.fit)))
 }
 

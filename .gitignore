@@ -3,6 +3,7 @@
 *.Rproj.user
 *.Rproj
 *.html
+*.pdf
 .Rproj.user
 
 litterFitter_0.1.tar.gz
