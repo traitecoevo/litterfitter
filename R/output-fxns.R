@@ -159,8 +159,7 @@ predict.litfit <- function(object, newdata = NULL, ...) {
 ##' @export steady_state
 steady_state <- function(x, ...) {
     if (class(x) != "litfit") {
-        message("Something went wrong -- litterfitter::steady_state takes a 'litfit' object")
-        return(NULL)
+       stop("Something went wrong -- litterfitter::steady_state takes a 'litfit' object")
     }
     out <- switch(x$model, neg.exp = negexp.steadystate(x$optimFit$par), weibull = weibull.steadystate(x$optimFit$par[1], 
         x$optimFit$par[2]), discrete.parallel = discrete.parallel.steadystate(x$optimFit$par[1], x$optimFit$par[2], 
