@@ -9,8 +9,12 @@ before_install:
 
 install:
   - ./travis-tool.sh install_deps
+  - ./travis-tool.sh github_package jimhester/covr
 
 script: ./travis-tool.sh run_tests
+
+after_success:
+  - Rscript -e 'library(covr); coveralls()'
 
 after_failure:
   - ./travis-tool.sh dump_logs
@@ -20,9 +24,4 @@ notifications:
     on_success: change
     on_failure: change
 
-r_github_packages:
-  - jimhester/covr
-
-after_success:
-  - Rscript -e 'covr::codecov(token="3cc7373a-3b8f-4079-a3fb-31b7f44aa825")'  
   

@@ -4,4 +4,4 @@
 ^Makefile$
 ^\.remake$
 ^readme\.Rmd$
-^readme_files$
+^readme\_files$
