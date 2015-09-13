@@ -1,7 +1,7 @@
 # litterFitter: a package for fitting and testing alternative models for single cohort litter decomposition data
 Will Cornwell, James Weedon, and Liu Guofang  
 
-[![Build Status](https://travis-ci.org/cornwell-lab-unsw/litterfitter.svg?branch=master)](https://travis-ci.org/cornwell-lab-unsw/litterfitter) [![codecov.io](http://codecov.io/github/cornwell-lab-unsw/litterfitter/coverage.svg?branch=master)](http://codecov.io/github/cornwell-lab-unsw/litterfitter?branch=master)
+[![Build Status](https://travis-ci.org/cornwell-lab-unsw/litterfitter.svg?branch=master)](https://travis-ci.org/cornwell-lab-unsw/litterfitter) [![Coverage Status](https://coveralls.io/repos/cornwell-lab-unsw/litterfitter/badge.svg?branch=master&service=github)](https://coveralls.io/github/cornwell-lab-unsw/litterfitter?branch=master)
 
 To install run:
 

@@ -134,7 +134,7 @@ rnd.to.text <- function(x, digits=4){
 }
 
 simulate.and.check<-function(model){
-  data("pineneedles")
+  data(pineneedles)
   fit <- fit_litter(time = pineneedles$Year, mass.remaining = pineneedles$Mass.remaining,
                     model = model, iters = 2000)
   simulated.data <- simulate.decomposition.with.error(fit, sigma = 0.01)

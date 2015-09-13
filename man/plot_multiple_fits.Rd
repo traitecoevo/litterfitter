@@ -29,11 +29,9 @@ this function is designed to compare a variety of curve shapes visually and with
 }
 \examples{
 data(pineneedles,package='litterfitter')
-plot_multiple_fits(time = pineneedles$Year, mass.remaining = pineneedles$Mass.remaining,
-                bty = 'n')
 
 plot_multiple_fits(time = pineneedles$Year, mass.remaining = pineneedles$Mass.remaining,
-bty = 'n', model = c('neg.exp', 'weibull'), xlab = 'Time', ylab = 'Proportion mass remaining')
+bty = 'n', model = c('neg.exp', 'weibull'), xlab = 'Time', ylab = 'Proportion mass remaining',iters=1000)
 }
 \author{
 Liu Guofang
