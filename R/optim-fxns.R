@@ -78,6 +78,10 @@ fit_litter <- function(time, mass.remaining, model = c("neg.exp", "weibull", "di
     if (min(mass.remaining) > 1 | max(mass.remaining) > 2) {
         stop("Check mass remaining vector; must be in proportional mass remaining.")
     }
+    
+    if (min(time) < 0) {
+      stop("Check time vector; negative values detected.")
+    }
   
   # test that if user supplied bounds, there are enough of them
   

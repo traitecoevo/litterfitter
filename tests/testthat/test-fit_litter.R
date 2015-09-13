@@ -2,10 +2,10 @@ context("fit_litter")
 
 
 test_that("fit sane", {
-    fit <- fit_litter(time = c(0, 1, 2, 3, 4, 5, 6), mass.remaining = c(1, 0.9, 1.01, 0.4, 0.6, 0.2, 0.01), 
+    fit <- fit_litter(time = c(0, 1, 2, 3, 4, 5, 6), mass.remaining = c(1, 0.9, 1.01, 0.4, 0.6, 0.2, 0.01),
         model = "weibull", iters = 1000)
     simulated.data <- simulate.decomposition.with.error(fit, sigma = 0.01)
-    simulated.fit <- fit_litter(time = simulated.data$time, mass.remaining = simulated.data$mass.remaining, 
+    simulated.fit <- fit_litter(time = simulated.data$time, mass.remaining = simulated.data$mass.remaining,
         model = "weibull", iters = 1000)
     expect_true(are.within.ten.percent.of(coef(fit)[1], coef(simulated.fit)[1]))
     expect_true(are.within.ten.percent.of(coef(fit)[2], coef(simulated.fit)[2]))
@@ -13,4 +13,25 @@ test_that("fit sane", {
     expect_true(fit$nparams > 0)
     expect_true(fit$optimFit$convergence == 0)
     expect_true(all(predict(fit) > 0))
-}) 
+})
+
+
+test_that("plots don't throw errors", {
+  expect_true(exists('plot', where='package:litterfitter', mode='function'))
+  fit <- fit_litter(time = c(0, 1, 2, 3, 4, 5, 6), mass.remaining = c(1, 0.9, 1.01, 0.4, 0.6, 0.2, 0.01),
+                    model = "weibull", iters = 1000)
+  plot(fit)
+  plot_multiple_fits(time = pineneedles$Year, mass.remaining = pineneedles$Mass.remaining,model=c("neg.exp", "weibull"),
+                     bty = 'n', iters = 1500)
+
+})
+
+test_that("crazy input throws errors",{
+  throws_error(fit_litter(time = c(0, 1, 2, 3, 4, 5, 6), mass.remaining = c(1000, 0.9, 1.01, 0.4, 0.6, 0.2, 0.01),
+             model = "weibull", iters = 1000))
+  throws_error(fit_litter(time = c(0, -1, 2, 3, 4, 5, 6), mass.remaining = c(1, 0.9, 1.01, 0.4, 0.6, 0.2, 0.01),
+                          model = "weibull", iters = 1000))
+})
+
+
+
