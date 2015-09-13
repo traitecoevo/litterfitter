@@ -1,13 +1,12 @@
 ---
 title: "litterFitter: a package for fitting and testing alternative models for single cohort litter decomposition data"
 author: "Will Cornwell, James Weedon, and Liu Guofang"
-date: "9 September 2015"
 output: 
   html_document:
     keep_md: true
 ---
 
-[![Build Status](https://travis-ci.org/cornwell-lab-unsw/litterfitter.png?branch=master)](https://travis-ci.org/cornwell-lab-unsw/litterfitter)
+[![Build Status](https://travis-ci.org/cornwell-lab-unsw/litterfitter.svg?branch=master)](https://travis-ci.org/cornwell-lab-unsw/litterfitter) [![codecov.io](http://codecov.io/github/cornwell-lab-unsw/litterfitter/coverage.svg?branch=master)](http://codecov.io/github/cornwell-lab-unsw/litterfitter?branch=master)
 
 To install run:
 
@@ -18,19 +17,17 @@ To install run:
 ```
 At the moment there is one key function which is `fit_litter` which can fit 6 different types of decomposition trajectories.  
 
-Try:
-
 ```{R,results="hide",warning=FALSE,message = FALSE}
    fit<-fit_litter(time=c(0,1,2,3,4,5,6),
    mass.remaining=c(1,0.9,1.01,0.4,0.6,0.2,0.01),
-   model="weibull",iters=100)
+   model="weibull",iters=500)
 ```
-You can see this visually with the `plot_multiple_fits` function:
+You can visually compare the fits of different non-linear equations with the `plot_multiple_fits` function:
 
-
-```{R,fig.height=5,results='hide',fig.keep=TRUE,warning=FALSE,message = FALSE}
+```{R,fig.height=6,results='hide',fig.keep=TRUE,warning=FALSE,message = FALSE}
    plot_multiple_fits(time=c(0,1,2,3,4,5,6),
-   mass.remaining=c(1,0.9,1.01,0.4,0.6,0.2,0.01),iters=100)
+   mass.remaining=c(1,0.9,1.01,0.4,0.6,0.2,0.01),
+   model=c("neg.exp","weibull"),iters=500)
 ```
 Calling `plot` on a `litfit` object will show you the data, the curve fit, and even the equation, with the estimated coefficients:
 
@@ -43,7 +40,3 @@ The summary of a `litfit` object will show you some of the summary staistics for
 ```{R,echo=FALSE,fig.keep=TRUE}
    summary(fit)
 ```
-
-
-
-
