@@ -23,33 +23,38 @@
 ##' @export
 
 plot.litfit <- function(x, formulae.cex = 1, ...) {
-    plot(x$mass ~ x$time, pch = 16, xlab = "Time", ylab = "Proportion mass remaining", xlim = c(0, max(x$time)), main = x$model, 
-        ...)
+    plot(x$mass ~ x$time, pch = 16, xlab = "Time", ylab = "Proportion mass remaining", 
+        xlim = c(0, max(x$time)), main = x$model, ...)
     mod <- get(x$model)
-    time.vec<-seq(0, max(x$time), 0.01)
+    time.vec <- seq(0, max(x$time), 0.01)
     lines(time.vec, do.call(mod, c(list(time.vec), as.list(x$optimFit$par))))
     pt.pos <- c(grconvertX(0.5, from = "npc"), grconvertY(0.95, from = "npc"))
     
-    formula.text <- switch(x$model, neg.exp = substitute(paste(y == e^A), list(A = paste("-", rnd.to.text(x$optimFit$par, 
-        3), "t", sep = ""))), weibull = substitute(paste(y == e^frac(-t, A)^B), list(A = round(x$optimFit$par[1], 3), 
-        B = round(x$optimFit$par[2], 3))), discrete.parallel = substitute(paste(y == A * e^{
+    formula.text <- switch(x$model, neg.exp = substitute(paste(y == e^A), list(A = paste("-", 
+        rnd.to.text(x$optimFit$par, 3), "t", sep = ""))), weibull = substitute(paste(y == 
+        e^frac(-t, A)^B), list(A = round(x$optimFit$par[1], 3), B = round(x$optimFit$par[2], 
+        3))), discrete.parallel = substitute(paste(y == A * e^{
         B * t
     } + C * e^{
         D * t
-    }), list(A = rnd.to.text(x$optimFit$par[1], 4), B = rnd.to.text(-1 * x$optimFit$par[2], 4), C = rnd.to.text(1 - 
-        x$optimFit$par[1], 4), D = rnd.to.text(-1 * x$optimFit$par[3], 4))), discrete.series = substitute(paste(y == 
-        frac(A * e^{
-            C * t
-        } * sign * D * e^{
-            F * t
-        }, G)), list(A = rnd.to.text((1 - x$optimFit$par[1]) * x$optimFit$par[2]), C = rnd.to.text(-1 * x$optimFit$par[3]), 
-        D = rnd.to.text(x$optimFit$par[3] - x$optimFit$par[2] * x$optimFit$par[1]), F = rnd.to.text(-1 * x$optimFit$par[2]), 
-        G = x$optimFit$par[2] - x$optimFit$par[3], sign = ifelse(x$optimFit$par[3] - x$optimFit$par[2] * x$optimFit$par[1] > 
-            0, "-", ""))), cont.quality.1 = substitute(paste(y == frac((B^A), (B + t)^A)), list(A = rnd.to.text(x$optimFit$par[2]), 
-        B = rnd.to.text(x$optimFit$par[1]))), cont.quality.2 = substitute(paste(y == frac(1, (1 + B * t)^A)), list(A = rnd.to.text(x$optimFit$par[2]), 
-        B = rnd.to.text(x$optimFit$par[1]))), neg.exp.limit = substitute(paste(y == A * e^{
-        -K * t
-    } + B), list(K = rnd.to.text(x$optimFit$par[1]), A = rnd.to.text(x$optimFit$par[2]), B = rnd.to.text(x$optimFit$par[3]))))
+    }), list(A = rnd.to.text(x$optimFit$par[1], 4), B = rnd.to.text(-1 * x$optimFit$par[2], 
+        4), C = rnd.to.text(1 - x$optimFit$par[1], 4), D = rnd.to.text(-1 * x$optimFit$par[3], 
+        4))), discrete.series = substitute(paste(y == frac(A * e^{
+        C * t
+    } * sign * D * e^{
+        F * t
+    }, G)), list(A = rnd.to.text((1 - x$optimFit$par[1]) * x$optimFit$par[2]), C = rnd.to.text(-1 * 
+        x$optimFit$par[3]), D = rnd.to.text(x$optimFit$par[3] - x$optimFit$par[2] * 
+        x$optimFit$par[1]), F = rnd.to.text(-1 * x$optimFit$par[2]), G = x$optimFit$par[2] - 
+        x$optimFit$par[3], sign = ifelse(x$optimFit$par[3] - x$optimFit$par[2] * 
+        x$optimFit$par[1] > 0, "-", ""))), cont.quality.1 = substitute(paste(y == 
+        frac((B^A), (B + t)^A)), list(A = rnd.to.text(x$optimFit$par[2]), B = rnd.to.text(x$optimFit$par[1]))), 
+        cont.quality.2 = substitute(paste(y == frac(1, (1 + B * t)^A)), list(A = rnd.to.text(x$optimFit$par[2]), 
+            B = rnd.to.text(x$optimFit$par[1]))), neg.exp.limit = substitute(paste(y == 
+            A * e^{
+                -K * t
+            } + B), list(K = rnd.to.text(x$optimFit$par[1]), A = rnd.to.text(x$optimFit$par[2]), 
+            B = rnd.to.text(x$optimFit$par[3]))))
     
     text(pt.pos[1], pt.pos[2], label = formula.text, cex = formulae.cex)
 }
@@ -142,10 +147,10 @@ steady_state <- function(x, ...) {
         stop("Something went wrong -- litterfitter::steady_state takes a 'litfit' object")
     }
     out <- switch(x$model, neg.exp = negexp.steadystate(x$optimFit$par), weibull = weibull.steadystate(x$optimFit$par[1], 
-        x$optimFit$par[2]), discrete.parallel = discrete.parallel.steadystate(x$optimFit$par[1], x$optimFit$par[2], 
-        x$optimFit$par[3]), discrete.series = discrete.series.steadystate(x$optimFit$par[1], x$optimFit$par[2], x$optimFit$par[3]), 
-        cont.quality.2 = cont.quality.2.steadystate(x$optimFit$par[1], x$optimFit$par[2]), cont.quality.1 = "not yet implemented", 
-        neg.exp.limit = "not yet implemented")
+        x$optimFit$par[2]), discrete.parallel = discrete.parallel.steadystate(x$optimFit$par[1], 
+        x$optimFit$par[2], x$optimFit$par[3]), discrete.series = discrete.series.steadystate(x$optimFit$par[1], 
+        x$optimFit$par[2], x$optimFit$par[3]), cont.quality.2 = cont.quality.2.steadystate(x$optimFit$par[1], 
+        x$optimFit$par[2]), cont.quality.1 = "not yet implemented", neg.exp.limit = "not yet implemented")
     names(out) <- x$model
     return(out)
 }
@@ -186,18 +191,21 @@ steady_state <- function(x, ...) {
 ##'   
 ##' 
 ##' @export plot_multiple_fits
-plot_multiple_fits <- function(time, mass.remaining, model = c("neg.exp", "weibull", "discrete.parallel", "discrete.series", 
-    "cont.quality.1", "cont.quality.2", "neg.exp.limit"), color = NULL, iters = 500, bty = "o", ...) {
+plot_multiple_fits <- function(time, mass.remaining, model = c("neg.exp", "weibull", 
+    "discrete.parallel", "discrete.series", "cont.quality.1", "cont.quality.2", "neg.exp.limit"), 
+    color = NULL, iters = 500, bty = "o", ...) {
     
     fixed_string_width <- function(string) {
         empty.char <- strwidth(" ", units = "inch")
         value <- strwidth(string, units = "inch")
         diff <- max(value) - value
         number <- round(diff/empty.char, 0)
-        return(lapply(1:length(string), function(i) paste(string[i], paste(rep(" ", number[i]), collapse = ""), sep = "")))
+        return(lapply(1:length(string), function(i) paste(string[i], paste(rep(" ", 
+            number[i]), collapse = ""), sep = "")))
     }
     
-    mod.lst <- lapply(model, function(x) fit_litter(time = time, mass.remaining = mass.remaining, model = x, iters = iters))
+    mod.lst <- lapply(model, function(x) fit_litter(time = time, mass.remaining = mass.remaining, 
+        model = x, iters = iters))
     
     N <- length(model)
     if (is.null(color)) 
@@ -206,17 +214,18 @@ plot_multiple_fits <- function(time, mass.remaining, model = c("neg.exp", "weibu
     
     for (i in 1:N) {
         mod <- get(mod.lst[[i]]$model)
-        lines(seq(0, max(mod.lst[[i]]$time), 0.01), do.call(mod, c(list(seq(0, max(mod.lst[[i]]$time), 0.01)), as.list(mod.lst[[i]]$optimFit$par))), 
-            col = color[i])
+        lines(seq(0, max(mod.lst[[i]]$time), 0.01), do.call(mod, c(list(seq(0, max(mod.lst[[i]]$time), 
+            0.01)), as.list(mod.lst[[i]]$optimFit$par))), col = color[i])
     }
     
-    values <- plyr::ldply(mod.lst, function(x) cbind(AIC = round(x$fitAIC, 2), BIC = round(x$fitBIC, 2)))
+    values <- plyr::ldply(mod.lst, function(x) cbind(AIC = round(x$fitAIC, 2), BIC = round(x$fitBIC, 
+        2)))
     values <- data.frame(model, values)
     values <- values[order(values$AIC), ]
-    legend("topright", lty = c(NA, rep(1, N)), legend = sprintf("%s %s  %s", fixed_string_width(c("", as.character(values$model))), 
-        fixed_string_width(c("AIC", values$AIC)), fixed_string_width(c("BIC", values$BIC))), col = c(NA, color[as.numeric(row.names(values))]), 
-        bty = bty)
-} 
+    legend("topright", lty = c(NA, rep(1, N)), legend = sprintf("%s %s  %s", fixed_string_width(c("", 
+        as.character(values$model))), fixed_string_width(c("AIC", values$AIC)), fixed_string_width(c("BIC", 
+        values$BIC))), col = c(NA, color[as.numeric(row.names(values))]), bty = bty)
+}
 
 
 
@@ -225,10 +234,11 @@ plot_multiple_fits <- function(time, mass.remaining, model = c("neg.exp", "weibu
 ##' 
 ##' @title Get the predicted time until half mass loss for a litter decomposition trajectory
 ##' 
-##' @usage time_to_prop_mass_loss(x)
+##' @usage time_to_prop_mass_loss(x,threshold.mass=0.5)
 ##' 
 ##' @param x a litfit object
 ##' 
+##' @param threshold.mass mass loss threshold in proportion, default is 0.5
 ##' 
 ##' @details this function finds the time to a specified mass loss percentage
 ##' 
@@ -244,15 +254,15 @@ plot_multiple_fits <- function(time, mass.remaining, model = c("neg.exp", "weibu
 ##' 
 ##' @export 
 ##' 
-time_to_prop_mass_loss<-function(x,threshold.mass=0.5){
-  if (class(x) != "litfit") {
-    stop("Something went wrong -- litterfitter::steady_state takes a 'litfit' object")
-  }
-  mod <- get(x$model)  
-  time.vec<-seq(0, max(x$time), 0.0001)
-  mass.predict<-do.call(mod, c(list(time.vec), as.list(x$optimFit$par)))
-  if(all(mass.predict<threshold.mass)){ 
-    stop("Not predicted to reach threshold mass within the time range.")
-  }
-  return(min(time.vec[mass.predict<threshold.mass]))
-}
+time_to_prop_mass_loss <- function(x, threshold.mass = 0.5) {
+    if (class(x) != "litfit") {
+        stop("Something went wrong -- litterfitter::steady_state takes a 'litfit' object")
+    }
+    mod <- get(x$model)
+    time.vec <- seq(0, max(x$time), 1e-04)
+    mass.predict <- do.call(mod, c(list(time.vec), as.list(x$optimFit$par)))
+    if (all(mass.predict < threshold.mass)) {
+        stop("Not predicted to reach threshold mass within the time range.")
+    }
+    return(min(time.vec[mass.predict < threshold.mass]))
+} 

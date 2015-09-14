@@ -41,7 +41,8 @@
 ##' 
 ##' @details the model likelihood is maximized using methods available in \code{\link[stats]{optim}}.  Optimization methods to be used within optim can be specified through the control object (i.e., control$method).  The default method is L-BFGS-B with bounds specific to each model. Each model 
 ##' \itemize{
-## ` \item{\bold{neg.exp} The classic negative exponential model--one parameter (Olsen 1963)}
+## ` \item{\bold{neg.exp} The classic negative exponential model--one parameter
+## (Olsen 1963)}
 ##' \item{\bold{weibull} The Weibull residence time model--two parameters (Frechet 1927)}
 ##' \item{\bold{discrete.parallel} Two pools in parallel with a term for the fraction of initial mass in each pool--three parameter (Manzoni et al. 2012)}
 ##' \item{\bold{discrete.series} A three parameter model in which there is the possibility of two sequential pools (Manzoni et al. 2012)}
@@ -70,8 +71,9 @@
 ##' model='neg.exp',iters=1000)
 ##' 
 
-fit_litter <- function(time, mass.remaining, model = c("neg.exp", "weibull", "discrete.parallel", "discrete.series", 
-    "cont.quality.1", "cont.quality.2", "neg.exp.limit"), iters = 500, upper = NULL, lower = NULL, ...) {
+fit_litter <- function(time, mass.remaining, model = c("neg.exp", "weibull", "discrete.parallel", 
+    "discrete.series", "cont.quality.1", "cont.quality.2", "neg.exp.limit"), iters = 500, 
+    upper = NULL, lower = NULL, ...) {
     if (length(time) != length(mass.remaining)) {
         stop("Time vector must have the same length and correspond to the mass remaining vector")
     }
@@ -100,7 +102,8 @@ fit_litter <- function(time, mass.remaining, model = c("neg.exp", "weibull", "di
     
     
     
-    fit <- multioptimFit(time, mass.remaining, model, iters = iters, upper = upper, lower = lower, ...)
+    fit <- multioptimFit(time, mass.remaining, model, iters = iters, upper = upper, 
+        lower = lower, ...)
     if (is.null(fit)) 
         return(NULL)
     predicted_vals <- do.call(model, c(list(time), as.list(fit$par)))
@@ -109,11 +112,13 @@ fit_litter <- function(time, mass.remaining, model = c("neg.exp", "weibull", "di
     model.AIC <- calculateAIC(LL, nps)
     model.AICc <- calculateAICc(LL, nps, length(mass.remaining))
     model.BIC <- calculateBIC(LL, nps, length(mass.remaining))
-    fit.out <- list(optimFit = fit, logLik = LL, fitAIC = model.AIC, fitAICc = model.AICc, fitBIC = model.BIC, time = time, 
-        mass = mass.remaining, predicted = predicted_vals, model = model, nparams = nps)
+    fit.out <- list(optimFit = fit, logLik = LL, fitAIC = model.AIC, fitAICc = model.AICc, 
+        fitBIC = model.BIC, time = time, mass = mass.remaining, predicted = predicted_vals, 
+        model = model, nparams = nps)
     class(fit.out) <- "litfit"
-    if (any(fit.out$optimFit$par == ifelse(is.null(lower), eval(formals(get(model))$lower), lower) | fit.out$optimFit$par == 
-        ifelse(is.null(upper), eval(formals(get(model))$upper), upper))) {
+    if (any(fit.out$optimFit$par == ifelse(is.null(lower), eval(formals(get(model))$lower), 
+        lower) | fit.out$optimFit$par == ifelse(is.null(upper), eval(formals(get(model))$upper), 
+        upper))) {
         warning("one or more parameters fit on the boundary, check fit closely")
     }
     return(fit.out)
