@@ -116,9 +116,12 @@ fit_litter <- function(time, mass.remaining, model = c("neg.exp", "weibull", "di
         fitBIC = model.BIC, time = time, mass = mass.remaining, predicted = predicted_vals, 
         model = model, nparams = nps)
     class(fit.out) <- "litfit"
-    if (any(fit.out$optimFit$par == ifelse(is.null(lower), eval(formals(get(model))$lower), 
-        lower) | fit.out$optimFit$par == ifelse(is.null(upper), eval(formals(get(model))$upper), 
-        upper))) {
+    
+    # create objects for testing if best fits are on boundary values
+    test.lower <- if(is.null(lower)) eval(formals(get(model))$lower) else lower
+    test.upper <- if(is.null(upper)) eval(formals(get(model))$upper) else upper
+    
+    if (any(fit.out$optimFit$par == test.lower | fit.out$optimFit$par == test.upper)) {
         warning("one or more parameters fit on the boundary, check fit closely")
     }
     return(fit.out)
