@@ -2,7 +2,7 @@
 % Please edit documentation in R/output-fxns.R
 \name{time_to_prop_mass_loss}
 \alias{time_to_prop_mass_loss}
-\title{Get the predicted time to 50% mass loss for a litter decomposition trajectory}
+\title{Get the predicted time until half mass loss for a litter decomposition trajectory}
 \usage{
 time_to_prop_mass_loss(x)
 }
@@ -10,7 +10,7 @@ time_to_prop_mass_loss(x)
 \item{x}{a litfit object}
 }
 \description{
-Get estimated time to 50% (or an alternate threshold) mass loss from a particular fit to a litter decomposition trajectory
+Get estimated time to 0.5 (or an alternate threshold) mass loss from a particular fit to a litter decomposition trajectory
 }
 \details{
 this function finds the time to a specified mass loss percentage

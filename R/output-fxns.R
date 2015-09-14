@@ -220,9 +220,10 @@ plot_multiple_fits <- function(time, mass.remaining, model = c("neg.exp", "weibu
 
 
 
-##' Get estimated time to 50% (or an alternate threshold) mass loss from a particular fit to a litter decomposition trajectory
+##' Get estimated time to 0.5 (or an alternate threshold) mass loss from a particular fit to a litter decomposition trajectory
 ##' 
-##' @title Get the predicted time to 50% mass loss for a litter decomposition trajectory
+##' 
+##' @title Get the predicted time until half mass loss for a litter decomposition trajectory
 ##' 
 ##' @usage time_to_prop_mass_loss(x)
 ##' 
@@ -241,7 +242,8 @@ plot_multiple_fits <- function(time, mass.remaining, model = c("neg.exp", "weibu
 ##'  model='neg.exp',iters=1000)
 ##'  time_to_prop_mass_loss(fit)
 ##' 
-##' @export time_to_prop_mass_loss
+##' @export 
+##' 
 time_to_prop_mass_loss<-function(x,threshold.mass=0.5){
   if (class(x) != "litfit") {
     stop("Something went wrong -- litterfitter::steady_state takes a 'litfit' object")
