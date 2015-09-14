@@ -11,9 +11,9 @@ test_that("fit sane", {
     expect_true(steady_state(fit)>0)
     expect_true(simulate.and.check("weibull"))
     expect_true(simulate.and.check("neg.exp"))
-    #expect_true(simulate.and.check("discrete.parallel"))
-    #expect_true(simulate.and.check("discrete.series"))
-    #expect_true(simulate.and.check("cont.quality.1"))
+    expect_true(simulate.and.check("discrete.parallel"))
+    expect_true(simulate.and.check("discrete.series"))
+    expect_true(simulate.and.check("cont.quality.1"))
     expect_true(simulate.and.check("cont.quality.2"))
 })
 
