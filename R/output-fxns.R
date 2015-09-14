@@ -25,9 +25,9 @@
 plot.litfit <- function(x, formulae.cex = 1, ...) {
     plot(x$mass ~ x$time, pch = 16, xlab = "Time", ylab = "Proportion mass remaining", xlim = c(0, max(x$time)), main = x$model, 
         ...)
-    mod <- eval(parse(text = paste("litterfitter:::", x$model, sep = "")))
-    
-    lines(seq(0, max(x$time), 0.01), do.call(mod, c(list(seq(0, max(x$time), 0.01)), as.list(x$optimFit$par))))
+    mod <- get(x$model)
+    time.vec<-seq(0, max(x$time), 0.01)
+    lines(time.vec, do.call(mod, c(list(time.vec), as.list(x$optimFit$par))))
     pt.pos <- c(grconvertX(0.5, from = "npc"), grconvertY(0.95, from = "npc"))
     
     formula.text <- switch(x$model, neg.exp = substitute(paste(y == e^A), list(A = paste("-", rnd.to.text(x$optimFit$par, 
@@ -205,7 +205,7 @@ plot_multiple_fits <- function(time, mass.remaining, model = c("neg.exp", "weibu
     plot(time, mass.remaining, pch = 19, ylim = c(0, 1), ...)
     
     for (i in 1:N) {
-        mod <- eval(parse(text = paste("litterfitter:::", mod.lst[[i]]$model, sep = "")))
+        mod <- get(mod.lst[[i]]$model)
         lines(seq(0, max(mod.lst[[i]]$time), 0.01), do.call(mod, c(list(seq(0, max(mod.lst[[i]]$time), 0.01)), as.list(mod.lst[[i]]$optimFit$par))), 
             col = color[i])
     }
@@ -217,3 +217,40 @@ plot_multiple_fits <- function(time, mass.remaining, model = c("neg.exp", "weibu
         fixed_string_width(c("AIC", values$AIC)), fixed_string_width(c("BIC", values$BIC))), col = c(NA, color[as.numeric(row.names(values))]), 
         bty = bty)
 } 
+
+
+
+##' Get estimated time to 50% (or an alternate threshold) mass loss from a particular fit to a litter decomposition trajectory
+##' 
+##' @title Get the predicted time to 50% mass loss for a litter decomposition trajectory
+##' 
+##' @usage time_to_prop_mass_loss(x)
+##' 
+##' @param x a litfit object
+##' 
+##' 
+##' @details this function finds the time to a specified mass loss percentage
+##' 
+##' @seealso \code{\link{fit_litter}} \code{\link{plot.litfit}}
+##' 
+##' @author Will Cornwell 
+##' 
+##' @examples 
+##'
+##'  fit<-fit_litter(time=pineneedles$Year,mass.remaining=pineneedles$Mass.remaining,
+##'  model='neg.exp',iters=1000)
+##'  time_to_prop_mass_loss(fit)
+##' 
+##' @export time_to_prop_mass_loss
+time_to_prop_mass_loss<-function(x,threshold.mass=0.5){
+  if (class(x) != "litfit") {
+    stop("Something went wrong -- litterfitter::steady_state takes a 'litfit' object")
+  }
+  mod <- get(x$model)  
+  time.vec<-seq(0, max(x$time), 0.0001)
+  mass.predict<-do.call(mod, c(list(time.vec), as.list(x$optimFit$par)))
+  if(all(mass.predict<threshold.mass)){ 
+    stop("Not predicted to reach threshold mass within the time range.")
+  }
+  return(min(time.vec[mass.predict<threshold.mass]))
+}
