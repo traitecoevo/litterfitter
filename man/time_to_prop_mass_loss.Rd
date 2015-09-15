@@ -4,10 +4,12 @@
 \alias{time_to_prop_mass_loss}
 \title{Get the predicted time until half mass loss for a litter decomposition trajectory}
 \usage{
-time_to_prop_mass_loss(x)
+time_to_prop_mass_loss(x,threshold.mass=0.5)
 }
 \arguments{
 \item{x}{a litfit object}
+
+\item{threshold.mass}{mass loss threshold in proportion, default is 0.5}
 }
 \description{
 Get estimated time to 0.5 (or an alternate threshold) mass loss from a particular fit to a litter decomposition trajectory
