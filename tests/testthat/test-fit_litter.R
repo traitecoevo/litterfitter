@@ -14,6 +14,7 @@ test_that("fit sane", {
     expect_true(simulate.and.check("discrete.series"))
     expect_true(simulate.and.check("cont.quality.1"))
     expect_true(simulate.and.check("cont.quality.2"))
+    expect_true(simulate.and.check("neg.exp.limit"))
 })
 
 
@@ -44,5 +45,10 @@ test_that("known parameter fits on boundary", {
                             model = "discrete.parallel",iters = 200))
   
   
+})
+
+test_that("utility functions work", {
+  expect_that(rnd.to.text(1.11119, digits=4), equals("1.1112"))
+  expect_that(rnd.to.text(1.11119, digits=2), equals("1.11"))
 })
  
