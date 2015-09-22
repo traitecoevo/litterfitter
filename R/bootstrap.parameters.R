@@ -43,11 +43,8 @@ bootstrap.parameters <- function(x, nboot=1000,upper=NULL, lower=NULL){
                                dep = boot.mass, 
                    curve = fit.model, method = "L-BFGS-B", lower = lower_bounds, upper = upper_bounds), error = function(e) NULL)
     output[i,1:fit.nparams] <- boot.fit$par
-    #output[i, fit.nparams+1] <- steady_state(boot.fit)
-    ## doesn't work yet due to steady_state() requiring a litfit object
-    ## need to either make steady_state() more portable OR
-    ## adapt the creation of boot.fit <- (above) to use fit_litter()
-    ## i'm inclined towards the former, in the interests of code speed
+    output[i, fit.nparams+1] <- steady_state(pars=boot.fit$par, model=fit.model)
+
     
   }
   return(output)

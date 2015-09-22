@@ -142,16 +142,25 @@ predict.litfit <- function(object, newdata = NULL, ...) {
 ##' 
 ##' 
 ##' @export steady_state
-steady_state <- function(x, ...) {
-    if (class(x) != "litfit") {
-        stop("Something went wrong -- litterfitter::steady_state takes a 'litfit' object")
+steady_state <- function(x=NULL,pars=NULL,model=NULL) {
+    if (is.null(x) & (class(model)!="character" | class(pars) != "numeric")) {
+        stop("Something went wrong -- litterfitter::steady_state requires either a litfit
+             object, or a model name and the appropriate numeric vector of parameter values")
     }
-    out <- switch(x$model, neg.exp = negexp.steadystate(x$optimFit$par), weibull = weibull.steadystate(x$optimFit$par[1], 
-        x$optimFit$par[2]), discrete.parallel = discrete.parallel.steadystate(x$optimFit$par[1], 
-        x$optimFit$par[2], x$optimFit$par[3]), discrete.series = discrete.series.steadystate(x$optimFit$par[1], 
-        x$optimFit$par[2], x$optimFit$par[3]), cont.quality.2 = cont.quality.2.steadystate(x$optimFit$par[1], 
-        x$optimFit$par[2]), cont.quality.1 = "not yet implemented", neg.exp.limit = "not yet implemented")
-    names(out) <- x$model
+  if(class(x) == "litfit"){
+    model <- x$model
+    pars <- x$optimFit$par
+  }
+    
+    out <- switch(model,
+                  neg.exp = negexp.steadystate(pars),
+                  weibull = weibull.steadystate(pars[1],pars[2]),
+                  discrete.parallel = discrete.parallel.steadystate(pars[1],pars[2],pars[3]),
+                  discrete.series = discrete.series.steadystate(pars[1],pars[2],pars[3]),
+                  cont.quality.2 = cont.quality.2.steadystate(pars[1],pars[2]),
+                  cont.quality.1 = "not yet implemented",
+                  neg.exp.limit = "not yet implemented")
+    names(out) <- model
     return(out)
 }
 
