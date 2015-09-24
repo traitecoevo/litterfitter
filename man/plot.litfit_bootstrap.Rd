@@ -2,22 +2,24 @@
 % Please edit documentation in R/bootstrap.parameters.R
 \name{plot.litfit_bootstrap}
 \alias{plot.litfit_bootstrap}
-\title{Plot}
+\title{Plot the bootstrap distribution for a parameter from a litfit object}
 \usage{
-\method{plot}{litfit_bootstrap}(x,parameter,...)
+\method{plot}{litfit_bootstrap}(x,coef.index,bw,...)
 }
 \arguments{
 \item{x}{litfit object}
 
-\item{...}{additional arguments passed to plot.default}
+\item{coef.index}{coeficient number to plot from the litfit object, see order of coeffients for that paricular model.  default is to plot the first parameter for that model.}
 
-\item{parameter}{which coeficient to plot from the litfit object}
+\item{bw}{bandwidth (or bandwidth algorhitm see \code{\link{density}}) for the density plot}
+
+\item{...}{additional arguments passed to plot.default}
 }
 \description{
 Plot a bootstrap distribution of a particular coefficient
 }
 \details{
-Some more details
+The grey fill goes from 0.025 quantile to the 0.975 quantile of the distribution.  Red line shows the mean.  Blue line shows the median.
 }
 \examples{
 fit <- fit_litter(time=pineneedles$Year, mass.remaining=pineneedles$Mass.remaining, model='neg.exp', iters=1000)
@@ -28,6 +30,6 @@ plot(boot1)
 James Weedon
 }
 \seealso{
-\code{\link{fit_litter}} \code{\link{bootstrap.parameters}}
+\code{\link{fit_litter}} \code{\link{bootstrap.parameters}} \code{\link{density}}
 }
 

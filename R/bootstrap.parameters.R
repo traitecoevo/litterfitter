@@ -2,7 +2,7 @@
 #'
 #'@usage bootstrap.parameters(x,nboot,upper,lower,...)
 #'
-#' @param fit this is a litfit object
+#' @param x this is a litfit object
 #' 
 #' @param nboot number of bootstraps
 #' 
@@ -66,19 +66,21 @@ bootstrap.parameters <- function(x, nboot=1000,upper=NULL, lower=NULL,...){
 
 ##' Plot a bootstrap distribution of a particular coefficient
 ##' 
-##' @title Plot 
+##' @title Plot the bootstrap distribution for a parameter from a litfit object
 ##' 
-##' @usage \method{plot}{litfit_bootstrap}(x,parameter,...)
+##' @usage \method{plot}{litfit_bootstrap}(x,coef.index,bw,...)
 ##' 
 ##' @param x litfit object
 ##' 
-##' @param parameter which coeficient to plot from the litfit object
+##' @param coef.index  coeficient number to plot from the litfit object, see order of coeffients for that paricular model.  default is to plot the first parameter for that model.
+##' 
+##' @param bw bandwidth (or bandwidth algorhitm see \code{\link{density}}) for the density plot
 ##' 
 ##' @param ... additional arguments passed to plot.default
 ##' 
-##' @details Some more details
+##' @details The grey fill goes from 0.025 quantile to the 0.975 quantile of the distribution.  Red line shows the mean.  Blue line shows the median.  
 ##' 
-##' @seealso \code{\link{fit_litter}} \code{\link{bootstrap.parameters}}
+##' @seealso \code{\link{fit_litter}} \code{\link{bootstrap.parameters}} \code{\link{density}}
 ##' 
 ##' @author James Weedon
 ##' 
@@ -89,17 +91,17 @@ bootstrap.parameters <- function(x, nboot=1000,upper=NULL, lower=NULL,...){
 ##' 
 ##' @export
 
-plot.litfit_bootstrap <- function(x,parameter.num=1,...) {
-  coef.of.interest<-x[,parameter.num]
-  dens <- density(coef.of.interest)
+plot.litfit_bootstrap <- function(x,coef.index=1,bw="nrd",...) {
+  coef.of.interest<-x[,coef.index]
+  dens <- density(coef.of.interest,bw = bw)
   plot(dens, main="Bootstrap distribution",...)
   
   qfs <- quantile(coef.of.interest, probs=c(0.025,0.975))
   x1 <- min(which(dens$x >= qfs[1]))  
   x2 <- max(which(dens$x <  qfs[2]))
   with(dens, polygon(x=c(x[c(x1,x1:x2,x2)]), y= c(0, y[x1:x2], 0), col="gray"))
-  abline(v=mean(x[,parameter.num]), col="red", lty=2)
-  
+  abline(v=mean(x[,coef.index]), col="red", lty=2)
+  abline(v=median(x[,coef.index]), col="blue", lty=2)
 }
 
 

@@ -7,6 +7,8 @@
 bootstrap.parameters(x,nboot,upper,lower,...)
 }
 \arguments{
+\item{x}{this is a litfit object}
+
 \item{nboot}{number of bootstraps}
 
 \item{upper}{optional vector of upper bounds for the bootstrap replicates}
@@ -14,8 +16,6 @@ bootstrap.parameters(x,nboot,upper,lower,...)
 \item{lower}{optional vector of lower bounds for the bootstrap replicates}
 
 \item{...}{passed to optim}
-
-\item{fit}{this is a litfit object}
 }
 \value{
 returns a litfit_bootstrap object
