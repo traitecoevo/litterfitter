@@ -1,16 +1,29 @@
-#' Title
+#' Create a bootstrap distribution of a particular coefficient from a model fit
 #'
-#' @param fit 
-#' @param nboot 
+#'@usage bootstrap.parameters(x,nboot,upper,lower,...)
 #'
-#' @return NULL
+#' @param fit this is a litfit object
+#' 
+#' @param nboot number of bootstraps
+#' 
+#' @param upper optional vector of upper bounds for the bootstrap replicates
+#' 
+#' @param lower optional vector of lower bounds for the bootstrap replicates
+#' 
+#' @param ... passed to optim
+#'
+#' @return returns a litfit_bootstrap object
+#' 
+#' 
+#'
+#' @examples 
+#' fit <- fit_litter(time=pineneedles$Year, mass.remaining=pineneedles$Mass.remaining, model='neg.exp', iters=100)
+#' boot1 <- bootstrap.parameters(fit, nboot = 500)
+#' 
+#' 
+#' 
 #' @export
-#'
-#' @examples NULL
-#' 
-#' 
-#' 
-bootstrap.parameters <- function(x, nboot=1000,upper=NULL, lower=NULL){
+bootstrap.parameters <- function(x, nboot=1000,upper=NULL, lower=NULL,...){
   # basic error checking
   if (class(x) != "litfit") {
     stop("Something went wrong -- litterfitter::bootstrap.parameters
@@ -41,12 +54,52 @@ bootstrap.parameters <- function(x, nboot=1000,upper=NULL, lower=NULL){
     
     boot.fit <- tryCatch(optim(fit.params, obj_func, ind = boot.time,
                                dep = boot.mass, 
-                   curve = fit.model, method = "L-BFGS-B", lower = lower_bounds, upper = upper_bounds), error = function(e) NULL)
+                   curve = fit.model, method = "L-BFGS-B", lower = lower_bounds, upper = upper_bounds,...), error = function(e) NULL)
     output[i,1:fit.nparams] <- boot.fit$par
     output[i, fit.nparams+1] <- steady_state(pars=boot.fit$par, model=fit.model)
-
     
   }
+  class(output) <- "litfit_bootstrap"
   return(output)
 }
+
+
+##' Plot a bootstrap distribution of a particular coefficient
+##' 
+##' @title Plot 
+##' 
+##' @usage \method{plot}{litfit_bootstrap}(x,parameter,...)
+##' 
+##' @param x litfit object
+##' 
+##' @param parameter which coeficient to plot from the litfit object
+##' 
+##' @param ... additional arguments passed to plot.default
+##' 
+##' @details Some more details
+##' 
+##' @seealso \code{\link{fit_litter}} \code{\link{bootstrap.parameters}}
+##' 
+##' @author James Weedon
+##' 
+##' @examples 
+##' fit <- fit_litter(time=pineneedles$Year, mass.remaining=pineneedles$Mass.remaining, model='neg.exp', iters=1000)
+##' boot1 <- bootstrap.parameters(fit, nboot = 5000)
+##' plot(boot1)
+##' 
+##' @export
+
+plot.litfit_bootstrap <- function(x,parameter.num=1,...) {
+  coef.of.interest<-x[,parameter.num]
+  dens <- density(coef.of.interest)
+  plot(dens, main="Bootstrap distribution",...)
+  
+  qfs <- quantile(coef.of.interest, probs=c(0.025,0.975))
+  x1 <- min(which(dens$x >= qfs[1]))  
+  x2 <- max(which(dens$x <  qfs[2]))
+  with(dens, polygon(x=c(x[c(x1,x1:x2,x2)]), y= c(0, y[x1:x2], 0), col="gray"))
+  abline(v=mean(x[,parameter.num]), col="red", lty=2)
+  
+}
+
 
