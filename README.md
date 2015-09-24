@@ -8,7 +8,7 @@ To install run:
 
 ```r
   #install.packages("devtools")
-  devtools::install_github("cornwell-lab-unsw/litterfitter")
+  devtools::install_github("cornwell-lab-unsw/litterfitter",ref="bootstrap")
   library(litterfitter)
 ```
 At the moment there is one key function which is `fit_litter` which can fit 6 different types of decomposition trajectories.  
@@ -19,6 +19,7 @@ At the moment there is one key function which is `fit_litter` which can fit 6 di
    mass.remaining=c(1,0.9,1.01,0.4,0.6,0.2,0.01),
    model="weibull",iters=500)
 ```
+
 You can visually compare the fits of different non-linear equations with the `plot_multiple_fits` function:
 
 
@@ -29,6 +30,7 @@ You can visually compare the fits of different non-linear equations with the `pl
 ```
 
 ![](readme_files/figure-html/unnamed-chunk-3-1.png) 
+
 Calling `plot` on a `litfit` object will show you the data, the curve fit, and even the equation, with the estimated coefficients:
 
 
@@ -49,3 +51,9 @@ The summary of a `litfit` object will show you some of the summary staistics for
 ## AICc:  -0.8883 
 ## BIC:  -3.9965
 ```
+
+From this `litfit` object you can then see the uncertainty in the parameter estimate by bootstrapping
+
+![](readme_files/figure-html/unnamed-chunk-6-1.png) 
+
+
