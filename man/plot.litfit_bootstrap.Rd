@@ -9,9 +9,9 @@
 \arguments{
 \item{x}{litfit object}
 
-\item{coef.index}{coeficient number to plot from the litfit object, see order of coeffients for that paricular model.  default is to plot the first parameter for that model.}
+\item{coef.index}{coeficient number to plot from the \code{litfit} object, see order of coeffients for that particular model.  Default is to plot the first parameter for that model.}
 
-\item{bw}{bandwidth (or bandwidth algorhitm see \code{\link{density}}) for the density plot}
+\item{bw}{bandwidth (or bandwidth algorithm see \code{\link{density}}) for the density plot}
 
 \item{...}{additional arguments passed to plot.default}
 }

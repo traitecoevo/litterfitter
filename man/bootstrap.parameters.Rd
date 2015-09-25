@@ -7,18 +7,18 @@
 bootstrap.parameters(x,nboot,upper,lower,...)
 }
 \arguments{
-\item{x}{this is a litfit object}
+\item{x}{an object of class "\code{litfit}"}
 
-\item{nboot}{number of bootstraps}
+\item{nboot}{number of bootstrap replications}
 
 \item{upper}{optional vector of upper bounds for the bootstrap replicates}
 
 \item{lower}{optional vector of lower bounds for the bootstrap replicates}
 
-\item{...}{passed to optim}
+\item{...}{passed to \code{\link{optim}}}
 }
 \value{
-returns a litfit_bootstrap object
+returns a \code{litfit_bootstrap object}
 }
 \description{
 Create a bootstrap distribution of a particular coefficient from a model fit

@@ -2,17 +2,17 @@
 #'
 #'@usage bootstrap.parameters(x,nboot,upper,lower,...)
 #'
-#' @param x this is a litfit object
+#' @param x an object of class "\code{litfit}"
 #' 
-#' @param nboot number of bootstraps
+#' @param nboot number of bootstrap replications
 #' 
 #' @param upper optional vector of upper bounds for the bootstrap replicates
 #' 
 #' @param lower optional vector of lower bounds for the bootstrap replicates
 #' 
-#' @param ... passed to optim
+#' @param ... passed to \code{\link{optim}}
 #'
-#' @return returns a litfit_bootstrap object
+#' @return returns a \code{litfit_bootstrap object}
 #' 
 #' 
 #'
@@ -72,9 +72,9 @@ bootstrap.parameters <- function(x, nboot=1000,upper=NULL, lower=NULL,...){
 ##' 
 ##' @param x litfit object
 ##' 
-##' @param coef.index  coeficient number to plot from the litfit object, see order of coeffients for that paricular model.  default is to plot the first parameter for that model.
+##' @param coef.index  coeficient number to plot from the \code{litfit} object, see order of coeffients for that particular model.  Default is to plot the first parameter for that model.
 ##' 
-##' @param bw bandwidth (or bandwidth algorhitm see \code{\link{density}}) for the density plot
+##' @param bw bandwidth (or bandwidth algorithm see \code{\link{density}}) for the density plot
 ##' 
 ##' @param ... additional arguments passed to plot.default
 ##' 
@@ -91,7 +91,7 @@ bootstrap.parameters <- function(x, nboot=1000,upper=NULL, lower=NULL,...){
 ##' 
 ##' @export
 
-plot.litfit_bootstrap <- function(x,coef.index=1,bw="nrd",...) {
+plot.litfit_bootstrap <- function(x,coef.index=1,bw="nrd0",...) {
   coef.of.interest<-x[,coef.index]
   dens <- density(coef.of.interest,bw = bw)
   plot(dens, main="Bootstrap distribution",...)
