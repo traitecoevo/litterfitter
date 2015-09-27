@@ -23,14 +23,14 @@ The grey fill goes from 0.025 quantile to the 0.975 quantile of the distribution
 }
 \examples{
 fit <- fit_litter(time=pineneedles$Year,
-mass.remaining=pineneedles$Mass.remaining, model='neg.exp', iters=1000)
-boot1 <- bootstrap.parameters(fit, nboot = 5000)
+mass.remaining=pineneedles$Mass.remaining, model='neg.exp', iters=200)
+boot1 <- bootstrap_parameters(fit, nboot = 500)
 plot(boot1)
 }
 \author{
 James Weedon
 }
 \seealso{
-\code{\link{fit_litter}} \code{\link{bootstrap.parameters}} \code{\link{density}}
+\code{\link{fit_litter}} \code{\link{bootstrap_parameters}} \code{\link{density}}
 }
 
