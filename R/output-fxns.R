@@ -47,9 +47,8 @@ plot.litfit <- function(x, formulae.cex = 1, ...) {
         x$optimFit$par[3]), D = rnd.to.text(x$optimFit$par[3] - x$optimFit$par[2] * 
         x$optimFit$par[1]), F = rnd.to.text(-1 * x$optimFit$par[2]), G = x$optimFit$par[2] - 
         x$optimFit$par[3], sign = ifelse(x$optimFit$par[3] - x$optimFit$par[2] * 
-        x$optimFit$par[1] > 0, "-", ""))), cont.quality.1 = substitute(paste(y == 
-        frac((B^A), (B + t)^A)), list(A = rnd.to.text(x$optimFit$par[2]), B = rnd.to.text(x$optimFit$par[1]))), 
-        cont.quality.2 = substitute(paste(y == frac(1, (1 + B * t)^A)), list(A = rnd.to.text(x$optimFit$par[2]), 
+        x$optimFit$par[1] > 0, "-", ""))),  
+        cont.quality = substitute(paste(y == frac(1, (1 + B * t)^A)), list(A = rnd.to.text(x$optimFit$par[2]), 
             B = rnd.to.text(x$optimFit$par[1]))), neg.exp.limit = substitute(paste(y == 
             A * e^{
                 -K * t
@@ -149,8 +148,8 @@ steady_state <- function(x, ...) {
     out <- switch(x$model, neg.exp = negexp.steadystate(x$optimFit$par), weibull = weibull.steadystate(x$optimFit$par[1], 
         x$optimFit$par[2]), discrete.parallel = discrete.parallel.steadystate(x$optimFit$par[1], 
         x$optimFit$par[2], x$optimFit$par[3]), discrete.series = discrete.series.steadystate(x$optimFit$par[1], 
-        x$optimFit$par[2], x$optimFit$par[3]), cont.quality.2 = cont.quality.2.steadystate(x$optimFit$par[1], 
-        x$optimFit$par[2]), cont.quality.1 = "not yet implemented", neg.exp.limit = "not yet implemented")
+        x$optimFit$par[2], x$optimFit$par[3]), cont.quality = cont.quality.steadystate(x$optimFit$par[1], 
+        x$optimFit$par[2]),  neg.exp.limit = "not yet implemented")
     names(out) <- x$model
     return(out)
 }
@@ -187,12 +186,12 @@ steady_state <- function(x, ...) {
 ##' plot_multiple_fits(time = pineneedles$Year, 
 ##' mass.remaining = pineneedles$Mass.remaining, 
 ##' bty = 'n', model = c('neg.exp', 'weibull'), 
-##' xlab = 'Time', ylab = 'Proportion mass remaining',iters=1000) 
+##' xlab = 'Time', ylab = 'Proportion mass remaining',iters=200) 
 ##'   
 ##' 
 ##' @export plot_multiple_fits
 plot_multiple_fits <- function(time, mass.remaining, model = c("neg.exp", "weibull", 
-    "discrete.parallel", "discrete.series", "cont.quality.1", "cont.quality.2", "neg.exp.limit"), 
+    "discrete.parallel", "discrete.series", "cont.quality", "neg.exp.limit"), 
     color = NULL, iters = 500, bty = "o", ...) {
     
     fixed_string_width <- function(string) {

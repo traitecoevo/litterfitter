@@ -5,3 +5,4 @@
 ^\.remake$
 ^readme\.Rmd$
 ^readme\_files$
+^readme\.html$

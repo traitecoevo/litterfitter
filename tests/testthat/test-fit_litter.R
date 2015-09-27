@@ -12,8 +12,7 @@ test_that("fit sane", {
     expect_true(simulate.and.check("neg.exp"))
     expect_true(simulate.and.check("discrete.parallel"))
     expect_true(simulate.and.check("discrete.series"))
-    expect_true(simulate.and.check("cont.quality.1"))
-    expect_true(simulate.and.check("cont.quality.2"))
+    expect_true(simulate.and.check("cont.quality"))
     expect_true(simulate.and.check("neg.exp.limit"))
 })
 
@@ -37,8 +36,6 @@ test_that("crazy input throws errors", {
 })
 
 test_that("known parameter fits on boundary", {
- expect_warning(fit_litter(time=pineneedles$Year,mass.remaining = pineneedles$Mass.remaining,
-                           model = "cont.quality.1",iters = 200))
   expect_warning(fit_litter(time=pineneedles$Year,mass.remaining = pineneedles$Mass.remaining,
                             model = "discrete.series",iters = 200))
   expect_warning(fit_litter(time=pineneedles$Year,mass.remaining = pineneedles$Mass.remaining,

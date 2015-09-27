@@ -6,8 +6,8 @@
 \title{Fit different models to single cohort decomposition data}
 \usage{
 fit_litter(time, mass.remaining, model = c("neg.exp", "weibull",
-  "discrete.parallel", "discrete.series", "cont.quality.1", "cont.quality.2",
-  "neg.exp.limit"), iters = 500, upper = NULL, lower = NULL, ...)
+  "discrete.parallel", "discrete.series", "cont.quality", "neg.exp.limit"),
+  iters = 500, upper = NULL, lower = NULL, ...)
 }
 \arguments{
 \item{time}{time since decomposition began, that is, ti-t0}
@@ -52,8 +52,7 @@ the model likelihood is maximized using methods available in \code{\link[stats]{
 \item{\bold{weibull} The Weibull residence time model--two parameters (Frechet 1927)}
 \item{\bold{discrete.parallel} Two pools in parallel with a term for the fraction of initial mass in each pool--three parameter (Manzoni et al. 2012)}
 \item{\bold{discrete.series} A three parameter model in which there is the possibility of two sequential pools (Manzoni et al. 2012)}
-\item{\bold{cont.quality.1} Manzoni et al. 2012 see also Bolker}
-\item{\bold{cont.quality.2} (Agren and Bosatta 1996)}
+\item{\bold{cont.quality} (Ägren and Bosatta 1996, see also Manzoni et al. 2012)}
 }
 \emph{Warning}: difficulty in finding the optimal solution is determined by an interaction between the nature and complexity of the
 likelihood space (which is both data- and model-dependent) as well as the optimization methods.  There is can never be a guarantee that the optimal solution is found, but using many random starting points will increase these odds.  It should be noted that there is significant variation among models in identifiability, with some models inherently less identifiable likely due to a tendency to form for flat ridges in likelihood space.  The confidence in the fit should be very low in these cases (see Cornwell and Weedon 2013).   A number of random starting points are used in optimization and are given through the iters.  The function checks whether the the top 10 optimizations have converged on the same likelihood, and if they have not this function will return a warning.
@@ -67,7 +66,7 @@ model='neg.exp',iters=1000)
 Will Cornwell and James Weedon
 }
 \references{
-\itemize{ \item{Agren, G. and Bosatta, E. (1996) Quality: a bridge between theory and experiment in soil organic matter studies. Oikos, 76, 522–528.}
+\itemize{ \item{Ägren, G. and Bosatta, E. (1996) Quality: a bridge between theory and experiment in soil organic matter studies. Oikos, 76, 522–528.}
 \item{Cornwell, W. K., and J. T. Weedon. (2013).  Decomposition trajectories of diverse litter types: a model selection analysis. Methods in Ecology and Evolution.}
 \item{Frechet, M. (1927) Sur la loi de probabilite de lecart maximum. Ann de la Soc polonaise de Math, 6, 93–116.}
 \item{Manzoni, S., Pineiro, G., Jackson, R. B., Jobbagy, E. G., Kim, J. H., & Porporato, A. (2012). Analytical models of soil and litter decomposition: Solutions for mass loss and time-dependent decay rates. Soil Biology and Biochemistry, 50, 66-76.}
