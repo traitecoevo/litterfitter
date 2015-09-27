@@ -139,7 +139,7 @@ simulate.and.check <- function(model) {
         1e-04)
     suppressWarnings(simulated.fit <- fit_litter(time = pineneedles$Year, mass.remaining = mass.with.error, 
         model = model, iters = 1000))
-    return(are.within.ten.percent.of(time_to_prop_mass_loss(fit), time_to_prop_mass_loss(simulated.fit)))
+    return(are.within.ten.percent.of(time_to_prop_mass_remaining(fit), time_to_prop_mass_remaining(simulated.fit)))
 }
 
 

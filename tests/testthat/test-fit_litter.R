@@ -17,10 +17,11 @@ test_that("fit sane", {
 })
 
 
-test_that("plots dont throw errors", {
+test_that("plots and summaries dont throw errors", {
     expect_true(exists("plot", where = "package:litterfitter", mode = "function"))
     fit <- fit_litter(time = c(0, 1, 2, 3, 4, 5, 6), mass.remaining = c(1, 0.9, 1.01, 0.4, 0.6, 0.2, 0.01), model = "weibull", iters = 2000)
     expect_that(plot(fit), not(gives_warning()))
+    expect_that(summary(fit), not(gives_warning()))
     
     expect_that(plot_multiple_fits(time = pineneedles$Year, mass.remaining = pineneedles$Mass.remaining, model = c("neg.exp", "weibull"), bty = "n", 
         iters = 2000), not(gives_warning()))
