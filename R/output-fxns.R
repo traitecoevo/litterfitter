@@ -33,29 +33,19 @@ plot.litfit <- function(x, formulae.cex = 1, ...) {
     formula.text <- switch(x$model, neg.exp = substitute(paste(y == e^A), list(A = paste("-", 
         rnd.to.text(x$optimFit$par, 3), "t", sep = ""))), weibull = substitute(paste(y == 
         e^frac(-t, A)^B), list(A = round(x$optimFit$par[1], 3), B = round(x$optimFit$par[2], 
-        3))), discrete.parallel = substitute(paste(y == A * e^{
-        B * t
-    } + C * e^{
-        D * t
-    }), list(A = rnd.to.text(x$optimFit$par[1], 4), B = rnd.to.text(-1 * x$optimFit$par[2], 
+        3))), discrete.parallel = substitute(paste(y == A * e^{ B * t } + C * e^{ D * t}), 
+        list(A = rnd.to.text(x$optimFit$par[1], 4), B = rnd.to.text(-1 * x$optimFit$par[2], 
         4), C = rnd.to.text(1 - x$optimFit$par[1], 4), D = rnd.to.text(-1 * x$optimFit$par[3], 
-        4))), discrete.series = substitute(paste(y == frac(A * e^{
-        C * t
-    } * sign * D * e^{
-        F * t
-    }, G)), list(A = rnd.to.text((1 - x$optimFit$par[1]) * x$optimFit$par[2]), C = rnd.to.text(-1 * 
+        4))), discrete.series = substitute(paste(y == frac(A * e^{ C * t } * sign * D * e^{ F * t}, G)), 
+        list(A = rnd.to.text((1 - x$optimFit$par[1]) * x$optimFit$par[2]), C = rnd.to.text(-1 * 
         x$optimFit$par[3]), D = rnd.to.text(x$optimFit$par[3] - x$optimFit$par[2] * 
         x$optimFit$par[1]), F = rnd.to.text(-1 * x$optimFit$par[2]), G = x$optimFit$par[2] - 
         x$optimFit$par[3], sign = ifelse(x$optimFit$par[3] - x$optimFit$par[2] * 
-        x$optimFit$par[1] > 0, "-", ""))), cont.quality.1 = substitute(paste(y == 
-        frac((B^A), (B + t)^A)), list(A = rnd.to.text(x$optimFit$par[2]), B = rnd.to.text(x$optimFit$par[1]))), 
-        cont.quality.2 = substitute(paste(y == frac(1, (1 + B * t)^A)), list(A = rnd.to.text(x$optimFit$par[2]), 
+        x$optimFit$par[1] > 0, "-", ""))),  
+        cont.quality = substitute(paste(y == frac(1, (1 + B * t)^A)), list(A = rnd.to.text(x$optimFit$par[2]), 
             B = rnd.to.text(x$optimFit$par[1]))), neg.exp.limit = substitute(paste(y == 
-            A * e^{
-                -K * t
-            } + B), list(K = rnd.to.text(x$optimFit$par[1]), A = rnd.to.text(x$optimFit$par[2]), 
+            A * e^{ -K * t } + B), list(K = rnd.to.text(x$optimFit$par[1]), A = rnd.to.text(x$optimFit$par[2]), 
             B = rnd.to.text(x$optimFit$par[3]))))
-    
     text(pt.pos[1], pt.pos[2], label = formula.text, cex = formulae.cex)
 }
 
@@ -71,15 +61,33 @@ fitted.litfit <- function(object, ...) {
 }
 
 #' @export
+print.summary.litfit <- function(x, ...) {
+  # prototype, to be expanded and improved
+  cat("Summary of litFit object\n")
+  cat(paste("Model type:", x$model, "\n"))
+  cat(paste("Number of observations: ", x$num.obs, "\n"))
+  for (i in seq_along(x$optimFit$par)){
+    cat(paste("Parameter fits:", signif(x$optimFit$par[i],3), "\n"))
+  }
+  cat(paste("Time to 50% mass loss:",signif(x$time_to_50,3), "\n"))
+  cat(paste("Implied steady state litter mass:", signif(x$steady_state,3), "in units of yearly input","\n"))
+  cat(paste("AIC: ", round(x$fitAIC, 4), "\n"))
+  cat(paste("AICc: ", round(x$fitAICc, 4), "\n"))
+  cat(paste("BIC: ", round(x$fitBIC, 4), "\n"))
+}
 
-summary.litfit <- function(object, ...) {
-    # prototype, to be expanded and improved
-    cat("Summary of litFit object\n")
-    cat(paste("Model type:", object$model, "\n"))
-    cat(paste("Number of observations: ", length(object$time), "\n"))
-    cat(paste("AIC: ", round(object$fitAIC, 4), "\n"))
-    cat(paste("AICc: ", round(object$fitAICc, 4), "\n"))
-    cat(paste("BIC: ", round(object$fitBIC, 4), "\n"))
+#' @export
+summary.litfit<-function(object, ...) {
+  ans<-object
+  class(ans) <- "summary.litfit"
+  ans$num.obs<-sum(!is.na(ans$mass)&!is.na(ans$time))
+  ans$mass<-NULL
+  ans$time<-NULL
+  ans$predicted<-NULL
+  ans$steady_state<-steady_state(object)
+  names(ans$steady_state)<-NULL
+  tryCatch(ans$time_to_50<-time_to_prop_mass_remaining(object,0.5), error = function(e) NULL)
+  return(ans)
 }
 
 ##' Generated predicted values for (new) time points from a litfit model fit
@@ -202,12 +210,12 @@ steady_state <- function(x=NULL,pars=NULL,model=NULL) {
 ##' plot_multiple_fits(time = pineneedles$Year, 
 ##' mass.remaining = pineneedles$Mass.remaining, 
 ##' bty = 'n', model = c('neg.exp', 'weibull'), 
-##' xlab = 'Time', ylab = 'Proportion mass remaining',iters=1000) 
+##' xlab = 'Time', ylab = 'Proportion mass remaining',iters=200) 
 ##'   
 ##' 
 ##' @export plot_multiple_fits
 plot_multiple_fits <- function(time, mass.remaining, model = c("neg.exp", "weibull", 
-    "discrete.parallel", "discrete.series", "cont.quality.1", "cont.quality.2", "neg.exp.limit"), 
+    "discrete.parallel", "discrete.series", "cont.quality", "neg.exp.limit"), 
     color = NULL, iters = 500, bty = "o", ...) {
     
     fixed_string_width <- function(string) {
@@ -249,7 +257,7 @@ plot_multiple_fits <- function(time, mass.remaining, model = c("neg.exp", "weibu
 ##' 
 ##' @title Get the predicted time until half mass loss for a litter decomposition trajectory
 ##' 
-##' @usage time_to_prop_mass_loss(x,threshold.mass=0.5)
+##' @usage time_to_prop_mass_remaining(x,threshold.mass=0.5)
 ##' 
 ##' @param x a litfit object
 ##' 
@@ -265,18 +273,18 @@ plot_multiple_fits <- function(time, mass.remaining, model = c("neg.exp", "weibu
 ##'
 ##'  fit<-fit_litter(time=pineneedles$Year,mass.remaining=pineneedles$Mass.remaining,
 ##'  model='neg.exp',iters=1000)
-##'  time_to_prop_mass_loss(fit)
+##'  time_to_prop_mass_remaining(fit, threshold.mass = 0.5)
 ##' 
 ##' @export 
 ##' 
-time_to_prop_mass_loss <- function(x, threshold.mass = 0.5) {
+time_to_prop_mass_remaining <- function(x, threshold.mass = 0.5) {
     if (class(x) != "litfit") {
         stop("Something went wrong -- litterfitter::steady_state takes a 'litfit' object")
     }
     mod <- get(x$model)
     time.vec <- seq(0, max(x$time), 1e-04)
     mass.predict <- do.call(mod, c(list(time.vec), as.list(x$optimFit$par)))
-    if (all(mass.predict < threshold.mass)) {
+    if (all(mass.predict > threshold.mass)) {
         stop("Not predicted to reach threshold mass within the time range.")
     }
     return(min(time.vec[mass.predict < threshold.mass]))

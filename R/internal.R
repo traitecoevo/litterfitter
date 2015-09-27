@@ -1,5 +1,6 @@
 ## internal functions see base functions for models in Manzoni 2012 Table A1
 
+
 discrete.series <- function(x, R, K1, K2, upper = c((1 - 1e-04), 1000, 1000), lower = c(1e-04, 
     1e-04, 1e-04)) {
     (((1 - R) * K1 * exp(-K2 * x)) - ((K2 - K1 * R) * exp(-K1 * x)))/(K1 - K2)
@@ -9,6 +10,7 @@ discrete.parallel <- function(t, A, K1, K2, upper = c((1 - 1e-04), 100, 100), lo
     1e-04, 1e-04)) {
     A * exp(-K1 * t) + (1 - A) * exp(-K2 * t)
 }
+
 
 weibull <- function(x, beta, alpha, upper = c(10, 10), lower = c(1e-04, 1e-04)) {
     exp(-(x/beta)^alpha)
@@ -25,11 +27,7 @@ neg.exp.limit <- function(x, k, A, B, upper = c(5, 100, 1), lower = c(1e-06, 1e-
 }
 
 
-cont.quality.1 <- function(x, b, a, upper = c(10^10, 100), lower = c(1e-04, 1e-04)) {
-    (b^a)/(b + x)^a
-}
-
-cont.quality.2 <- function(x, b, a, upper = c(10^10, 100), lower = c(1e-04, 1.0001)) {
+cont.quality <- function(x, b, a, upper = c(10^10, 100), lower = c(1e-04, 1.0001)) {
     1/((1 + b * x)^a)
 }
 
@@ -55,7 +53,7 @@ discrete.parallel.steadystate <- function(A, K1, K2) {
     (A/K1) + (1 - A)/K2
 }
 
-cont.quality.2.steadystate <- function(b, a) {
+cont.quality.steadystate <- function(b, a) {
     1/b * 1/(a - 1)
 }
 
@@ -141,7 +139,7 @@ simulate.and.check <- function(model) {
         1e-04)
     suppressWarnings(simulated.fit <- fit_litter(time = pineneedles$Year, mass.remaining = mass.with.error, 
         model = model, iters = 1000))
-    return(are.within.ten.percent.of(time_to_prop_mass_loss(fit), time_to_prop_mass_loss(simulated.fit)))
+    return(are.within.ten.percent.of(time_to_prop_mass_remaining(fit), time_to_prop_mass_remaining(simulated.fit)))
 }
 
 
