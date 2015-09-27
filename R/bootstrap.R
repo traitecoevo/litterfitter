@@ -1,6 +1,6 @@
 #' Create a bootstrap distribution of a particular coefficient from a model fit
 #'
-#'@usage bootstrap.parameters(x,nboot,upper,lower,...)
+#'@usage bootstrap_parameters(x,nboot,upper,lower,...)
 #'
 #' @param x an object of class "\code{litfit}"
 #' 
@@ -17,13 +17,14 @@
 #' 
 #'
 #' @examples 
-#' fit <- fit_litter(time=pineneedles$Year, mass.remaining=pineneedles$Mass.remaining, model='neg.exp', iters=100)
-#' boot1 <- bootstrap.parameters(fit, nboot = 500)
+#' fit <- fit_litter(time=pineneedles$Year, 
+#' mass.remaining=pineneedles$Mass.remaining, model='neg.exp', iters=100)
+#' boot1 <- bootstrap_parameters(fit, nboot = 500)
 #' 
 #' 
 #' 
 #' @export
-bootstrap.parameters <- function(x, nboot=1000,upper=NULL, lower=NULL,...){
+bootstrap_parameters <- function(x, nboot=1000,upper=NULL, lower=NULL,...){
   # basic error checking
   if (class(x) != "litfit") {
     stop("Something went wrong -- litterfitter::bootstrap.parameters
@@ -85,7 +86,8 @@ bootstrap.parameters <- function(x, nboot=1000,upper=NULL, lower=NULL,...){
 ##' @author James Weedon
 ##' 
 ##' @examples 
-##' fit <- fit_litter(time=pineneedles$Year, mass.remaining=pineneedles$Mass.remaining, model='neg.exp', iters=1000)
+##' fit <- fit_litter(time=pineneedles$Year, 
+##' mass.remaining=pineneedles$Mass.remaining, model='neg.exp', iters=1000)
 ##' boot1 <- bootstrap.parameters(fit, nboot = 5000)
 ##' plot(boot1)
 ##' 
