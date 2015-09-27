@@ -132,11 +132,14 @@ predict.litfit <- function(object, newdata = NULL, ...) {
 ##' 
 ##' @title Steady-state estimating from a lit fit object
 ##' 
-##' @usage steady_state(x,...)
+##' @usage steady_state(x=NULL, pars=NULL, model=NULL)
 ##' 
 ##' @param x litfit object
 ##' 
-##' @param ... additional parameters
+##' @param pars (If x not specified) a vector of parameters for the model
+##' 
+##' @param model (If x not specified) one of "neg.exp", "weibull", "discrete.parallel",
+##' "discrete series", "cont.quality2"
 ##' 
 ##' @details Right now only implemented for a subset of models.  More coming soon...
 ##' 
@@ -144,22 +147,34 @@ predict.litfit <- function(object, newdata = NULL, ...) {
 ##' 
 ##' @author Will Cornwell
 ##' 
-##' @examples fit<-fit_litter(time=c(0,1,2,3,4,5,6),mass.remaining=c(1,0.9,1.01,0.4,0.6,0.2,0.01),
-##' 'neg.exp',iters=250)
+##' @examples fit <- fit_litter(time = c(0,1,2,3,4,5,6),mass.remaining = c(1,0.9,1.01,0.4,0.6,0.2,0.01),
+##' 'neg.exp',iters = 250)
 ##' steady_state(fit)
+##' 
+##' # no litfit object specified, arbitrary model and parameter values
+##' steady_state(pars = c(6,2), model = "weibull")
 ##' 
 ##' 
 ##' @export steady_state
-steady_state <- function(x, ...) {
-    if (class(x) != "litfit") {
-        stop("Something went wrong -- litterfitter::steady_state takes a 'litfit' object")
+steady_state <- function(x=NULL,pars=NULL,model=NULL) {
+    if (is.null(x) & (class(model)!="character" | class(pars) != "numeric")) {
+        stop("Something went wrong -- litterfitter::steady_state requires either a litfit
+             object, or a model name and the appropriate numeric vector of parameter values")
     }
-    out <- switch(x$model, neg.exp = negexp.steadystate(x$optimFit$par), weibull = weibull.steadystate(x$optimFit$par[1], 
-        x$optimFit$par[2]), discrete.parallel = discrete.parallel.steadystate(x$optimFit$par[1], 
-        x$optimFit$par[2], x$optimFit$par[3]), discrete.series = discrete.series.steadystate(x$optimFit$par[1], 
-        x$optimFit$par[2], x$optimFit$par[3]), cont.quality = cont.quality.steadystate(x$optimFit$par[1], 
-        x$optimFit$par[2]),  neg.exp.limit = "not yet implemented")
-    names(out) <- x$model
+  if(class(x) == "litfit"){
+    model <- x$model
+    pars <- x$optimFit$par
+  }
+    
+    out <- switch(model,
+                  neg.exp = negexp.steadystate(pars),
+                  weibull = weibull.steadystate(pars[1],pars[2]),
+                  discrete.parallel = discrete.parallel.steadystate(pars[1],pars[2],pars[3]),
+                  discrete.series = discrete.series.steadystate(pars[1],pars[2],pars[3]),
+                  cont.quality.2 = cont.quality.2.steadystate(pars[1],pars[2]),
+                  cont.quality.1 = "not yet implemented",
+                  neg.exp.limit = "not yet implemented")
+    names(out) <- model
     return(out)
 }
 
