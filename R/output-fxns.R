@@ -71,16 +71,18 @@ fitted.litfit <- function(object, ...) {
 
 #' @export
 print.summary.litfit <- function(object, ...) {
-    # prototype, to be expanded and improved
-    cat("Summary of litFit object\n")
-    cat(paste("Model type:", object$model, "\n"))
-    cat(paste("Number of observations: ", object$num.obs, "\n"))
-    cat(paste("Parameter fits:", signif(object$coef,3), "\n"))
-    cat(paste("Time to 50% mass loss:",signif(object$time_to_50,3), "\n"))
-    cat(paste("Implied steady state litter mass:", signif(object$steady_state,3), "in units of yearly input","\n"))
-    cat(paste("AIC: ", round(object$fitAIC, 4), "\n"))
-    cat(paste("AICc: ", round(object$fitAICc, 4), "\n"))
-    cat(paste("BIC: ", round(object$fitBIC, 4), "\n"))
+  # prototype, to be expanded and improved
+  cat("Summary of litFit object\n")
+  cat(paste("Model type:", object$model, "\n"))
+  cat(paste("Number of observations: ", object$num.obs, "\n"))
+  for (i in seq_along(object$optimFit$par)){
+    cat(paste("Parameter fits:", signif(object$optimFit$par[i],3), "\n"))
+  }
+  cat(paste("Time to 50% mass loss:",signif(object$time_to_50,3), "\n"))
+  cat(paste("Implied steady state litter mass:", signif(object$steady_state,3), "in units of yearly input","\n"))
+  cat(paste("AIC: ", round(object$fitAIC, 4), "\n"))
+  cat(paste("AICc: ", round(object$fitAICc, 4), "\n"))
+  cat(paste("BIC: ", round(object$fitBIC, 4), "\n"))
 }
 
 #' @export
@@ -91,14 +93,9 @@ summary.litfit<-function(object, ...) {
   ans$mass<-NULL
   ans$time<-NULL
   ans$predicted<-NULL
-  ans$coef<-coef(fit)
   ans$steady_state<-steady_state(fit)
   names(ans$steady_state)<-NULL
-  tryCatch(ans$time_to_10<-time_to_prop_mass_remaining(fit,0.10), error = function(e) NULL)
-  tryCatch(ans$time_to_25<-time_to_prop_mass_remaining(fit,0.25), error = function(e) NULL)
   tryCatch(ans$time_to_50<-time_to_prop_mass_remaining(fit,0.5), error = function(e) NULL)
-  ans$time_to_75<-time_to_prop_mass_remaining(fit,0.75)
-  ans$time_to_90<-time_to_prop_mass_remaining(fit,0.90)
   return(ans)
 }
 
