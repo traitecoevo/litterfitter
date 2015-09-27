@@ -70,15 +70,36 @@ fitted.litfit <- function(object, ...) {
 }
 
 #' @export
-
-summary.litfit <- function(object, ...) {
+print.summary.litfit <- function(object, ...) {
     # prototype, to be expanded and improved
     cat("Summary of litFit object\n")
     cat(paste("Model type:", object$model, "\n"))
-    cat(paste("Number of observations: ", length(object$time), "\n"))
+    cat(paste("Number of observations: ", object$num.obs, "\n"))
+    cat(paste("Parameter fits:", signif(object$coef,3), "\n"))
+    cat(paste("Time to 50% mass loss:",signif(object$time_to_50,3), "\n"))
+    cat(paste("Implied steady state litter mass:", signif(object$steady_state,3), "in units of yearly input","\n"))
     cat(paste("AIC: ", round(object$fitAIC, 4), "\n"))
     cat(paste("AICc: ", round(object$fitAICc, 4), "\n"))
     cat(paste("BIC: ", round(object$fitBIC, 4), "\n"))
+}
+
+#' @export
+summary.litfit<-function(object, ...) {
+  ans<-object
+  class(ans) <- "summary.litfit"
+  ans$num.obs<-sum(!is.na(ans$mass)&!is.na(ans$time))
+  ans$mass<-NULL
+  ans$time<-NULL
+  ans$predicted<-NULL
+  ans$coef<-coef(fit)
+  ans$steady_state<-steady_state(fit)
+  names(ans$steady_state)<-NULL
+  tryCatch(ans$time_to_10<-time_to_prop_mass_remaining(fit,0.10), error = function(e) NULL)
+  tryCatch(ans$time_to_25<-time_to_prop_mass_remaining(fit,0.25), error = function(e) NULL)
+  tryCatch(ans$time_to_50<-time_to_prop_mass_remaining(fit,0.5), error = function(e) NULL)
+  ans$time_to_75<-time_to_prop_mass_remaining(fit,0.75)
+  ans$time_to_90<-time_to_prop_mass_remaining(fit,0.90)
+  return(ans)
 }
 
 ##' Generated predicted values for (new) time points from a litfit model fit
@@ -233,7 +254,7 @@ plot_multiple_fits <- function(time, mass.remaining, model = c("neg.exp", "weibu
 ##' 
 ##' @title Get the predicted time until half mass loss for a litter decomposition trajectory
 ##' 
-##' @usage time_to_prop_mass_loss(x,threshold.mass=0.5)
+##' @usage time_to_prop_mass_remaining(x,threshold.mass=0.5)
 ##' 
 ##' @param x a litfit object
 ##' 
@@ -249,18 +270,18 @@ plot_multiple_fits <- function(time, mass.remaining, model = c("neg.exp", "weibu
 ##'
 ##'  fit<-fit_litter(time=pineneedles$Year,mass.remaining=pineneedles$Mass.remaining,
 ##'  model='neg.exp',iters=1000)
-##'  time_to_prop_mass_loss(fit)
+##'  time_to_prop_mass_remaining(fit, threshold.mass = 0.5)
 ##' 
 ##' @export 
 ##' 
-time_to_prop_mass_loss <- function(x, threshold.mass = 0.5) {
+time_to_prop_mass_remaining <- function(x, threshold.mass = 0.5) {
     if (class(x) != "litfit") {
         stop("Something went wrong -- litterfitter::steady_state takes a 'litfit' object")
     }
     mod <- get(x$model)
     time.vec <- seq(0, max(x$time), 1e-04)
     mass.predict <- do.call(mod, c(list(time.vec), as.list(x$optimFit$par)))
-    if (all(mass.predict < threshold.mass)) {
+    if (all(mass.predict > threshold.mass)) {
         stop("Not predicted to reach threshold mass within the time range.")
     }
     return(min(time.vec[mass.predict < threshold.mass]))
