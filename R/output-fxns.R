@@ -33,28 +33,19 @@ plot.litfit <- function(x, formulae.cex = 1, ...) {
     formula.text <- switch(x$model, neg.exp = substitute(paste(y == e^A), list(A = paste("-", 
         rnd.to.text(x$optimFit$par, 3), "t", sep = ""))), weibull = substitute(paste(y == 
         e^frac(-t, A)^B), list(A = round(x$optimFit$par[1], 3), B = round(x$optimFit$par[2], 
-        3))), discrete.parallel = substitute(paste(y == A * e^{
-        B * t
-    } + C * e^{
-        D * t
-    }), list(A = rnd.to.text(x$optimFit$par[1], 4), B = rnd.to.text(-1 * x$optimFit$par[2], 
+        3))), discrete.parallel = substitute(paste(y == A * e^{ B * t } + C * e^{ D * t}), 
+        list(A = rnd.to.text(x$optimFit$par[1], 4), B = rnd.to.text(-1 * x$optimFit$par[2], 
         4), C = rnd.to.text(1 - x$optimFit$par[1], 4), D = rnd.to.text(-1 * x$optimFit$par[3], 
-        4))), discrete.series = substitute(paste(y == frac(A * e^{
-        C * t
-    } * sign * D * e^{
-        F * t
-    }, G)), list(A = rnd.to.text((1 - x$optimFit$par[1]) * x$optimFit$par[2]), C = rnd.to.text(-1 * 
+        4))), discrete.series = substitute(paste(y == frac(A * e^{ C * t } * sign * D * e^{ F * t}, G)), 
+        list(A = rnd.to.text((1 - x$optimFit$par[1]) * x$optimFit$par[2]), C = rnd.to.text(-1 * 
         x$optimFit$par[3]), D = rnd.to.text(x$optimFit$par[3] - x$optimFit$par[2] * 
         x$optimFit$par[1]), F = rnd.to.text(-1 * x$optimFit$par[2]), G = x$optimFit$par[2] - 
         x$optimFit$par[3], sign = ifelse(x$optimFit$par[3] - x$optimFit$par[2] * 
         x$optimFit$par[1] > 0, "-", ""))),  
         cont.quality = substitute(paste(y == frac(1, (1 + B * t)^A)), list(A = rnd.to.text(x$optimFit$par[2]), 
             B = rnd.to.text(x$optimFit$par[1]))), neg.exp.limit = substitute(paste(y == 
-            A * e^{
-                -K * t
-            } + B), list(K = rnd.to.text(x$optimFit$par[1]), A = rnd.to.text(x$optimFit$par[2]), 
+            A * e^{ -K * t } + B), list(K = rnd.to.text(x$optimFit$par[1]), A = rnd.to.text(x$optimFit$par[2]), 
             B = rnd.to.text(x$optimFit$par[3]))))
-    
     text(pt.pos[1], pt.pos[2], label = formula.text, cex = formulae.cex)
 }
 
