@@ -2,19 +2,29 @@
 % Please edit documentation in R/bootstrap.parameters.R
 \name{bootstrap.parameters}
 \alias{bootstrap.parameters}
-\title{Title}
+\title{Create a bootstrap distribution of a particular coefficient from a model fit}
 \usage{
-bootstrap.parameters(x, nboot = 1000, upper = NULL, lower = NULL)
+bootstrap.parameters(x,nboot,upper,lower,...)
 }
 \arguments{
-\item{nboot}{}
+\item{x}{an object of class "\code{litfit}"}
 
-\item{fit}{}
+\item{nboot}{number of bootstrap replications}
+
+\item{upper}{optional vector of upper bounds for the bootstrap replicates}
+
+\item{lower}{optional vector of lower bounds for the bootstrap replicates}
+
+\item{...}{passed to \code{\link{optim}}}
+}
+\value{
+returns a \code{litfit_bootstrap object}
 }
 \description{
-Title
+Create a bootstrap distribution of a particular coefficient from a model fit
 }
 \examples{
-NULL
+fit <- fit_litter(time=pineneedles$Year, mass.remaining=pineneedles$Mass.remaining, model='neg.exp', iters=100)
+boot1 <- bootstrap.parameters(fit, nboot = 500)
 }
 

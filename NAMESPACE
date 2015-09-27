@@ -3,6 +3,7 @@
 S3method(coef,litfit)
 S3method(fitted,litfit)
 S3method(plot,litfit)
+S3method(plot,litfit_bootstrap)
 S3method(predict,litfit)
 S3method(print,summary.litfit)
 S3method(summary,litfit)
