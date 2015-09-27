@@ -70,19 +70,19 @@ fitted.litfit <- function(object, ...) {
 }
 
 #' @export
-print.summary.litfit <- function(object, ...) {
+print.summary.litfit <- function(x, ...) {
   # prototype, to be expanded and improved
   cat("Summary of litFit object\n")
-  cat(paste("Model type:", object$model, "\n"))
-  cat(paste("Number of observations: ", object$num.obs, "\n"))
-  for (i in seq_along(object$optimFit$par)){
-    cat(paste("Parameter fits:", signif(object$optimFit$par[i],3), "\n"))
+  cat(paste("Model type:", x$model, "\n"))
+  cat(paste("Number of observations: ", x$num.obs, "\n"))
+  for (i in seq_along(x$optimFit$par)){
+    cat(paste("Parameter fits:", signif(x$optimFit$par[i],3), "\n"))
   }
-  cat(paste("Time to 50% mass loss:",signif(object$time_to_50,3), "\n"))
-  cat(paste("Implied steady state litter mass:", signif(object$steady_state,3), "in units of yearly input","\n"))
-  cat(paste("AIC: ", round(object$fitAIC, 4), "\n"))
-  cat(paste("AICc: ", round(object$fitAICc, 4), "\n"))
-  cat(paste("BIC: ", round(object$fitBIC, 4), "\n"))
+  cat(paste("Time to 50% mass loss:",signif(x$time_to_50,3), "\n"))
+  cat(paste("Implied steady state litter mass:", signif(x$steady_state,3), "in units of yearly input","\n"))
+  cat(paste("AIC: ", round(x$fitAIC, 4), "\n"))
+  cat(paste("AICc: ", round(x$fitAICc, 4), "\n"))
+  cat(paste("BIC: ", round(x$fitBIC, 4), "\n"))
 }
 
 #' @export
@@ -93,9 +93,9 @@ summary.litfit<-function(object, ...) {
   ans$mass<-NULL
   ans$time<-NULL
   ans$predicted<-NULL
-  ans$steady_state<-steady_state(fit)
+  ans$steady_state<-steady_state(object)
   names(ans$steady_state)<-NULL
-  tryCatch(ans$time_to_50<-time_to_prop_mass_remaining(fit,0.5), error = function(e) NULL)
+  tryCatch(ans$time_to_50<-time_to_prop_mass_remaining(object,0.5), error = function(e) NULL)
   return(ans)
 }
 
