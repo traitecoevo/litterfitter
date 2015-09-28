@@ -117,12 +117,6 @@ multioptimFit <- function(time_data, mass_data, model, iters = 200, upper = NULL
     return(s.fit[[best.one]])
 }
 
-simulate.decomposition.with.error <- function(fit, sigma) {
-    mass <- predict(fit) + rnorm(length(predict(fit)), 0, sigma)
-    time <- fit$time
-    return(data.frame(mass = mass, time = time))
-}
-
 are.within.ten.percent.of <- function(x, y) {
     return(y < 1.1 * x & y > 0.9 * x)
 }
@@ -134,9 +128,8 @@ rnd.to.text <- function(x, digits = 4) {
 simulate.and.check <- function(model) {
     suppressWarnings(fit <- fit_litter(time = pineneedles$Year, mass.remaining = pineneedles$Mass.remaining, 
         model = model, iters = 1000))
-    # simulated.data <- simulate.decomposition.with.error(fit, sigma = 1e-50)
     mass.with.error <- pineneedles$Mass.remaining + rnorm(length(predict(fit)), 0, 
-        1e-04)
+        1e-03)
     suppressWarnings(simulated.fit <- fit_litter(time = pineneedles$Year, mass.remaining = mass.with.error, 
         model = model, iters = 1000))
     return(are.within.ten.percent.of(time_to_prop_mass_remaining(fit), time_to_prop_mass_remaining(simulated.fit)))
