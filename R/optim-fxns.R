@@ -73,6 +73,7 @@
 fit_litter <- function(time, mass.remaining, model = c("neg.exp", "weibull", "discrete.parallel", 
     "discrete.series", "cont.quality", "neg.exp.limit"), iters = 500, 
     upper = NULL, lower = NULL, ...) {
+
     if (length(time) != length(mass.remaining)) {
         stop("Time vector must have the same length and correspond to the mass remaining vector")
     }
@@ -97,10 +98,7 @@ fit_litter <- function(time, mass.remaining, model = c("neg.exp", "weibull", "di
             stop(paste("Incorrect number of lower bounds supplied, should be:", length(eval(formals(get(model))$lower))))
         }
     }
-    
-    
-    
-    
+
     fit <- multioptimFit(time, mass.remaining, model, iters = iters, upper = upper, 
         lower = lower, ...)
     if (is.null(fit)) 
