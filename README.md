@@ -8,7 +8,7 @@ To install run:
 
 ```r
   #install.packages("devtools")
-  devtools::install_github("cornwell-lab-unsw/litterfitter",ref="bootstrap")
+  devtools::install_github("cornwell-lab-unsw/litterfitter")
   library(litterfitter)
 ```
 At the moment there is one key function which is `fit_litter` which can fit 6 different types of decomposition trajectories.  
@@ -47,6 +47,10 @@ The summary of a `litfit` object will show you some of the summary staistics for
 ## Summary of litFit object
 ## Model type: weibull 
 ## Number of observations:  7 
+## Parameter fits: 4.19 
+## Parameter fits: 2.47 
+## Time to 50% mass loss: 3.61 
+## Implied steady state litter mass: 3.71 in units of yearly input 
 ## AIC:  -3.8883 
 ## AICc:  -0.8883 
 ## BIC:  -3.9965

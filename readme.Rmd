@@ -12,7 +12,7 @@ To install run:
 
 ```{R,results="hide",warning=FALSE,message = FALSE}
   #install.packages("devtools")
-  devtools::install_github("cornwell-lab-unsw/litterfitter",ref="bootstrap")
+  devtools::install_github("cornwell-lab-unsw/litterfitter")
   library(litterfitter)
 ```
 At the moment there is one key function which is `fit_litter` which can fit 6 different types of decomposition trajectories.  
@@ -46,7 +46,7 @@ The summary of a `litfit` object will show you some of the summary staistics for
 From this `litfit` object you can then see the uncertainty in the parameter estimate by bootstrapping
 
 ```{R,echo=FALSE,fig.keep=TRUE}
-   post<-bootstrap.parameters(fit)
+   post<-bootstrap_parameters(fit)
    plot(post)
 ```
 
