@@ -157,7 +157,7 @@ predict.litfit <- function(object, newdata = NULL, ...) {
 ##' 
 ##' @export steady_state
 steady_state <- function(x=NULL,pars=NULL,model=NULL) {
-    if (is.null(x) & (class(model)!="character" | class(pars) != "numeric")) {
+    if (class(x) != "litfit" & (class(model)!="character" | class(pars) != "numeric")) {
         stop("Something went wrong -- litterfitter::steady_state requires either a litfit
              object, or a model name and the appropriate numeric vector of parameter values")
     }
