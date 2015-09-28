@@ -173,6 +173,9 @@ steady_state <- function(x=NULL,pars=NULL,model=NULL) {
                   discrete.series = discrete.series.steadystate(pars[1],pars[2],pars[3]),
                   cont.quality = cont.quality.steadystate(pars[1],pars[2]),
                   neg.exp.limit = "not yet implemented")
+    if (is.null(out)){
+      stop("model name did not current set of implemented models, see ?fit_litter")
+    }
     names(out) <- model
     return(out)
 }

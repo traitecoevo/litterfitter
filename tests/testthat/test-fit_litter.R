@@ -37,6 +37,7 @@ test_that("crazy input throws errors", {
     expect_error(fit_litter(time = c(0, 1, 2, 3, 4 ), mass.remaining = c(1, 0.9, 1.01, 0.4, 0.6), model = "weibull", iters = 10,lower=2))
     expect_error(steady_state(pars=c(3,3),model=3)))
     expect_error(steady_state(3))
+    expect_error(steady_state(pars=c(3,3),model="netflix_and_chill"))
 })
 
 test_that("known parameter fits on boundary", {
