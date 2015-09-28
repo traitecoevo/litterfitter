@@ -23,7 +23,7 @@ test_that("plots and summaries dont throw errors", {
     expect_that(plot(fit), not(gives_warning()))
     expect_that(summary(fit), is_a("summary.litfit"))
     out<-summary(fit)
-    expect_that(print(fit), not(gives_warning()))
+    expect_that(print(out), not(gives_warning()))
     expect_that(plot_multiple_fits(time = pineneedles$Year, mass.remaining = pineneedles$Mass.remaining, model = c("neg.exp", "weibull"), bty = "n", 
         iters = 2000), not(gives_warning()))
     
