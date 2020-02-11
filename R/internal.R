@@ -66,7 +66,7 @@ obj_func <- function(x, ind, dep, curve) {
 
 
 calculateLL <- function(predicted, observed, sigma) {
-    return(sum(dnorm(observed, mean = predicted, sd = sigma, log = T)))
+    return(sum(stats::dnorm(observed, mean = predicted, sd = sigma, log = T)))
 }
 
 calculateAIC <- function(LL, nparams) {
@@ -96,7 +96,7 @@ multioptimFit <- function(time_data, mass_data, model, iters = 200, upper = NULL
     for (i in 1:iters) {
         starter <- runif(nArgs, min = lower_bounds, max = lower_bounds + 0.9998)
         # always start near lower bound--empirically works better
-        fit[[i]] <- tryCatch(optim(starter, obj_func, ind = time_data, dep = mass_data, 
+        fit[[i]] <- tryCatch(stats::optim(starter, obj_func, ind = time_data, dep = mass_data, 
             curve = model, method = "L-BFGS-B", lower = lower_bounds, upper = upper_bounds, 
             ...), error = function(e) NULL)
     }

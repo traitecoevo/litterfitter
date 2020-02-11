@@ -234,7 +234,7 @@ plot_multiple_fits <- function(time, mass.remaining, model = c("neg.exp", "weibu
     
     N <- length(model)
     if (is.null(color)) 
-        color <- palette()[1:N]
+        color <- grDevices::palette()[1:N]
     plot(time, mass.remaining, pch = 19, ylim = c(0, 1), ...)
     
     for (i in 1:N) {
@@ -287,7 +287,10 @@ time_to_prop_mass_remaining <- function(x, threshold.mass = 0.5) {
     time.vec <- seq(0, max(x$time), 1e-04)
     mass.predict <- do.call(mod, c(list(time.vec), as.list(x$optimFit$par)))
     if (all(mass.predict > threshold.mass)) {
-        stop("Not predicted to reach threshold mass within the time range.")
+        warning("Not predicted to reach threshold mass (usu 50% loss) within the time range of the data.")
+        time.vec <- seq(0, max(x$time)*100, 1e-04)
+        mass.predict <- do.call(mod, c(list(time.vec), as.list(x$optimFit$par)))
+        return(min(time.vec[mass.predict < threshold.mass]))
     }
     return(min(time.vec[mass.predict < threshold.mass]))
 } 
