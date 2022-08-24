@@ -5,6 +5,6 @@
 *.html
 *.pdf
 .Rproj.user
-
 litterFitter_0.1.tar.gz
 man/.Rapp.history
+.DS_Store
