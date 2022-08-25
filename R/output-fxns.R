@@ -1,26 +1,28 @@
-##' Plot a fit of a curve to a litter decomposition trajectory
-##' 
-##' @title Plot decomposition trajectory and curve fit
-##' 
-##' @usage \method{plot}{litfit}(x,formulae.cex,...)
-##' 
-##' @param x litfit object
-##' 
-##' @param formulae.cex how big do you want your formula?
-##' 
-##' @param ... additional arguments passed to plot.default
-##' 
-##' @details The data and the line fit plotted from a litFit object.  Designed to give a quick visual check if model fitting is adequate.
-##' 
-##' @seealso \code{\link{fit_litter}}
-##' 
-##' @author Will Cornwell
-##' 
-##' @examples fit<-fit_litter(time=c(0,1,2,3,4,5,6),mass.remaining=c(1,0.9,1.01,0.4,0.6,0.2,0.01),
-##' 'neg.exp',iters=250)
-##' plot(fit)
-##' 
-##' @export
+#' Plot a fit of a curve to a litter decomposition trajectory
+#' 
+#' @title Plot decomposition trajectory and curve fit
+#' 
+#' @usage \method{plot}{litfit}(x,formulae.cex,...)
+#' 
+#' @param x litfit object
+#' 
+#' @param formulae.cex how big do you want your formula?
+#' 
+#' @param ... additional arguments passed to plot.default
+#' 
+#' @details The data and the line fit plotted from a litFit object.  Designed to give a quick visual check if model fitting is adequate.
+#' 
+#' @seealso \code{\link{fit_litter}}
+#' 
+#' @author Will Cornwell
+#' 
+#' @examples fit<-fit_litter(time=c(0,1,2,3,4,5,6),mass.remaining=c(1,0.9,1.01,0.4,0.6,0.2,0.01),
+#' 'neg.exp',iters=250)
+#' plot(fit)
+#' 
+#' @export
+#' 
+#' @import graphics
 
 plot.litfit <- function(x, formulae.cex = 1, ...) {
     plot(x$mass ~ x$time, pch = 16, xlab = "Time", ylab = "Proportion mass remaining", 
@@ -90,30 +92,30 @@ summary.litfit<-function(object, ...) {
   return(ans)
 }
 
-##' Generated predicted values for (new) time points from a litfit model fit
-##' 
-##' @title Predict method for litfit objects
-##' 
-##' @usage \method{predict}{litfit}(object,newdata=NULL,...)
-##' 
-##' @param object litfit object
-##' 
-##' @param newdata optional vector of new Time points at which to predict mass remaining. If not specified, Time points from the original fit are used.
-##' 
-##' @param ... further arguments passed to or from other methods.
-##' 
-##' @details to do
-##' 
-##' @seealso \code{\link{fit_litter}}
-##' 
-##' @author Will Cornwell
-##' @author James Weedon
-##' 
-##' @examples fit<-fit_litter(time=c(0,1,2,3,4,5,6),mass.remaining=c(1,0.9,1.01,0.4,0.6,0.2,0.01),
-##' 'neg.exp',iters=250)
-##' predict(fit, newdata=1:10)
-##' 
-##' @export
+#' Generated predicted values for (new) time points from a litfit model fit
+#' 
+#' @title Predict method for litfit objects
+#' 
+#' @usage \method{predict}{litfit}(object,newdata=NULL,...)
+#' 
+#' @param object litfit object
+#' 
+#' @param newdata optional vector of new Time points at which to predict mass remaining. If not specified, Time points from the original fit are used.
+#' 
+#' @param ... further arguments passed to or from other methods.
+#' 
+#' @details to do
+#' 
+#' @seealso \code{\link{fit_litter}}
+#' 
+#' @author Will Cornwell
+#' @author James Weedon
+#' 
+#' @examples fit<-fit_litter(time=c(0,1,2,3,4,5,6),mass.remaining=c(1,0.9,1.01,0.4,0.6,0.2,0.01),
+#' 'neg.exp',iters=250)
+#' predict(fit, newdata=1:10)
+#' 
+#' @export
 predict.litfit <- function(object, newdata = NULL, ...) {
     if (is.null(newdata)) {
         X <- object$time
@@ -127,41 +129,42 @@ predict.litfit <- function(object, newdata = NULL, ...) {
 
 
 
-##' Estimate the steady state biomass as a proportion of the annual input,
-##' based on the particular model fit.
-##' 
-##' @title Steady-state estimating from a lit fit object
-##' 
-##' @usage steady_state(x=NULL, pars=NULL, model=NULL)
-##' 
-##' @param x litfit object
-##' 
-##' @param pars (If x not specified) a vector of parameters for the model
-##' 
-##' @param model (If x not specified) one of "neg.exp", "weibull", "discrete.parallel",
-##' "discrete series", "cont.quality2"
-##' 
-##' @details Right now only implemented for a subset of models.  More coming soon...
-##' 
-##' @seealso \code{\link{fit_litter}}
-##' 
-##' @author Will Cornwell
-##' 
-##' @examples fit <- fit_litter(time = c(0,1,2,3,4,5,6),mass.remaining = c(1,0.9,1.01,0.4,0.6,0.2,0.01),
-##' 'neg.exp',iters = 250)
-##' steady_state(fit)
-##' 
-##' # no litfit object specified, arbitrary model and parameter values
-##' steady_state(pars = c(6,2), model = "weibull")
-##' 
-##' 
-##' @export steady_state
+#' Estimate the steady state biomass as a proportion of the annual input,
+#' based on the particular model fit.
+#' 
+#' @title Steady-state estimating from a lit fit object
+#' 
+#' @usage steady_state(x=NULL, pars=NULL, model=NULL)
+#' 
+#' @param x litfit object
+#' 
+#' @param pars (If x not specified) a vector of parameters for the model
+#' 
+#' @param model (If x not specified) one of "neg.exp", "weibull", "discrete.parallel",
+#' "discrete series", "cont.quality2"
+#' 
+#' @details Right now only implemented for a subset of models.  More coming soon...
+#' 
+#' @seealso \code{\link{fit_litter}}
+#' 
+#' @author Will Cornwell
+#' 
+#' @examples fit <- fit_litter(time = c(0,1,2,3,4,5,6),mass.remaining = c(1,0.9,1.01,0.4,0.6,0.2,0.01),
+#' 'neg.exp',iters = 250)
+#' steady_state(fit)
+#' 
+#' # no litfit object specified, arbitrary model and parameter values
+#' steady_state(pars = c(6,2), model = "weibull")
+#' 
+#' @import methods
+#' 
+#' @export steady_state
 steady_state <- function(x=NULL,pars=NULL,model=NULL) {
-    if (class(x) != "litfit" & (class(model)!="character" | class(pars) != "numeric")) {
+    if (!is(x, "litfit") & (class(model)!="character" | class(pars) != "numeric")) {
         stop("Something went wrong -- litterfitter::steady_state requires either a litfit
              object, or a model name and the appropriate numeric vector of parameter values")
     }
-  if(class(x) == "litfit"){
+  if(is(x, "litfit")){
     model <- x$model
     pars <- x$optimFit$par
   }
@@ -181,41 +184,41 @@ steady_state <- function(x=NULL,pars=NULL,model=NULL) {
 }
 
 
-##' Plot multiple fits of decomposition trajectories on one graph with model selection results displayed
-##' 
-##' @title Plot multiple fits on one graph with model selection results displayed
-##' 
-##' @usage plot_multiple_fits(time,mass.remaining,model,color,iters,bty,...)
-##' 
-##' @param time vector of time points
-##' 
-##' @param mass.remaining vector of mass remaining
-##' 
-##' @param model vector of models to fit and plot (see \code{\link{fit_litter}})
-##' 
-##' @param color a vector of colors the same length as the number of models
-##' 
-##' @param iters parameter passed to \code{\link{fit_litter}}
-##' 
-##' @param bty bty
-##' 
-##' @param ... additional parameters passed to \code{\link{plot}}
-##' 
-##' @details this function is designed to compare a variety of curve shapes visually and with AIC and BIC simultaneously
-##' 
-##' @seealso \code{\link{fit_litter}} \code{\link{plot.litfit}}
-##' 
-##' @author Liu Guofang
-##' 
-##' @examples data(pineneedles,package='litterfitter')
-##'
-##' plot_multiple_fits(time = pineneedles$Year, 
-##' mass.remaining = pineneedles$Mass.remaining, 
-##' bty = 'n', model = c('neg.exp', 'weibull'), 
-##' xlab = 'Time', ylab = 'Proportion mass remaining',iters=200) 
-##'   
-##' 
-##' @export plot_multiple_fits
+#' Plot multiple fits of decomposition trajectories on one graph with model selection results displayed
+#' 
+#' @title Plot multiple fits on one graph with model selection results displayed
+#' 
+#' @usage plot_multiple_fits(time,mass.remaining,model,color,iters,bty,...)
+#' 
+#' @param time vector of time points
+#' 
+#' @param mass.remaining vector of mass remaining
+#' 
+#' @param model vector of models to fit and plot (see \code{\link{fit_litter}})
+#' 
+#' @param color a vector of colors the same length as the number of models
+#' 
+#' @param iters parameter passed to \code{\link{fit_litter}}
+#' 
+#' @param bty bty
+#' 
+#' @param ... additional parameters passed to \code{\link{plot}}
+#' 
+#' @details this function is designed to compare a variety of curve shapes visually and with AIC and BIC simultaneously
+#' 
+#' @seealso \code{\link{fit_litter}} \code{\link{plot.litfit}}
+#' 
+#' @author Liu Guofang
+#' 
+#' @examples data(pineneedles,package='litterfitter')
+#'
+#' plot_multiple_fits(time = pineneedles$Year, 
+#' mass.remaining = pineneedles$Mass.remaining, 
+#' bty = 'n', model = c('neg.exp', 'weibull'), 
+#' xlab = 'Time', ylab = 'Proportion mass remaining',iters=200) 
+#'   
+#' 
+#' @export plot_multiple_fits
 plot_multiple_fits <- function(time, mass.remaining, model = c("neg.exp", "weibull", 
     "discrete.parallel", "discrete.series", "cont.quality", "neg.exp.limit"), 
     color = NULL, iters = 500, bty = "o", ...) {
@@ -254,31 +257,31 @@ plot_multiple_fits <- function(time, mass.remaining, model = c("neg.exp", "weibu
 
 
 
-##' Get estimated time to 0.5 (or an alternate threshold) mass loss from a particular fit to a litter decomposition trajectory
-##' 
-##' 
-##' @title Get the predicted time until half mass loss for a litter decomposition trajectory
-##' 
-##' @usage time_to_prop_mass_remaining(x,threshold.mass=0.5)
-##' 
-##' @param x a litfit object
-##' 
-##' @param threshold.mass mass loss threshold in proportion, default is 0.5
-##' 
-##' @details this function finds the time to a specified mass loss percentage
-##' 
-##' @seealso \code{\link{fit_litter}} \code{\link{plot.litfit}}
-##' 
-##' @author Will Cornwell 
-##' 
-##' @examples 
-##'
-##'  fit<-fit_litter(time=pineneedles$Year,mass.remaining=pineneedles$Mass.remaining,
-##'  model='neg.exp',iters=1000)
-##'  time_to_prop_mass_remaining(fit, threshold.mass = 0.5)
-##' 
-##' @export 
-##' 
+#' Get estimated time to 0.5 (or an alternate threshold) mass loss from a particular fit to a litter decomposition trajectory
+#' 
+#' 
+#' @title Get the predicted time until half mass loss for a litter decomposition trajectory
+#' 
+#' @usage time_to_prop_mass_remaining(x,threshold.mass=0.5)
+#' 
+#' @param x a litfit object
+#' 
+#' @param threshold.mass mass loss threshold in proportion, default is 0.5
+#' 
+#' @details this function finds the time to a specified mass loss percentage
+#' 
+#' @seealso \code{\link{fit_litter}} \code{\link{plot.litfit}}
+#' 
+#' @author Will Cornwell 
+#' 
+#' @examples 
+#'
+#'  fit<-fit_litter(time=pineneedles$Year,mass.remaining=pineneedles$Mass.remaining,
+#'  model='neg.exp',iters=1000)
+#'  time_to_prop_mass_remaining(fit, threshold.mass = 0.5)
+#' 
+#' @export 
+#' 
 time_to_prop_mass_remaining <- function(x, threshold.mass = 0.5) {
     if (class(x) != "litfit") {
         stop("Something went wrong -- litterfitter::steady_state takes a 'litfit' object")
