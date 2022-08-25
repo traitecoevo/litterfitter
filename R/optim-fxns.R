@@ -77,7 +77,7 @@ fit_litter <- function(time, mass.remaining, model = c("neg.exp", "weibull", "di
     if (length(time) != length(mass.remaining)) {
         stop("Time vector must have the same length and correspond to the mass remaining vector")
     }
-    if (min(mass.remaining) > 1 | max(mass.remaining) > 2) {
+    if (min(mass.remaining) > 100 | max(mass.remaining) > 200) {
         stop("Check mass remaining vector; must be in proportional mass remaining.")
     }
     

@@ -31,6 +31,27 @@ cont.quality <- function(x, b, a, upper = c(10^10, 100), lower = c(1e-04, 1.0001
     1/((1 + b * x)^a)
 }
 
+b_func<- function(x,d,e){
+  d*(1-exp(e*x))
+}
+
+b_func_100<- function(d,e){
+  d*(1-exp(e*100))
+}
+
+f_func<-function(x,a,b){
+  (x/b)/(sqrt((2*a*x/b)^2+(1-(x/b)^2)^2))
+}
+
+f_func_100<-function(a,b){
+  (100/b)/(sqrt((2*a*100/b)^2+(1-(100/b)^2)^2))
+}
+
+import.model <- function(x,a,b,upper = c(1, 100), lower = c(0.5, 10)){
+  f_func(x,a,b)/f_func_100(a,b)
+}
+
+
 predict.from.fit <- function(model_fn, params, target_time) {
     prediction <- do.call(model_fn, c(list(target_time), as.list(params)))
     return(prediction)
