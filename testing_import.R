@@ -15,3 +15,6 @@ plot(fit)
 
 #a and b fits
 fit$optimFit$par
+
+
+
