@@ -23,8 +23,8 @@
 ##' @export
 
 plot.litfit <- function(x, formulae.cex = 1, ...) {
-    plot(x$mass ~ x$time, pch = 16, xlab = "Time", ylab = "Proportion mass remaining", 
-        xlim = c(0, max(x$time)), main = x$model, ...)
+    plot(x$mass ~ x$time, pch = 16, xlab = "Mass remaining", ylab = "Fraction of intial N", 
+        xlim = c(0, max(x$time)), ...)
     mod <- get(x$model)
     time.vec <- seq(0, max(x$time), 0.01)
     lines(time.vec, do.call(mod, c(list(time.vec), as.list(x$optimFit$par))))
