@@ -1,11 +1,11 @@
 Package: litterfitter
 Type: Package
-Title: Fit a collection of models to single cohort decomposition data
+Title: Fit a Collection of Curves to Single Cohort Decomposition Data
 Version: 0.1.2
-Date: 2022-08-25
+Date: 2022-08-30
 Author: Will Cornwell, James Weedon, Liu Guofang 
 Maintainer: Will Cornwell <wcornwell@gmail.com>
-Description: Fitting curves to litterbag data--single cohort mass loss through time.
+Description: Fitting Curves to Single Cohort Organic Matter Decomposition Series Data.
 Depends: R (>= 3.1.0)
 LazyData: true
 Encoding: UTF-8
