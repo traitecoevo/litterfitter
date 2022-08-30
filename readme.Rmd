@@ -5,6 +5,7 @@ output:
   html_document:
     keep_md: true
 ---
+
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/cornwell-lab-unsw/litterfitter/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cornwell-lab-unsw/litterfitter/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
