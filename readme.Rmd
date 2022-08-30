@@ -8,6 +8,7 @@ output:
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/cornwell-lab-unsw/litterfitter/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cornwell-lab-unsw/litterfitter/actions/workflows/R-CMD-check.yaml)
+[![Codecov test coverage](https://codecov.io/gh/cornwell-lab-unsw/litterfitter/branch/master/graph/badge.svg)](https://app.codecov.io/gh/cornwell-lab-unsw/litterfitter?branch=master)
 <!-- badges: end -->
 
 
