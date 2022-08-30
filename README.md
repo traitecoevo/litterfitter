@@ -10,11 +10,6 @@ Will Cornwell, James Weedon, and Liu Guofang
 coverage](https://codecov.io/gh/cornwell-lab-unsw/litterfitter/branch/master/graph/badge.svg)](https://app.codecov.io/gh/cornwell-lab-unsw/litterfitter?branch=master)
 <!-- badges: end -->
 
-[![Build
-Status](https://travis-ci.org/cornwell-lab-unsw/litterfitter.svg?branch=master)](https://travis-ci.org/cornwell-lab-unsw/litterfitter)
-[![Coverage
-Status](https://coveralls.io/repos/cornwell-lab-unsw/litterfitter/badge.svg?branch=master&service=github)](https://coveralls.io/github/cornwell-lab-unsw/litterfitter?branch=master)
-
 To install run:
 
 ``` r
