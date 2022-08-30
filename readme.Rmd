@@ -2,8 +2,7 @@
 title: "litterFitter: a package for fitting and testing alternative models for single cohort litter decomposition data"
 author: "Will Cornwell, James Weedon, and Liu Guofang"
 output: 
-  html_document:
-    keep_md: true
+  github_document
 ---
 
 <!-- badges: start -->
@@ -27,7 +26,7 @@ At the moment there is one key function which is `fit_litter` which can fit 6 di
 ```{R,results="hide",warning=FALSE,message = FALSE}
    fit<-fit_litter(time=c(0,1,2,3,4,5,6),
    mass.remaining=c(1,0.9,1.01,0.4,0.6,0.2,0.01),
-   model="weibull",iters=500)
+   model="weibull",iters=2000)
 ```
 
 You can visually compare the fits of different non-linear equations with the `plot_multiple_fits` function:
@@ -35,7 +34,7 @@ You can visually compare the fits of different non-linear equations with the `pl
 ```{R,fig.height=6,results='hide',fig.keep=TRUE,warning=FALSE,message = FALSE}
    plot_multiple_fits(time=c(0,1,2,3,4,5,6),
    mass.remaining=c(1,0.9,1.01,0.4,0.6,0.2,0.01),
-   model=c("neg.exp","weibull"),iters=500)
+   model=c("neg.exp","weibull"),iters=2000)
 ```
 
 Calling `plot` on a `litfit` object will show you the data, the curve fit, and even the equation, with the estimated coefficients:
