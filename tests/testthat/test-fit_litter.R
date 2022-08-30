@@ -116,6 +116,9 @@ test_that("bootstraps are behaving", {
       iters = 2000
     )
   out <- bootstrap_parameters(fit)
+  expect_is(predict.from.fit("neg.exp",params=0.2,target_time=2),"numeric")
   expect_true(are.within.ten.percent.of(median(out[, 1]), coef(fit)))
   expect_silent(plot(out))
 })
+
+
