@@ -22,7 +22,7 @@ Plot a bootstrap distribution of a particular coefficient
 The grey fill goes from 0.025 quantile to the 0.975 quantile of the distribution.  Red line shows the mean.  Blue line shows the median.
 }
 \examples{
-fit <- fit_litter(time=pineneedles$Year, 
+fit <- fit_litter(time=pineneedles$Year,
 mass.remaining=pineneedles$Mass.remaining, model='neg.exp', iters=200)
 boot1 <- bootstrap_parameters(fit, nboot = 500)
 plot(boot1)

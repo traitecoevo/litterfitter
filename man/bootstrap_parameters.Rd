@@ -24,7 +24,7 @@ returns a \code{litfit_bootstrap object}
 Create a bootstrap distribution of a particular coefficient from a model fit
 }
 \examples{
-fit <- fit_litter(time=pineneedles$Year, 
+fit <- fit_litter(time=pineneedles$Year,
 mass.remaining=pineneedles$Mass.remaining, model='neg.exp', iters=100)
 boot1 <- bootstrap_parameters(fit, nboot = 500)
 
