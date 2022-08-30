@@ -19,8 +19,7 @@ Suggests:
     testthat,
     knitr,
     roxygen2,
-    devtools,
-    covr
+    devtools
 License: MIT + file LICENSE
 URL: https://github.com/cornwell-lab-unsw/litterfitter
 RoxygenNote: 7.2.1
