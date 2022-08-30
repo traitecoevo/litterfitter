@@ -7,3 +7,5 @@
 ^readme\_files$
 ^readme\.html$
 ^travis-tool\.sh$
+^\.github$
+^codecov\.yml$

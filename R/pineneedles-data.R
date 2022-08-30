@@ -7,3 +7,5 @@
 ##' @source Hobbie et al.
 ##' @author Will Cornwell 
 NULL 
+
+utils::globalVariables(c("pineneedles"))

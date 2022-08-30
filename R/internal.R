@@ -156,8 +156,3 @@ simulate.and.check <- function(model) {
     return(are.within.ten.percent.of(time_to_prop_mass_remaining(fit), time_to_prop_mass_remaining(simulated.fit)))
 }
 
-
-
-
-
- 
