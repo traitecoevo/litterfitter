@@ -39,7 +39,7 @@ Calling `plot` on a `litfit` object will show you the data, the curve fit, and e
    plot(fit)
 ```
 
-The summary of a `litfit` object will show you some of the summary staistics for the fit.
+The summary of a `litfit` object will show you some of the summary statistics for the fit.
 
 ```{R,echo=FALSE,fig.keep=TRUE}
    summary(fit)
