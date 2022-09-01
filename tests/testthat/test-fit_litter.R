@@ -7,7 +7,7 @@ test_that("fit sane", {
       time = c(0, 1, 2, 3, 4, 5, 6),
       mass.remaining = c(1, 0.9, 1.01, 0.4, 0.6, 0.2, 0.01),
       model = "weibull",
-      iters = 1000
+      iters = 2000
     )
   expect_that(fit, is_a("litfit"))
   expect_true(fit$nparams > 0)
@@ -121,4 +121,11 @@ test_that("bootstraps are behaving", {
   expect_silent(plot(out))
 })
 
+
+test_that("elements are behaving", {
+  fit <- fit_element(mass.remaining=pineneedles$Mass.remaining,
+                     element.remaining=c(1.1,1.2,1.3,1,0.8,0.6),
+                     model="import.model",iters=1000)
+  expect_is(fit,"elementfit")
+})
 
