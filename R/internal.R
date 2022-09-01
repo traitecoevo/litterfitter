@@ -31,6 +31,7 @@ cont.quality <- function(x, b, a, upper = c(10^10, 100), lower = c(1e-04, 1.0001
     1/((1 + b * x)^a)
 }
 
+# functions to model release in nutrients - Parton et al. (2007)
 b_func<- function(x,d,e){
   d*(1-exp(e*x))
 }
@@ -51,6 +52,14 @@ import.model <- function(x,a,b,lower = c(0.25, 1),upper = c(10, 100)){
   f_func(x,a,b)/f_func_100(a,b)
 }
 
+
+# Function to model release in nutrients in relation to stoichiometry and consumer carbon efficiency - Manzoni et al. (2008)
+
+stoch.model <- function(x, l, e, lower = c(0.1, 0.01), upper = c(200,200)){
+  
+  x*(10/l)+(1-(10/l))*x^(1/(1-e))
+  
+}
 
 predict.from.fit <- function(model_fn, params, target_time) {
     prediction <- do.call(model_fn, c(list(target_time), as.list(params)))
