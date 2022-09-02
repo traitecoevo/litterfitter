@@ -1,34 +1,56 @@
 ---
-title: "litterFitter: a package for fitting and testing alternative models for single cohort litter decomposition data"
-author: "Will Cornwell, James Weedon, and Liu Guofang"
-output: 
-  html_document:
-    keep_md: true
+output: github_document
 ---
 
-[![Build Status](https://travis-ci.org/cornwell-lab-unsw/litterfitter.svg?branch=master)](https://travis-ci.org/cornwell-lab-unsw/litterfitter) [![Coverage Status](https://coveralls.io/repos/cornwell-lab-unsw/litterfitter/badge.svg?branch=master&service=github)](https://coveralls.io/github/cornwell-lab-unsw/litterfitter?branch=master)
+<!-- README.md is generated from README.Rmd. Please edit that file -->
 
-To install run:
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
 
-```{R,results="hide",warning=FALSE,message = FALSE}
-  #install.packages("devtools")
-  devtools::install_github("cornwell-lab-unsw/litterfitter")
-  library(litterfitter)
+library(litterfitter)
 ```
-At the moment there is one key function which is `fit_litter` which can fit 6 different types of decomposition trajectories.  
+
+# litterfitter
+> R package for fitting and testing alternative models for single cohort litter decomposition data
+
+<!-- badges: start -->
+[![Build Status](https://travis-ci.org/cornwell-lab-unsw/litterfitter.svg?branch=master)](https://travis-ci.org/cornwell-lab-unsw/litterfitter) [![Coverage Status](https://coveralls.io/repos/cornwell-lab-unsw/litterfitter/badge.svg?branch=master&service=github)](https://coveralls.io/github/cornwell-lab-unsw/litterfitter?branch=master)
+<!-- badges: end -->
+
+### Installation 
+
+```{R, eval = FALSE}
+  #install.packages("remotes")
+  remotes::install_github("cornwell-lab-unsw/litterfitter")
+  
+library(litterfitter)
+```
+
+### Getting started 
+
+At the moment there is one key function which is `fit_litter` which can fit 6 different types of decomposition trajectories. Note that the fitted object is a `litfit` object
 
 ```{R,results="hide",warning=FALSE,message = FALSE}
-   fit<-fit_litter(time=c(0,1,2,3,4,5,6),
-   mass.remaining=c(1,0.9,1.01,0.4,0.6,0.2,0.01),
-   model="weibull",iters=500)
+fit <- fit_litter(time=c(0,1,2,3,4,5,6),
+                  mass.remaining =c(1,0.9,1.01,0.4,0.6,0.2,0.01),
+                  model="weibull",
+                  iters=500)
+
+class(fit)
 ```
 
 You can visually compare the fits of different non-linear equations with the `plot_multiple_fits` function:
 
 ```{R,fig.height=6,results='hide',fig.keep=TRUE,warning=FALSE,message = FALSE}
-   plot_multiple_fits(time=c(0,1,2,3,4,5,6),
-   mass.remaining=c(1,0.9,1.01,0.4,0.6,0.2,0.01),
-   model=c("neg.exp","weibull"),iters=500)
+plot_multiple_fits(time=c(0,1,2,3,4,5,6),
+                   mass.remaining=c(1,0.9,1.01,0.4,0.6,0.2,0.01),
+                   model=c("neg.exp","weibull"),
+                   iters=500)
 ```
 
 Calling `plot` on a `litfit` object will show you the data, the curve fit, and even the equation, with the estimated coefficients:
@@ -37,17 +59,15 @@ Calling `plot` on a `litfit` object will show you the data, the curve fit, and e
    plot(fit)
 ```
 
-The summary of a `litfit` object will show you some of the summary staistics for the fit.
+The summary of a `litfit` object will show you some of the summary statistics for the fit.
 
 ```{R,echo=FALSE,fig.keep=TRUE}
    summary(fit)
 ```
 
-From this `litfit` object you can then see the uncertainty in the parameter estimate by bootstrapping
+From the `litfit` object you can then see the uncertainty in the parameter estimate by bootstrapping
 
 ```{R,echo=FALSE,fig.keep=TRUE}
    post<-bootstrap_parameters(fit)
    plot(post)
 ```
-
-
