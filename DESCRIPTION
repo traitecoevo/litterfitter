@@ -19,8 +19,9 @@ Suggests:
     testthat,
     knitr,
     roxygen2,
-    devtools
+    devtools,
+    rmarkdown
 License: MIT + file LICENSE
 URL: https://github.com/cornwell-lab-unsw/litterfitter
 RoxygenNote: 7.2.1
-
+VignetteBuilder: knitr

@@ -6,6 +6,5 @@
 ##' @format a data.frame with two columns
 ##' @source Hobbie et al.
 ##' @author Will Cornwell 
-NULL 
+"pineneedles"
 
-utils::globalVariables(c("pineneedles"))

@@ -8,3 +8,5 @@
 ^readme\.html$
 ^travis-tool\.sh$
 ^README\.Rmd$
+^doc$
+^Meta$
