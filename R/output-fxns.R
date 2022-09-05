@@ -400,7 +400,7 @@ plot_multiple_fits <-
 #' @export
 #'
 time_to_prop_mass_remaining <- function(x, threshold.mass = 0.5) {
-  if (class(x) != "litfit") {
+  if (!is(x, "litfit")) {
     stop("Something went wrong -- litterfitter::steady_state takes a 'litfit' object")
   }
   mod <- get(x$model)
