@@ -9,7 +9,7 @@
 \arguments{
 \item{x}{litfit object}
 
-\item{coef.index}{coeficient number to plot from the \code{litfit} object, see order of coeffients for that particular model.  Default is to plot the first parameter for that model.}
+\item{coef.index}{coefficient number to plot from the \code{litfit} object, see order of coefficients for that particular model.  Default is to plot the first parameter for that model.}
 
 \item{bw}{bandwidth (or bandwidth algorithm see \code{\link{density}}) for the density plot}
 
