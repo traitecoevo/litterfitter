@@ -103,7 +103,7 @@ bootstrap_parameters <-
 ##'
 ##' @param x litfit object
 ##'
-##' @param coef.index  coeficient number to plot from the \code{litfit} object, see order of coeffients for that particular model.  Default is to plot the first parameter for that model.
+##' @param coef.index  coefficient number to plot from the \code{litfit} object, see order of coefficients for that particular model.  Default is to plot the first parameter for that model.
 ##'
 ##' @param bw bandwidth (or bandwidth algorithm see \code{\link{density}}) for the density plot
 ##'

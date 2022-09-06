@@ -2,9 +2,19 @@ Package: litterfitter
 Type: Package
 Title: Fit a Collection of Curves to Single Cohort Decomposition Data
 Version: 0.1.2
-Date: 2022-08-30
-Author: Will Cornwell, James Weedon, Liu Guofang 
-Maintainer: Will Cornwell <wcornwell@gmail.com>
+Date: 2022-09-05
+Authors@R: 
+    c(person(given = "Will",
+             family = "Cornwell",
+             role = c("aut", "cre"),
+             email = "wcornwell@gmail.com",
+             comment = c(ORCID = "0000-0003-4080-4073")),
+      person(given = "James",
+             family = "Weedon",
+             role = "aut"),
+      person(given = "Guofang",
+             family = "Liu",
+             role = "ctb"))
 Description: Fitting Curves to Single Cohort Organic Matter Decomposition Series Data.
 Depends: R (>= 3.1.0)
 LazyData: true

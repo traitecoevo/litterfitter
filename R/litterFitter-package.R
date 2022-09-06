@@ -1,6 +1,6 @@
 #' litterfitter: methods for fitting curves to litter decomposition trajectories
 #'
-#' @description There is a long tradition of studing the flux of carbon from the biosphere to the atmosphere by following a particular cohort of litter (wood, leaves, roots, or other organic material) through time.  The resulting data are mass remaining and time.  A variety of functional forms may be used to fit the resulting data.  Some work better empirically.  Some are better connected to a process-based understanding.  Some have a small number of free parameters; others have more.  This package matches decomposition data to a set of these curves using likelihood--based fitting.
+#' @description There is a long tradition of studying the flux of carbon from the biosphere to the atmosphere by following a particular cohort of litter (wood, leaves, roots, or other organic material) through time.  The resulting data are mass remaining and time.  A variety of functional forms may be used to fit the resulting data.  Some work better empirically.  Some are better connected to a process-based understanding.  Some have a small number of free parameters; others have more.  This package matches decomposition data to a set of these curves using likelihood--based fitting.
 #'
 #'
 #'

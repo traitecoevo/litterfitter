@@ -48,7 +48,7 @@ fit, and even the equation, with the estimated coefficients:
 ![](readme_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
 The summary of a `litfit` object will show you some of the summary
-staistics for the fit.
+statistics for the fit.
 
     ## Summary of litFit object
     ## Model type: weibull 
