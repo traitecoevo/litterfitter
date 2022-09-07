@@ -53,6 +53,10 @@ import.model <- function(x,a,b,lower = c(0.25, 1),upper = c(10, 100)){
 }
 
 
+exp.model <- function(x,a,b, lower = c(1,0.1), upper = c(1000000, 400)){
+  a^x + b
+}
+
 # Function to model release in nutrients in relation to stoichiometry and consumer carbon efficiency - Manzoni et al. (2008)
 
 stoch.model <- function(x, l, e, lower = c(0.1, 0.01), upper = c(200,200)){
