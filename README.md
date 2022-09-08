@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# litterfitter
+# litterfitter <img src="man/figures/litterfitter_hex.png" align="right" alt="" width="120" />
 
 > R package for fitting and testing alternative models for single cohort
 > litter decomposition data
