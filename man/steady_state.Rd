@@ -14,6 +14,9 @@ steady_state(x=NULL, pars=NULL, model=NULL)
 \item{model}{(If x not specified) one of "neg.exp", "weibull", "discrete.parallel",
 "discrete series", "cont.quality2"}
 }
+\value{
+steady state values from specified model
+}
 \description{
 Estimate the steady state biomass as a proportion of the annual input,
 based on the particular model fit.

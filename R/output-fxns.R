@@ -3,25 +3,23 @@
 #' @title Plot decomposition trajectory and curve fit
 #'
 #' @usage \method{plot}{litfit}(x,formulae.cex,...)
-#'
 #' @param x litfit object
-#'
 #' @param formulae.cex how big do you want your formula?
-#'
 #' @param ... additional arguments passed to plot.default
-#'
-#' @details The data and the line fit plotted from a litFit object.  Designed to give a quick visual check if model fitting is adequate.
-#'
+#' @return Plot of litfit object, returns invisibly
+#' @details The data and the line fit plotted from a litFit object. 
+#'  Designed to give a quick visual check if model fitting is adequate.
 #' @seealso \code{\link{fit_litter}}
-#'
 #' @author Will Cornwell
-#'
-#' @examples fit<-fit_litter(time=c(0,1,2,3,4,5,6),mass.remaining=c(1,0.9,1.01,0.4,0.6,0.2,0.01),
-#' 'neg.exp',iters=250)
+#' @examples fit <- fit_litter(
+#' time=c(0,1,2,3,4,5,6),
+#' mass.remaining=c(1,0.9,1.01,0.4,0.6,0.2,0.01),
+#' 'neg.exp',
+#' iters=250
+#' )
+#' 
 #' plot(fit)
-#'
 #' @export
-#'
 #' @import graphics
 
 plot.litfit <- function(x, formulae.cex = 1, ...) {
@@ -213,6 +211,8 @@ predict.litfit <- function(object, newdata = NULL, ...) {
 #'
 #' @param model (If x not specified) one of "neg.exp", "weibull", "discrete.parallel",
 #' "discrete series", "cont.quality2"
+#' 
+#' @return steady state values from specified model
 #'
 #' @details Right now only implemented for a subset of models.  More coming soon...
 #'
@@ -283,6 +283,7 @@ steady_state <- function(x = NULL,
 #' @param ... additional parameters passed to \code{\link{plot}}
 #'
 #' @details this function is designed to compare a variety of curve shapes visually and with AIC and BIC simultaneously
+#' @return plot of multiple fits, returns invisibly
 #'
 #' @seealso \code{\link{fit_litter}} \code{\link{plot.litfit}}
 #'
@@ -386,7 +387,7 @@ plot_multiple_fits <-
 #' @param threshold.mass mass loss threshold in proportion, default is 0.5
 #'
 #' @details this function finds the time to a specified mass loss percentage
-#'
+#' @return numeric value that represents time to a specified mass loss percentage
 #' @seealso \code{\link{fit_litter}} \code{\link{plot.litfit}}
 #'
 #' @author Will Cornwell

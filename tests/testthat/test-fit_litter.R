@@ -1,5 +1,5 @@
 context("fit_litter")
-data("pineneedles")
+# data("pineneedles")
 
 test_that("fit sane", {
   fit <-
@@ -36,7 +36,7 @@ test_that("plots and summaries dont throw errors", {
   expect_that(summary(fit), is_a("summary.litfit"))
   out <- summary(fit)
   expect_output(print(out), "Summary of litFit object")
-  expect_output(
+  expect_invisible(
     plot_multiple_fits(
       time = pineneedles$Year,
       mass.remaining = pineneedles$Mass.remaining,

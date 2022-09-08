@@ -59,7 +59,6 @@ cont.quality.steadystate <- function(b, a) {
 
 
 obj_func <- function(x, ind, dep, curve) {
-    # print(x)
     try(predicted <- do.call(curve, (c(list(ind), as.list(x)))))
     return(sum((predicted - dep)^2))
 }
@@ -103,7 +102,7 @@ multioptimFit <- function(time_data, mass_data, model, iters = 200, upper = NULL
     successes <- unlist(sapply(fit, function(x) {
         ifelse(is.null(x), return(FALSE), return(x$convergence == 0))
     }))
-    cat(paste("Number of successful fits: ", sum(successes), " out of", iters, "\n"))
+    message(paste("Number of successful fits: ", sum(successes), " out of", iters, "\n"))
     if (sum(successes) == 0) {
         stop("All attempts failed to converge")
     }

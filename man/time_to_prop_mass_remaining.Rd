@@ -11,6 +11,9 @@ time_to_prop_mass_remaining(x,threshold.mass=0.5)
 
 \item{threshold.mass}{mass loss threshold in proportion, default is 0.5}
 }
+\value{
+numeric value that represents time to a specified mass loss percentage
+}
 \description{
 Get estimated time to 0.5 (or an alternate threshold) mass loss from a particular fit to a litter decomposition trajectory
 }
