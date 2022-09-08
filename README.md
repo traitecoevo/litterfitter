@@ -11,7 +11,7 @@
 [![R-CMD-check](https://github.com/cornwell-lab-unsw/litterfitter/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cornwell-lab-unsw/litterfitter/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
 coverage](https://codecov.io/gh/cornwell-lab-unsw/litterfitter/branch/master/graph/badge.svg)](https://app.codecov.io/gh/cornwell-lab-unsw/litterfitter?branch=master)
-
+[![](https://img.shields.io/badge/doi-10.1111/2041--210X.12138-blue.svg)](https://doi.org/10.1111/2041-210X.12138)
 <!-- badges: end -->
 
 ### Installation

@@ -15,7 +15,9 @@ Authors@R:
       person(given = "Guofang",
              family = "Liu",
              role = "ctb"))
-Description: Fitting Curves to Single Cohort Organic Matter Decomposition Series Data.
+Description: Fitting Curves to Single Cohort Organic Matter Decomposition 
+            Series Data. This package is based on published research by 
+            Cornwell & Weedon (2013) <doi:10.1111/2041-210X.12138>
 Depends: R (>= 3.1.0)
 LazyData: true
 Encoding: UTF-8
