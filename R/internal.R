@@ -125,11 +125,11 @@ rnd.to.text <- function(x, digits = 4) {
 }
 
 simulate.and.check <- function(model) {
-    suppressWarnings(fit <- fit_litter(time = pineneedles$Year, mass.remaining = pineneedles$Mass.remaining, 
+    suppressWarnings(fit <- fit_litter(time = litterfitter::pineneedles$Year, mass.remaining = litterfitter::pineneedles$Mass.remaining, 
         model = model, iters = 1000))
-    mass.with.error <- pineneedles$Mass.remaining + rnorm(length(predict(fit)), 0, 
+    mass.with.error <- litterfitter::pineneedles$Mass.remaining + rnorm(length(predict(fit)), 0, 
         1e-03)
-    suppressWarnings(simulated.fit <- fit_litter(time = pineneedles$Year, mass.remaining = mass.with.error, 
+    suppressWarnings(simulated.fit <- fit_litter(time = litterfitter::pineneedles$Year, mass.remaining = mass.with.error, 
         model = model, iters = 1000))
     return(are.within.ten.percent.of(time_to_prop_mass_remaining(fit), time_to_prop_mass_remaining(simulated.fit)))
 }
