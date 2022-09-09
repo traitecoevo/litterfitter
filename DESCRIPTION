@@ -34,8 +34,8 @@ Suggests:
     devtools,
     rmarkdown
 License: MIT + file LICENSE
-URL: https://github.com/cornwell-lab-unsw/litterfitter
+URL: https://github.com/cornwell-lab-unsw/litterfitter,
+    http://cornwell-lab-unsw.github.io/litterfitter/
 RoxygenNote: 7.2.1
 VignetteBuilder: knitr
 BugReports: https://github.com/cornwell-lab-unsw/litterfitter/issues
-
