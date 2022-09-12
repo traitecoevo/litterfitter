@@ -1,0 +1,10 @@
+pandoc: 2.14.2
+pkgdown: 2.0.6
+pkgdown_sha: ~
+articles:
+  litterfitter: litterfitter.html
+last_built: 2022-09-12T06:50Z
+urls:
+  reference: http://cornwell-lab-unsw.github.io/litterfitter/reference
+  article: http://cornwell-lab-unsw.github.io/litterfitter/articles
+
