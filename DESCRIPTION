@@ -15,9 +15,7 @@ Authors@R:
       person(given = "Guofang",
              family = "Liu",
              role = "ctb"))
-Description: Fitting Curves to Single Cohort Organic Matter Decomposition 
-            Series Data. This package is based on published research by 
-            Cornwell & Weedon (2013) <doi:10.1111/2041-210X.12138>.
+Description: There is a long tradition of studying the flux of carbon from the biosphere to the atmosphere by following a particular cohort of litter (wood, leaves, roots, or other organic material) through time.  The resulting data are mass remaining and time. A variety of functional forms may be used to fit the resulting data. Some work better empirically. Some are better connected to a process-based understanding.  Some have a small number of free parameters; others have more. This package matches decomposition data to a family of these curvesusing likelihood--based fitting. This package is based on published research by Cornwell & Weedon (2013) <doi:10.1111/2041-210X.12138>.
 Depends: R (>= 3.1.0)
 LazyData: true
 Encoding: UTF-8

@@ -7,7 +7,6 @@
 ^readme\_files$
 ^readme\.html$
 ^travis-tool\.sh$
-<<<<<<< HEAD
 ^README\.Rmd$
 ^doc$
 ^Meta$
