@@ -8,4 +8,9 @@
 litterFitter_0.1.tar.gz
 man/.Rapp.history
 .DS_Store
+inst/doc
+/doc/
+/Meta/
 CRAN-SUBMISSION
+
+docs

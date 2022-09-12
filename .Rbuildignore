@@ -7,7 +7,19 @@
 ^readme\_files$
 ^readme\.html$
 ^travis-tool\.sh$
+<<<<<<< HEAD
+^README\.Rmd$
+^doc$
+^Meta$
 ^\.github$
 ^codecov\.yml$
 ^CRAN-SUBMISSION$
 ^cran-comments\.md$
+^ignore$
+^r-release$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+
+
+

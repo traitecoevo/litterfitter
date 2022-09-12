@@ -3,18 +3,12 @@
 #' @usage bootstrap_parameters(x,nboot,upper,lower,...)
 #'
 #' @param x an object of class "\code{litfit}"
-#'
 #' @param nboot number of bootstrap replications
-#'
 #' @param upper optional vector of upper bounds for the bootstrap replicates
-#'
 #' @param lower optional vector of lower bounds for the bootstrap replicates
-#'
 #' @param ... passed to \code{\link{optim}}
 #'
-#' @return returns a \code{litfit_bootstrap object}
-#'
-#'
+#' @return litfit_bootstrap object
 #'
 #' @examples
 #' fit <- fit_litter(time=pineneedles$Year,
@@ -103,14 +97,12 @@ bootstrap_parameters <-
 ##'
 ##' @param x litfit object
 ##'
-##' @param coef.index  coefficient number to plot from the \code{litfit} object, see order of coefficients for that particular model.  Default is to plot the first parameter for that model.
-##'
+##' @param coef.index  coefficient number to plot from the \code{litfit} object, see order of coefficients for that particular model.  Default is to plot the first parameter for that model
 ##' @param bw bandwidth (or bandwidth algorithm see \code{\link{density}}) for the density plot
-##'
 ##' @param ... additional arguments passed to plot.default
 ##'
 ##' @details The grey fill goes from 0.025 quantile to the 0.975 quantile of the distribution.  Red line shows the mean.  Blue line shows the median.
-##'
+##' @return plot of litfit_bootstrap object, returns invisibly
 ##' @seealso \code{\link{fit_litter}} \code{\link{bootstrap_parameters}} \code{\link{density}}
 ##'
 ##' @author James Weedon

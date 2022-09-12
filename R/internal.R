@@ -59,7 +59,6 @@ cont.quality.steadystate <- function(b, a) {
 
 
 obj_func <- function(x, ind, dep, curve) {
-    # print(x)
     try(predicted <- do.call(curve, (c(list(ind), as.list(x)))))
     return(sum((predicted - dep)^2))
 }
@@ -103,7 +102,7 @@ multioptimFit <- function(time_data, mass_data, model, iters = 200, upper = NULL
     successes <- unlist(sapply(fit, function(x) {
         ifelse(is.null(x), return(FALSE), return(x$convergence == 0))
     }))
-    cat(paste("Number of successful fits: ", sum(successes), " out of", iters, "\n"))
+    message(paste("Number of successful fits: ", sum(successes), " out of", iters, "\n"))
     if (sum(successes) == 0) {
         stop("All attempts failed to converge")
     }
@@ -126,11 +125,11 @@ rnd.to.text <- function(x, digits = 4) {
 }
 
 simulate.and.check <- function(model) {
-    suppressWarnings(fit <- fit_litter(time = pineneedles$Year, mass.remaining = pineneedles$Mass.remaining, 
+    suppressWarnings(fit <- fit_litter(time = litterfitter::pineneedles$Year, mass.remaining = litterfitter::pineneedles$Mass.remaining, 
         model = model, iters = 1000))
-    mass.with.error <- pineneedles$Mass.remaining + rnorm(length(predict(fit)), 0, 
+    mass.with.error <- litterfitter::pineneedles$Mass.remaining + rnorm(length(predict(fit)), 0, 
         1e-03)
-    suppressWarnings(simulated.fit <- fit_litter(time = pineneedles$Year, mass.remaining = mass.with.error, 
+    suppressWarnings(simulated.fit <- fit_litter(time = litterfitter::pineneedles$Year, mass.remaining = mass.with.error, 
         model = model, iters = 1000))
     return(are.within.ten.percent.of(time_to_prop_mass_remaining(fit), time_to_prop_mass_remaining(simulated.fit)))
 }

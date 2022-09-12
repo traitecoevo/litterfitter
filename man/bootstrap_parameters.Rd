@@ -18,7 +18,7 @@ bootstrap_parameters(x,nboot,upper,lower,...)
 \item{...}{passed to \code{\link{optim}}}
 }
 \value{
-returns a \code{litfit_bootstrap object}
+litfit_bootstrap object
 }
 \description{
 Create a bootstrap distribution of a particular coefficient from a model fit

@@ -9,11 +9,14 @@
 \arguments{
 \item{x}{litfit object}
 
-\item{coef.index}{coefficient number to plot from the \code{litfit} object, see order of coefficients for that particular model.  Default is to plot the first parameter for that model.}
+\item{coef.index}{coefficient number to plot from the \code{litfit} object, see order of coefficients for that particular model.  Default is to plot the first parameter for that model}
 
 \item{bw}{bandwidth (or bandwidth algorithm see \code{\link{density}}) for the density plot}
 
 \item{...}{additional arguments passed to plot.default}
+}
+\value{
+plot of litfit_bootstrap object, returns invisibly
 }
 \description{
 Plot a bootstrap distribution of a particular coefficient

@@ -1,39 +1,26 @@
 ---
-output: github_document
+title: "litterfitter"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{litterfitter}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
-
-<!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>",
-  fig.path = "man/figures/README-",
-  out.width = "100%"
+  comment = "#>"
 )
-
-library(litterfitter)
 ```
 
-# litterfitter <img src="man/figures/litterfitter_hex.png" align="right" alt="" width="120" />
-> R package for fitting and testing alternative models for single cohort litter decomposition data
-
-<!-- badges: start -->
-[![R-CMD-check](https://github.com/cornwell-lab-unsw/litterfitter/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cornwell-lab-unsw/litterfitter/actions/workflows/R-CMD-check.yaml)
-[![Codecov test coverage](https://codecov.io/gh/cornwell-lab-unsw/litterfitter/branch/master/graph/badge.svg)](https://app.codecov.io/gh/cornwell-lab-unsw/litterfitter?branch=master)
-[![](https://img.shields.io/badge/doi-10.1111/2041--210X.12138-blue.svg)](https://doi.org/10.1111/2041-210X.12138)
-<!-- badges: end -->
-
-### Installation 
-
-```{R, eval = FALSE}
-  #install.packages("remotes")
-  remotes::install_github("cornwell-lab-unsw/litterfitter")
-  
-library(litterfitter)
-```
+This vignette provides an overview of the main funtions in `litterfitter`
 
 ### Getting started 
+
+```{r setup}
+library(litterfitter)
+```
 
 At the moment there is one key function which is `fit_litter` which can fit 6 different types of decomposition trajectories. Note that the fitted object is a `litfit` object
 
@@ -73,3 +60,4 @@ From the `litfit` object you can then see the uncertainty in the parameter estim
    post<-bootstrap_parameters(fit)
    plot(post)
 ```
+
