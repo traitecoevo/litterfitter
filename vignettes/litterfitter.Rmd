@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-This vignette provides an overview of the main funtions in `litterfitter`
+This vignette provides an overview of the main functions in `litterfitter`
 
 ### Getting started 
 
