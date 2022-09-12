@@ -6,6 +6,12 @@ This is a resubmission. In this version I have:
 - Added \value for plot.litfit.Rd, plot.litfit_bootstrap.Rd, plot_multiple_fits.Rd,predict.litfit.Rd, steady_state.Rd, time_to_prop_mass_remaining.Rd
 - Removed print()/cat() calls in R/internal.R and replaced with message()
 
+## Downstream dependencies
+
+stats, grphics, grDevices, methods are a base package and cannot be installed/updated in console.
+
+- plyr installed successfully from source and passed checks (https://github.com/cornwell-lab-unsw/litterfitter/tree/master/r-release)
+
 ## R CMD check results
 
 There were no ERRORs, WARNINGs. NOTEs,

@@ -16,8 +16,10 @@
 ^CRAN-SUBMISSION$
 ^cran-comments\.md$
 ^ignore$
-
-
+^r-release$
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
+
+
+
