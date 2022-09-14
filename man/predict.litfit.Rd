@@ -13,6 +13,9 @@
 
 \item{...}{further arguments passed to or from other methods.}
 }
+\value{
+predicted values from a litfit object
+}
 \description{
 Generated predicted values for (new) time points from a litfit model fit
 }

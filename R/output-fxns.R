@@ -182,6 +182,7 @@ summary.litfit <- function(object, ...) {
 #' 'neg.exp',iters=250)
 #' predict(fit, newdata=1:10)
 #'
+#' @return predicted values from a litfit object
 #' @export
 predict.litfit <- function(object, newdata = NULL, ...) {
   if (is.null(newdata)) {
