@@ -2,9 +2,7 @@
 
 This is a resubmission. In this version I have:
 
-- Added a doi to published research relating to the package using <doi:...>
-- Added \value for plot.litfit.Rd, plot.litfit_bootstrap.Rd, plot_multiple_fits.Rd,predict.litfit.Rd, steady_state.Rd, time_to_prop_mass_remaining.Rd
-- Removed print()/cat() calls in R/internal.R and replaced with message()
+- Added \value for predict.litfit.Rd
 
 ## Downstream dependencies
 
