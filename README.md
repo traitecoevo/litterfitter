@@ -12,6 +12,7 @@
 [![Codecov test
 coverage](https://codecov.io/gh/cornwell-lab-unsw/litterfitter/branch/master/graph/badge.svg)](https://app.codecov.io/gh/cornwell-lab-unsw/litterfitter?branch=master)
 [![](https://img.shields.io/badge/doi-10.1111/2041--210X.12138-blue.svg)](https://doi.org/10.1111/2041-210X.12138)
+[![](https://www.r-pkg.org/badges/version/litterfitter?color=orange)](https://cran.r-project.org/package=litterfitter)
 <!-- badges: end -->
 
 ### Installation
