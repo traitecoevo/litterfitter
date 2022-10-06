@@ -416,3 +416,95 @@ time_to_prop_mass_remaining <- function(x, threshold.mass = 0.5) {
   }
   return(min(time.vec[mass.predict < threshold.mass]))
 }
+
+
+#' Plot model fits with 95% CI intervals
+#'
+#' @title Plot model fits with 95% CI intervals
+#'
+#' @usage plot_95CI(x, repetition)
+#'
+#' @param x litfit object
+#'
+#' @details this function is designed to plot 95% CI intervals from bootstrap of the model fit
+#'
+#' @seealso \code{\link{fit_litter}} \code{\link{bootstrap_parameters}}
+#'
+#' @author Baptiste Wijas
+#'
+#' @examples 
+#'
+#'
+#' @export plot_95CI
+plot_95CI <- function(x, repetition) {
+  
+  # basic error checking
+  if (!is(x, "litfit")) {
+    stop(
+      "Something went wrong -- litterfitter::bootstrap.parameters
+         takes a 'litfit' object"
+    )
+  }
+  
+  # extract necessary objects
+  fit.model <- x$model
+  obs.time <- x$time
+  
+  
+  if (fit.model == "weibull") {
+    final_df <- weibull.df(x, repetition, obs.time)
+    }
+  
+  else if (fit.model == "neg.exp") {
+    final_df <- neg.exp.df(fit, 1000, 6)
+    }
+    
+  else if (fit.model == "discrete.series") {
+    final_df <- discrete.series.df(x, repetition, obs.time)
+    }
+  
+  else if (fit.model == "discrete.parallel") {
+    final_df <- discrete.parallel.df(x, repetition, obs.time)
+    }
+  
+  else if (fit.model == "cont.quality") {
+    final_df <- cont.quality.df(x, repetition, obs.time)
+    }
+  
+  finaldf_spread <- select(final_df, time.vec, grouped_num, pred.val) %>% 
+    spread(grouped_num, pred.val)
+  
+  num_rep <- repetition + 1
+  nume_rep_doub <- num_rep*2
+  
+  comb_dif <- finaldf_spread %>%
+    mutate_at(vars(-c(num_rep, "time.vec")), list(dif = ~ . - `num_rep`)) %>% 
+    gather(group, dif, 2:num_rep_doub)
+  
+  mean_dif <- filter(comb_dif, group == "1001") %>% 
+    select(-group)
+  
+  max_dif <- filter(comb_dif, grepl("dif$", group) & time.vec != 0) %>% 
+    group_by(time.vec) %>% 
+    slice_max(n = 1, dif) %>%
+    ungroup() %>% 
+    mutate(maximum_dif = dif) %>% 
+    select(-c("dif", "group"))
+  
+  all_dif <- filter(comb_dif, grepl("dif$", group) & time.vec != 0) %>% 
+    group_by(time.vec) %>% 
+    slice_min(n = 1, dif) %>% 
+    summarise(minimum_dif = mean(dif)) %>% 
+    ungroup() %>% 
+    left_join(max_dif) %>% 
+    left_join(mean_dif)
+  
+  plot_gg <- ggplot() +
+    geom_line(data = all_dif, mapping = aes(x = time.vec, y = dif)) +
+    geom_ribbon(data = all_dif, aes(x = time.vec, ymin = dif + minimum_dif, ymax = dif + maximum_dif), alpha = 0.2) 
+    theme_bw() +
+    labs(x = "Time (Years)", y = "Proportion of mass remaining")
+  
+  return(plot_gg)
+  
+}

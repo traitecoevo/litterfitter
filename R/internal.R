@@ -169,3 +169,129 @@ simulate.and.check <- function(model) {
     return(are.within.ten.percent.of(time_to_prop_mass_remaining(fit), time_to_prop_mass_remaining(simulated.fit)))
 }
 
+weibull.df <- function(x, repetition, obs.time){
+  
+  # Run bootstrap and extract parameters for each repeated bootstrap
+  bootmat<-bootstrap_parameters(x, nboot=repetition)
+  alpha <- bootmat[,2]
+  beta <- bootmat[,1]
+  
+  bootfin <- as.data.frame(cbind(alpha, beta)) %>% 
+    mutate(grouped_num = 1:repetition) %>% 
+    filter(alpha < as.numeric(quantile(bootmat[,2], 0.95)) & alpha > as.numeric(quantile(bootmat[,2], 0.05))) %>% 
+    filter(beta < as.numeric(quantile(bootmat[,1], 0.95)) & beta > as.numeric(quantile(bootmat[,1], 0.05))) %>% 
+    add_row(alpha = median(bootmat[,2]), beta = median(bootmat[,1]), grouped_num = repetition+1)
+  
+  time.vec <- rep(seq(0, max(obs.time), 0.1), repetition+1)
+  grouped_num <- rep(seq(1,repetition+1, 1), each = ((max(obs.time)/0.1)+1))
+  
+  final_df <- as.data.frame(cbind(time.vec, grouped_num)) %>% 
+    left_join(bootfin, by = "grouped_num") %>% 
+    rowwise() %>% 
+    mutate(pred.val = exp(-(time.vec/beta)^alpha))
+  
+  return(final_df)
+  
+}
+
+neg.exp.df <- function(x, repetition, obs.time){
+  
+  # Run bootstrap and extract parameters for each repeated bootstrap
+  bootmat<-bootstrap_parameters(x, nboot=repetition)
+  k <- bootmat[,1]
+  
+  bootfin <- as.data.frame(k) %>% 
+    mutate(grouped_num = 1:repetition) %>% 
+    filter(k < as.numeric(quantile(bootmat[,1], 0.95)) & k > as.numeric(quantile(bootmat[,1], 0.05))) %>% 
+    add_row(k = median(bootmat[,1]), grouped_num = repetition+1)
+  
+  time.vec <- rep(seq(0, max(obs.time), 0.1), repetition+1)
+  grouped_num <- rep(seq(1,repetition+1, 1), each = ((max(obs.time)/0.1)+1))
+  
+  final_df <- as.data.frame(cbind(time.vec, grouped_num)) %>% 
+    left_join(bootfin, by = "grouped_num") %>% 
+    rowwise() %>% 
+    mutate(pred.val = exp(-k * time.vec))
+  
+  return(final_df)
+  
+}
+
+discrete.series.df <- function(x, repetition, obs.time){
+  
+  # Run bootstrap and extract parameters for each repeated bootstrap
+  bootmat<-bootstrap_parameters(x, nboot=repetition)
+  R <- bootmat[,1]
+  K1 <- bootmat[,2]
+  K2 <- bootmat[,3]
+  
+  
+  bootfin <- as.data.frame(cbind(R, K1, K2))  %>% 
+    mutate(grouped_num = 1:repetition) %>% 
+    filter(R < as.numeric(quantile(bootmat[,1], 0.95)) & R > as.numeric(quantile(bootmat[,1], 0.05))) %>% 
+    filter(K1 < as.numeric(quantile(bootmat[,2], 0.95)) & K1 > as.numeric(quantile(bootmat[,2], 0.05))) %>% 
+    filter(K2 < as.numeric(quantile(bootmat[,3], 0.95)) & K2 > as.numeric(quantile(bootmat[,3], 0.05)))
+  add_row(R = median(bootmat[,1]), K1 = median(bootmat[,2]), K2 = median(bootmat[,3]),  grouped_num = repetition+1)
+  
+  time.vec <- rep(seq(0, max(obs.time), 0.1), repetition+1)
+  grouped_num <- rep(seq(1,repetition+1, 1), each = ((max(obs.time)/0.1)+1))
+  
+  final_df <- as.data.frame(cbind(time.vec, grouped_num)) %>% 
+    left_join(bootfin, by = "grouped_num") %>% 
+    rowwise() %>% 
+    mutate(pred.val = (((1 - R) * K1 * exp(-K2 * time.vec)) - ((K2 - K1 * R) * exp(-K1 * time.vec)))/(K1 - K2))
+  
+  return(final_df)
+  
+}
+
+discrete.parallel.df <- function(x, repetition, obs.time){
+  
+  # Run bootstrap and extract parameters for each repeated bootstrap
+  bootmat<-bootstrap_parameters(x, nboot=repetition)
+  A <- bootmat[,1]
+  K1 <- bootmat[,2]
+  K2 <- bootmat[,3]
+  
+  
+  bootfin <- as.data.frame(cbind(A, K1, K2))  %>% 
+    mutate(grouped_num = 1:repetition) %>% 
+    filter(A < as.numeric(quantile(bootmat[,1], 0.95)) & A > as.numeric(quantile(bootmat[,1], 0.05))) %>% 
+    filter(K1 < as.numeric(quantile(bootmat[,2], 0.95)) & K1 > as.numeric(quantile(bootmat[,2], 0.05))) %>% 
+    filter(K2 < as.numeric(quantile(bootmat[,3], 0.95)) & K2 > as.numeric(quantile(bootmat[,3], 0.05)))
+  add_row(A = median(bootmat[,1]), K1 = median(bootmat[,2]), K2 = median(bootmat[,3]),  grouped_num = repetition+1)
+  
+  time.vec <- rep(seq(0, max(obs.time), 0.1), repetition+1)
+  grouped_num <- rep(seq(1,repetition+1, 1), each = ((max(obs.time)/0.1)+1))
+  
+  final_df <- as.data.frame(cbind(time.vec, grouped_num)) %>% 
+    left_join(bootfin, by = "grouped_num") %>% 
+    rowwise() %>% 
+    mutate(pred.val = A * exp(-K1 * time.vec) + (1 - A) * exp(-K2 * time.vec))
+  
+  return(final_df)
+}
+
+cont.quality.df <- function(x, repetition, obs.time){
+  
+  # Run bootstrap and extract parameters for each repeated bootstrap
+  bootmat<-bootstrap_parameters(x, nboot=repetition)
+  a <- bootmat[,2]
+  b <- bootmat[,1]
+  
+  bootfin <- as.data.frame(cbind(a, b)) %>% 
+    mutate(grouped_num = 1:repetition) %>% 
+    filter(a < as.numeric(quantile(bootmat[,2], 0.95)) & a > as.numeric(quantile(bootmat[,2], 0.05))) %>% 
+    filter(b < as.numeric(quantile(bootmat[,1], 0.95)) & b > as.numeric(quantile(bootmat[,1], 0.05))) %>% 
+    add_row(a = median(bootmat[,2]), b = median(bootmat[,1]), grouped_num = repetition+1)
+  time.vec <- rep(seq(0, max(obs.time), 0.1), repetition+1)
+  grouped_num <- rep(seq(1,repetition+1, 1), each = ((max(obs.time)/0.1)+1))
+  
+  final_df <- as.data.frame(cbind(time.vec, grouped_num)) %>% 
+    left_join(bootfin, by = "grouped_num") %>% 
+    rowwise() %>% 
+    mutate(pred.val = 1/((1 + b * time.vec)^a))
+  
+  return(final_df)
+}
+
