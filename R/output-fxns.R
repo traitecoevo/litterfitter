@@ -436,7 +436,7 @@ time_to_prop_mass_remaining <- function(x, threshold.mass = 0.5) {
 #'
 #'
 #' @export plot_95CI
-plot_95CI <- function(x, repetition) {
+plot_95CI <- function(x, repetition, obs.time) {
   
   # basic error checking
   if (!is(x, "litfit")) {
@@ -449,6 +449,7 @@ plot_95CI <- function(x, repetition) {
   # extract necessary objects
   fit.model <- x$model
   obs.time <- x$time
+  mass.remain <- x$mass
   
   
   if (fit.model == "weibull") {
@@ -456,7 +457,7 @@ plot_95CI <- function(x, repetition) {
     }
   
   else if (fit.model == "neg.exp") {
-    final_df <- neg.exp.df(fit, 1000, 6)
+    final_df <- neg.exp.df(fit, repetition, obs.time)
     }
     
   else if (fit.model == "discrete.series") {
@@ -475,13 +476,14 @@ plot_95CI <- function(x, repetition) {
     spread(grouped_num, pred.val)
   
   num_rep <- repetition + 1
-  nume_rep_doub <- num_rep*2
+  
+  colnames(finaldf_spread)[num_rep] <- "median"
   
   comb_dif <- finaldf_spread %>%
-    mutate_at(vars(-c(num_rep, "time.vec")), list(dif = ~ . - `num_rep`)) %>% 
-    gather(group, dif, 2:num_rep_doub)
+    mutate_at(vars(-c(num_rep, "time.vec")), list(dif = ~ . - median)) %>% 
+    gather(group, dif, 2:last_col())
   
-  mean_dif <- filter(comb_dif, group == "1001") %>% 
+  mean_dif <- filter(comb_dif, group == "median") %>% 
     select(-group)
   
   max_dif <- filter(comb_dif, grepl("dif$", group) & time.vec != 0) %>% 
@@ -499,12 +501,16 @@ plot_95CI <- function(x, repetition) {
     left_join(max_dif) %>% 
     left_join(mean_dif)
   
+  raw_dat <- as.data.frame(cbind(obs.time, mass.remain))
+  
   plot_gg <- ggplot() +
     geom_line(data = all_dif, mapping = aes(x = time.vec, y = dif)) +
-    geom_ribbon(data = all_dif, aes(x = time.vec, ymin = dif + minimum_dif, ymax = dif + maximum_dif), alpha = 0.2) 
+    geom_ribbon(data = all_dif, aes(x = time.vec, ymin = dif + minimum_dif, ymax = dif + maximum_dif), alpha = 0.2) +
     theme_bw() +
     labs(x = "Time (Years)", y = "Proportion of mass remaining")
-  
+
   return(plot_gg)
   
 }
+
+
