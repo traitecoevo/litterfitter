@@ -422,9 +422,11 @@ time_to_prop_mass_remaining <- function(x, threshold.mass = 0.5) {
 #'
 #' @title Plot model fits with 95% CI intervals
 #'
-#' @usage plot_95CI(x, repetition)
+#' @usage plot_95CI(x, repetition, obs.time)
 #'
 #' @param x litfit object
+#' @param repetition number of repeition for bootstrap
+#' @param obs.time maximum observation time
 #'
 #' @details this function is designed to plot 95% CI intervals from bootstrap of the model fit
 #'
@@ -432,11 +434,17 @@ time_to_prop_mass_remaining <- function(x, threshold.mass = 0.5) {
 #'
 #' @author Baptiste Wijas
 #'
-#' @examples 
+#' @examples data(pineneedles,package='litterfitter')
 #'
+#' fit<-fit_litter(time=pineneedles$Year,mass.remaining=pineneedles$Mass.remaining,
+#'  model='weibull',iters=1000)
+#' plot_95CI(fit, 1000, 6)
+#' 
+#' @import tidyverse
 #'
-#' @export plot_95CI
-plot_95CI <- function(x, repetition, obs.time) {
+#' @export 
+#' 
+plot_95CI <- function(x, repetition) {
   
   # basic error checking
   if (!is(x, "litfit")) {
@@ -453,23 +461,23 @@ plot_95CI <- function(x, repetition, obs.time) {
   
   
   if (fit.model == "weibull") {
-    final_df <- weibull.df(x, repetition, obs.time)
+    final_df <- weibull.df(x, repetition, max(obs.time))
     }
   
   else if (fit.model == "neg.exp") {
-    final_df <- neg.exp.df(fit, repetition, obs.time)
+    final_df <- neg.exp.df(fit, repetition, max(obs.time))
     }
     
   else if (fit.model == "discrete.series") {
-    final_df <- discrete.series.df(x, repetition, obs.time)
+    final_df <- discrete.series.df(x, repetition, max(obs.time))
     }
   
   else if (fit.model == "discrete.parallel") {
-    final_df <- discrete.parallel.df(x, repetition, obs.time)
+    final_df <- discrete.parallel.df(x, repetition, max(obs.time))
     }
   
   else if (fit.model == "cont.quality") {
-    final_df <- cont.quality.df(x, repetition, obs.time)
+    final_df <- cont.quality.df(x, repetition, max(obs.time))
     }
   
   finaldf_spread <- select(final_df, time.vec, grouped_num, pred.val) %>% 
@@ -505,7 +513,8 @@ plot_95CI <- function(x, repetition, obs.time) {
   
   plot_gg <- ggplot() +
     geom_line(data = all_dif, mapping = aes(x = time.vec, y = dif)) +
-    geom_ribbon(data = all_dif, aes(x = time.vec, ymin = dif + minimum_dif, ymax = dif + maximum_dif), alpha = 0.2) +
+    geom_ribbon(data = all_dif, mapping = aes(x = time.vec, ymin = dif + minimum_dif, ymax = dif + maximum_dif), alpha = 0.2) +
+    geom_point(data = raw_dat, mapping = aes(x = obs.time, y = mass.remain))
     theme_bw() +
     labs(x = "Time (Years)", y = "Proportion of mass remaining")
 

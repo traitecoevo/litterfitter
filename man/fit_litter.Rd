@@ -7,8 +7,8 @@
 fit_litter(
   time,
   mass.remaining,
-  model = c("neg.exp", "weibull", "discrete.parallel", "discrete.series", "cont.quality",
-    "neg.exp.limit"),
+  model = c("neg.exp", "weibull", "discrete.parallel", "discrete.series",
+    "cont.quality", "neg.exp.limit"),
   iters = 500,
   upper = NULL,
   lower = NULL,
