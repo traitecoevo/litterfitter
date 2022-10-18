@@ -422,10 +422,10 @@ time_to_prop_mass_remaining <- function(x, threshold.mass = 0.5) {
 #'
 #' @title Plot model fits with 95% CI intervals
 #'
-#' @usage plot_95CI(x, repetition, obs.time)
+#' @usage plot_95CI(x,repetition,obs.time)
 #'
 #' @param x litfit object
-#' @param repetition number of repeition for bootstrap
+#' @param repetition number of repetition for bootstrap
 #' @param obs.time maximum observation time
 #'
 #' @details this function is designed to plot 95% CI intervals from bootstrap of the model fit
@@ -438,7 +438,7 @@ time_to_prop_mass_remaining <- function(x, threshold.mass = 0.5) {
 #'
 #' fit<-fit_litter(time=pineneedles$Year,mass.remaining=pineneedles$Mass.remaining,
 #'  model='weibull',iters=1000)
-#' plot_95CI(fit, 1000, 6)
+#' plot_95CI(fit,1000,6)
 #' 
 #' @import tidyverse
 #'
@@ -461,7 +461,7 @@ plot_95CI <- function(x, repetition) {
   
   
   if (fit.model == "weibull") {
-    final_df <- weibull.df(x, repetition, max(obs.time))
+    final_df <- weibull.df(x, repetition, round(max(obs.time)))
     }
   
   else if (fit.model == "neg.exp") {
@@ -480,10 +480,11 @@ plot_95CI <- function(x, repetition) {
     final_df <- cont.quality.df(x, repetition, max(obs.time))
     }
   
+  
   finaldf_spread <- select(final_df, time.vec, grouped_num, pred.val) %>% 
     spread(grouped_num, pred.val)
   
-  num_rep <- repetition + 1
+  num_rep <- repetition + 2
   
   colnames(finaldf_spread)[num_rep] <- "median"
   
@@ -491,17 +492,17 @@ plot_95CI <- function(x, repetition) {
     mutate_at(vars(-c(num_rep, "time.vec")), list(dif = ~ . - median)) %>% 
     gather(group, dif, 2:last_col())
   
-  mean_dif <- filter(comb_dif, group == "median") %>% 
+  mean_dif <- dplyr::filter(comb_dif, group == "median") %>% 
     select(-group)
   
-  max_dif <- filter(comb_dif, grepl("dif$", group) & time.vec != 0) %>% 
+  max_dif <- dplyr::filter(comb_dif, grepl("dif$", group) & time.vec != 0) %>% 
     group_by(time.vec) %>% 
     slice_max(n = 1, dif) %>%
     ungroup() %>% 
     mutate(maximum_dif = dif) %>% 
     select(-c("dif", "group"))
   
-  all_dif <- filter(comb_dif, grepl("dif$", group) & time.vec != 0) %>% 
+  all_dif <- dplyr::filter(comb_dif, grepl("dif$", group) & time.vec != 0) %>% 
     group_by(time.vec) %>% 
     slice_min(n = 1, dif) %>% 
     summarise(minimum_dif = mean(dif)) %>% 
@@ -514,7 +515,7 @@ plot_95CI <- function(x, repetition) {
   plot_gg <- ggplot() +
     geom_line(data = all_dif, mapping = aes(x = time.vec, y = dif)) +
     geom_ribbon(data = all_dif, mapping = aes(x = time.vec, ymin = dif + minimum_dif, ymax = dif + maximum_dif), alpha = 0.2) +
-    geom_point(data = raw_dat, mapping = aes(x = obs.time, y = mass.remain))
+    geom_point(data = raw_dat, mapping = aes(x = obs.time, y = mass.remain)) +
     theme_bw() +
     labs(x = "Time (Years)", y = "Proportion of mass remaining")
 

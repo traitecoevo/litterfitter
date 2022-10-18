@@ -178,8 +178,8 @@ weibull.df <- function(x, repetition, obs.time){
   
   bootfin <- as.data.frame(cbind(alpha, beta)) %>% 
     mutate(grouped_num = 1:repetition) %>% 
-    filter(alpha < as.numeric(quantile(bootmat[,2], 0.95)) & alpha > as.numeric(quantile(bootmat[,2], 0.05))) %>% 
-    filter(beta < as.numeric(quantile(bootmat[,1], 0.95)) & beta > as.numeric(quantile(bootmat[,1], 0.05))) %>% 
+    dplyr::filter(alpha < as.numeric(quantile(bootmat[,2], 0.95)) & alpha > as.numeric(quantile(bootmat[,2], 0.05))) %>% 
+    dplyr::filter(beta < as.numeric(quantile(bootmat[,1], 0.95)) & beta > as.numeric(quantile(bootmat[,1], 0.05))) %>% 
     add_row(alpha = median(bootmat[,2]), beta = median(bootmat[,1]), grouped_num = repetition+1)
   
   time.vec <- rep(seq(0, max(obs.time), 0.1), repetition+1)
@@ -202,7 +202,7 @@ neg.exp.df <- function(x, repetition, obs.time){
   
   bootfin <- as.data.frame(k) %>% 
     mutate(grouped_num = 1:repetition) %>% 
-    filter(k < as.numeric(quantile(bootmat[,1], 0.95)) & k > as.numeric(quantile(bootmat[,1], 0.05))) %>% 
+    dplyr::filter(k < as.numeric(quantile(bootmat[,1], 0.95)) & k > as.numeric(quantile(bootmat[,1], 0.05))) %>% 
     add_row(k = median(bootmat[,1]), grouped_num = repetition+1)
   
   time.vec <- rep(seq(0, max(obs.time), 0.1), repetition+1)
@@ -228,9 +228,9 @@ discrete.series.df <- function(x, repetition, obs.time){
   
   bootfin <- as.data.frame(cbind(R, K1, K2))  %>% 
     mutate(grouped_num = 1:repetition) %>% 
-    filter(R < as.numeric(quantile(bootmat[,1], 0.95)) & R > as.numeric(quantile(bootmat[,1], 0.05))) %>% 
-    filter(K1 < as.numeric(quantile(bootmat[,2], 0.95)) & K1 > as.numeric(quantile(bootmat[,2], 0.05))) %>% 
-    filter(K2 < as.numeric(quantile(bootmat[,3], 0.95)) & K2 > as.numeric(quantile(bootmat[,3], 0.05)))
+    dplyr::filter(R < as.numeric(quantile(bootmat[,1], 0.95)) & R > as.numeric(quantile(bootmat[,1], 0.05))) %>% 
+    dplyr::filter(K1 < as.numeric(quantile(bootmat[,2], 0.95)) & K1 > as.numeric(quantile(bootmat[,2], 0.05))) %>% 
+    dplyr::filter(K2 < as.numeric(quantile(bootmat[,3], 0.95)) & K2 > as.numeric(quantile(bootmat[,3], 0.05))) %>% 
   add_row(R = median(bootmat[,1]), K1 = median(bootmat[,2]), K2 = median(bootmat[,3]),  grouped_num = repetition+1)
   
   time.vec <- rep(seq(0, max(obs.time), 0.1), repetition+1)
@@ -256,9 +256,9 @@ discrete.parallel.df <- function(x, repetition, obs.time){
   
   bootfin <- as.data.frame(cbind(A, K1, K2))  %>% 
     mutate(grouped_num = 1:repetition) %>% 
-    filter(A < as.numeric(quantile(bootmat[,1], 0.95)) & A > as.numeric(quantile(bootmat[,1], 0.05))) %>% 
-    filter(K1 < as.numeric(quantile(bootmat[,2], 0.95)) & K1 > as.numeric(quantile(bootmat[,2], 0.05))) %>% 
-    filter(K2 < as.numeric(quantile(bootmat[,3], 0.95)) & K2 > as.numeric(quantile(bootmat[,3], 0.05)))
+    dplyr::filter(A < as.numeric(quantile(bootmat[,1], 0.95)) & A > as.numeric(quantile(bootmat[,1], 0.05))) %>% 
+    dplyr::filter(K1 < as.numeric(quantile(bootmat[,2], 0.95)) & K1 > as.numeric(quantile(bootmat[,2], 0.05))) %>% 
+    dplyr::filter(K2 < as.numeric(quantile(bootmat[,3], 0.95)) & K2 > as.numeric(quantile(bootmat[,3], 0.05))) %>% 
   add_row(A = median(bootmat[,1]), K1 = median(bootmat[,2]), K2 = median(bootmat[,3]),  grouped_num = repetition+1)
   
   time.vec <- rep(seq(0, max(obs.time), 0.1), repetition+1)
@@ -281,8 +281,8 @@ cont.quality.df <- function(x, repetition, obs.time){
   
   bootfin <- as.data.frame(cbind(a, b)) %>% 
     mutate(grouped_num = 1:repetition) %>% 
-    filter(a < as.numeric(quantile(bootmat[,2], 0.95)) & a > as.numeric(quantile(bootmat[,2], 0.05))) %>% 
-    filter(b < as.numeric(quantile(bootmat[,1], 0.95)) & b > as.numeric(quantile(bootmat[,1], 0.05))) %>% 
+    dplyr::filter(a < as.numeric(quantile(bootmat[,2], 0.95)) & a > as.numeric(quantile(bootmat[,2], 0.05))) %>% 
+    dplyr::filter(b < as.numeric(quantile(bootmat[,1], 0.95)) & b > as.numeric(quantile(bootmat[,1], 0.05))) %>% 
     add_row(a = median(bootmat[,2]), b = median(bootmat[,1]), grouped_num = repetition+1)
   time.vec <- rep(seq(0, max(obs.time), 0.1), repetition+1)
   grouped_num <- rep(seq(1,repetition+1, 1), each = ((max(obs.time)/0.1)+1))

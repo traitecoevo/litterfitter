@@ -4,12 +4,12 @@
 \alias{plot_95CI}
 \title{Plot model fits with 95% CI intervals}
 \usage{
-plot_95CI(x, repetition, obs.time)
+plot_95CI(x,repetition,obs.time)
 }
 \arguments{
 \item{x}{litfit object}
 
-\item{repetition}{number of repeition for bootstrap}
+\item{repetition}{number of repetition for bootstrap}
 
 \item{obs.time}{maximum observation time}
 }
@@ -24,7 +24,7 @@ data(pineneedles,package='litterfitter')
 
 fit<-fit_litter(time=pineneedles$Year,mass.remaining=pineneedles$Mass.remaining,
  model='weibull',iters=1000)
-plot_95CI(fit, 1000, 6)
+plot_95CI(fit,1000,6)
 
 }
 \seealso{
