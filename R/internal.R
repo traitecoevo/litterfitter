@@ -295,3 +295,25 @@ cont.quality.df <- function(x, repetition, obs.time){
   return(final_df)
 }
 
+import.model.df <- function(x, repetition, obs.time){
+  
+  # Run bootstrap and extract parameters for each repeated bootstrap
+  bootmat<-bootstrap_parameters_element(x, nboot=repetition)
+  a <- bootmat[,1]
+  b <- bootmat[,2]
+  
+  bootfin <- as.data.frame(cbind(a, b)) %>% 
+    mutate(grouped_num = 1:repetition) %>% 
+    dplyr::filter(a < as.numeric(quantile(bootmat[,2], 0.95)) & a > as.numeric(quantile(bootmat[,2], 0.05))) %>% 
+    dplyr::filter(b < as.numeric(quantile(bootmat[,1], 0.95)) & b > as.numeric(quantile(bootmat[,1], 0.05))) %>% 
+    add_row(a = median(bootmat[,2]), b = median(bootmat[,1]), grouped_num = repetition+1)
+  time.vec <- rep(seq(0, max(obs.time), 0.1), repetition+1)
+  grouped_num <- rep(seq(1,repetition+1, 1), each = ((max(obs.time)/0.1)+1))
+  
+  final_df <- as.data.frame(cbind(time.vec, grouped_num)) %>% 
+    left_join(bootfin, by = "grouped_num") %>% 
+    rowwise() %>% 
+    mutate(pred.val = 1/((1 + b * time.vec)^a))
+  
+  return(final_df)
+}

@@ -94,6 +94,101 @@ bootstrap_parameters <-
     return(output)
   }
 
+#' Create a bootstrap distribution of a particular coefficient from a model fit for elementfit
+#'
+#' @usage bootstrap_parameters_element(x,nboot,upper,lower,...)
+#'
+#' @param x an object of class "\code{elementfit}"
+#'
+#' @param nboot number of bootstrap replications
+#'
+#' @param upper optional vector of upper bounds for the bootstrap replicates
+#'
+#' @param lower optional vector of lower bounds for the bootstrap replicates
+#'
+#' @param ... passed to \code{\link{optim}}
+#'
+#' @return returns a \code{litfit_bootstrap object}
+#'
+#'
+#'
+#' @examples
+#' fit <- fit_element(mass.remaining=pineneedles$Mass.remaining,
+#' element.remaining=c(1.1,1.2,1.3,1,0.8,0.6),
+#' model="import.model",iters=1000)
+#' boot1 <- bootstrap_parameters_element(fit, nboot = 500)
+#'
+#'
+#'
+#' @export
+bootstrap_parameters_element <-
+  function(x,
+           nboot = 1000,
+           upper = NULL,
+           lower = NULL,
+           ...) {
+    # basic error checking
+    if (!is(x, "elementfit")) {
+      stop(
+        "Something went wrong -- litterfitter::bootstrap.parameters.element
+         takes a 'elementfit' object"
+      )
+    }
+    
+    # extract necessary objects
+    
+    fit.model <- x$model
+    obs.time <- x$time
+    obs.mass <- x$mass
+    nobs <- length(obs.time)
+    fit.params <- x$optimFit$par
+    fit.nparams <- x$nparams
+    
+    output <- matrix(ncol = fit.nparams + 1, nrow = nboot)
+    
+    for (i in 1:nboot)
+    {
+      # do bootstrapping
+      
+      boot.inds <- sample(x = nobs,
+                          size = nobs,
+                          replace = TRUE)
+      boot.time <- obs.time[boot.inds]
+      boot.mass <- obs.mass[boot.inds]
+      
+      ifelse(!is.null(upper),
+             upper_bounds <-
+               upper,
+             upper_bounds <- eval(as.list(formals(fit.model))$upper))
+      
+      ifelse(!is.null(lower),
+             lower_bounds <-
+               lower,
+             lower_bounds <- eval(as.list(formals(fit.model))$lower))
+      
+      boot.fit <-
+        tryCatch(
+          optim(
+            fit.params,
+            obj_func,
+            ind = boot.time,
+            dep = boot.mass,
+            curve = fit.model,
+            method = "L-BFGS-B",
+            lower = lower_bounds,
+            upper = upper_bounds,
+            ...
+          ),
+          error = function(e)
+            NULL
+        )
+      output[i, 1:fit.nparams] <- boot.fit$par
+      
+    }
+    class(output) <- "elementfit_bootstrap"
+    return(output)
+  }
+
 
 ##' Plot a bootstrap distribution of a particular coefficient
 ##'

@@ -447,10 +447,10 @@ time_to_prop_mass_remaining <- function(x, threshold.mass = 0.5) {
 plot_95CI <- function(x, repetition) {
   
   # basic error checking
-  if (!is(x, "litfit")) {
+  if (!is(x, "litfit") && !is(x, "elementfit"))  {
     stop(
       "Something went wrong -- litterfitter::bootstrap.parameters
-         takes a 'litfit' object"
+         takes a 'litfit' or 'elementfit' object"
     )
   }
   
@@ -478,7 +478,11 @@ plot_95CI <- function(x, repetition) {
   
   else if (fit.model == "cont.quality") {
     final_df <- cont.quality.df(x, repetition, max(obs.time))
-    }
+  }
+  
+  else if (fit.model == "import.model") {
+    final_df <- cont.quality.df(x, repetition, max(obs.time))
+  }
   
   
   finaldf_spread <- select(final_df, time.vec, grouped_num, pred.val) %>% 
