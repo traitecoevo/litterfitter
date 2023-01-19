@@ -144,7 +144,7 @@ bootstrap_parameters_element <-
     fit.params <- x$optimFit$par
     fit.nparams <- x$nparams
     
-    output <- matrix(ncol = fit.nparams + 1, nrow = nboot)
+    output <- matrix(ncol = fit.nparams, nrow = nboot)
     
     for (i in 1:nboot)
     {
