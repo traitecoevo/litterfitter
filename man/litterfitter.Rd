@@ -3,6 +3,7 @@
 \docType{package}
 \name{litterfitter}
 \alias{litterfitter}
+\alias{litterfitter-package}
 \title{litterfitter: methods for fitting curves to litter decomposition trajectories}
 \description{
 There is a long tradition of studying the flux of carbon from 
@@ -19,4 +20,27 @@ using likelihood--based fitting.
 Cornwell, W. K., and J. T. Weedon. (2013). Decomposition trajectories of diverse litter types: a model selection analysis. Methods in Ecology and Evolution.
 
 Manzoni, S., Pineiro, G., Jackson, R. B., Jobbagy, E. G., Kim, J. H., & Porporato, A. (2012). Analytical models of soil and litter decomposition: Solutions for mass loss and time-dependent decay rates. Soil Biology and Biochemistry, 50, 66-76.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/cornwell-lab-unsw/litterfitter}
+  \item \url{http://cornwell-lab-unsw.github.io/litterfitter/}
+  \item Report bugs at \url{https://github.com/cornwell-lab-unsw/litterfitter/issues}
+}
+
+}
+\author{
+\strong{Maintainer}: Will Cornwell \email{wcornwell@gmail.com} (\href{https://orcid.org/0000-0003-4080-4073}{ORCID})
+
+Authors:
+\itemize{
+  \item James Weedon
+}
+
+Other contributors:
+\itemize{
+  \item Guofang Liu [contributor]
+}
+
 }
