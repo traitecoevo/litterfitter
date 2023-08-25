@@ -26,6 +26,9 @@ based on the particular model fit."><!-- mathjax --><script src="https://cdnjs.c
 <li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
+</li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -95,7 +98,7 @@ based on the particular model fit.</p>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="fit_litter.html">fit_litter</a></span><span class="op">(</span>time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">6</span><span class="op">)</span>,mass.remaining <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">0.9</span>,<span class="fl">1.01</span>,<span class="fl">0.4</span>,<span class="fl">0.6</span>,<span class="fl">0.2</span>,<span class="fl">0.01</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span><span class="st">'neg.exp'</span>,iters <span class="op">=</span> <span class="fl">250</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Number of successful fits:  248  out of 250 </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Number of successful fits:  245  out of 250 </span>
 <span class="r-in"><span><span class="fu">steady_state</span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> neg.exp </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4.60503 </span>
