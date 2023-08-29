@@ -2,6 +2,7 @@
 
 * updated package level documentation
 * improved documentation for a number of functions 
+* moving github home to traitecoevo
 
 # litterfitter 0.1.2
 
