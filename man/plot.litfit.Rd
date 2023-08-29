@@ -11,7 +11,7 @@
 
 \item{formulae.cex}{Size scaling factor for the formula display on the plot.}
 
-\item{...}{Additional arguments passed to \code{\link[base]{plot.default}}.}
+\item{...}{Additional arguments passed to \code{\link[graphics]{plot.default}}.}
 }
 \value{
 A plot visualizing the data and curve fit from a `litfit` object. 
@@ -36,6 +36,7 @@ fit <- fit_litter(
   iters=250
 )
 plot(fit)
+
 }
 \seealso{
 \code{\link{fit_litter}} for generating `litfit` objects.

@@ -7,7 +7,7 @@
 #' @title Plot Decomposition Trajectory and Curve Fit
 #' @param x A `litfit` object.
 #' @param formulae.cex Size scaling factor for the formula display on the plot.
-#' @param ... Additional arguments passed to \code{\link[base]{plot.default}}.
+#' @param ... Additional arguments passed to \code{\link[graphics]{plot.default}}.
 #' @return A plot visualizing the data and curve fit from a `litfit` object. 
 #'         The result is returned invisibly.
 #' @details The plot displays data points from the `litfit` object along with 
@@ -22,8 +22,11 @@
 #'   iters=250
 #' )
 #' plot(fit)
+#' 
 #' @export
-#' @importFrom graphics plot
+#' @importFrom graphics abline grconvertX grconvertY legend lines strwidth text
+#' 
+
 
 plot.litfit <- function(x, formulae.cex = 1, ...) {
   plot(

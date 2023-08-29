@@ -42,7 +42,7 @@ cont.quality <- function(x, b, a, upper = c(10^10, 100), lower = c(1e-04, 1.0001
 #' @param params A list of parameters to be passed to the model function.
 #' @param target_time A numeric value representing the target time for the prediction.
 #' @return Numeric. The predicted value computed by the model function.
-predict.from.fit <- function(model_fn, params, target_time) {
+predict_from_fit <- function(model_fn, params, target_time) {
     prediction <- do.call(model_fn, c(list(target_time), as.list(params)))
     return(prediction)
 }
@@ -149,7 +149,7 @@ rnd.to.text <- function(x, digits = 4) {
 #' fits are within ten percent of each other; FALSE otherwise.
 #' @seealso \code{\link[litterfitter]{fit_litter}}, \code{\link[litterfitter]{pineneedles}}
 #' 
-simulate.and.check <- function(model) {
+simulate_and_check <- function(model) {
     suppressWarnings(fit <- fit_litter(time = litterfitter::pineneedles$Year, mass.remaining = litterfitter::pineneedles$Mass.remaining, 
         model = model, iters = 1000))
     mass.with.error <- litterfitter::pineneedles$Mass.remaining + rnorm(length(predict(fit)), 0, 

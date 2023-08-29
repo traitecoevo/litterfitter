@@ -14,12 +14,12 @@ test_that("fit sane", {
   expect_true(fit$optimFit$convergence == 0)
   expect_true(all(predict(fit) > 0))
   expect_true(steady_state(fit) > 0)
-  expect_true(simulate.and.check("weibull"))
-  expect_true(simulate.and.check("neg.exp"))
-  expect_true(simulate.and.check("discrete.parallel"))
-  expect_true(simulate.and.check("discrete.series"))
-  expect_true(simulate.and.check("cont.quality"))
-  expect_true(simulate.and.check("neg.exp.limit"))
+  expect_true(simulate_and_check("weibull"))
+  expect_true(simulate_and_check("neg.exp"))
+  expect_true(simulate_and_check("discrete.parallel"))
+  expect_true(simulate_and_check("discrete.series"))
+  expect_true(simulate_and_check("cont.quality"))
+  expect_true(simulate_and_check("neg.exp.limit"))
 })
 
 
@@ -116,7 +116,7 @@ test_that("bootstraps are behaving", {
       iters = 2000
     )
   out <- bootstrap_parameters(fit)
-  expect_is(predict.from.fit("neg.exp",params=0.2,target_time=2),"numeric")
+  expect_is(predict_from_fit("neg.exp",params=0.2,target_time=2),"numeric")
   expect_true(are.within.ten.percent.of(median(out[, 1]), coef(fit)))
   expect_silent(plot(out))
 })
