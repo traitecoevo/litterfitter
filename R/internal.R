@@ -31,6 +31,17 @@ cont.quality <- function(x, b, a, upper = c(10^10, 100), lower = c(1e-04, 1.0001
     1/((1 + b * x)^a)
 }
 
+#' Predict Using a Specific Model Function
+#'
+#' This function computes predictions by applying the specified model function (`model_fn`)
+#' with provided parameters (`params`) at a target time (`target_time`). It is an internal
+#' utility function and is NOT a generic or S3 method.
+#'
+#' @keywords internal
+#' @param model_fn A function representing the model used for prediction.
+#' @param params A list of parameters to be passed to the model function.
+#' @param target_time A numeric value representing the target time for the prediction.
+#' @return Numeric. The predicted value computed by the model function.
 predict.from.fit <- function(model_fn, params, target_time) {
     prediction <- do.call(model_fn, c(list(target_time), as.list(params)))
     return(prediction)
@@ -124,6 +135,20 @@ rnd.to.text <- function(x, digits = 4) {
     format(round(x, digits), scientific = F)
 }
 
+
+#' Simulate and Check Model Fitting with Litter Data
+#'
+#' This internal function first fits a model to the `pineneedles` data from the `litterfitter` package
+#' using the `fit_litter` function. Next, it introduces random noise to the mass remaining data and refits 
+#' the model to this perturbed data. The function returns whether the time to proportion mass remaining
+#' values from the two fits are within ten percent of each other.
+#'
+#' @keywords internal
+#' @param model A character string representing the model type to be fitted using `fit_litter`.
+#' @return Logical. TRUE if the time to proportion mass remaining values from the original and simulated
+#' fits are within ten percent of each other; FALSE otherwise.
+#' @seealso \code{\link[litterfitter]{fit_litter}}, \code{\link[litterfitter]{pineneedles}}
+#' 
 simulate.and.check <- function(model) {
     suppressWarnings(fit <- fit_litter(time = litterfitter::pineneedles$Year, mass.remaining = litterfitter::pineneedles$Mass.remaining, 
         model = model, iters = 1000))

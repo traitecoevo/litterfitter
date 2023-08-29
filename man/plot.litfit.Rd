@@ -2,39 +2,43 @@
 % Please edit documentation in R/output-fxns.R
 \name{plot.litfit}
 \alias{plot.litfit}
-\title{Plot decomposition trajectory and curve fit}
+\title{Plot Decomposition Trajectory and Curve Fit}
 \usage{
-\method{plot}{litfit}(x,formulae.cex,...)
+\method{plot}{litfit}(x, formulae.cex = 1, ...)
 }
 \arguments{
-\item{x}{litfit object}
+\item{x}{A `litfit` object.}
 
-\item{formulae.cex}{how big do you want your formula?}
+\item{formulae.cex}{Size scaling factor for the formula display on the plot.}
 
-\item{...}{additional arguments passed to plot.default}
+\item{...}{Additional arguments passed to \code{\link[base]{plot.default}}.}
 }
 \value{
-Plot of litfit object, returns invisibly
+A plot visualizing the data and curve fit from a `litfit` object. 
+        The result is returned invisibly.
 }
 \description{
-Plot a fit of a curve to a litter decomposition trajectory
+Plot a Litter Decomposition Trajectory with Curve Fit
 }
 \details{
-The data and the line fit plotted from a litFit object. 
- Designed to give a quick visual check if model fitting is adequate.
+Visualizes the litter decomposition trajectory data and its curve fit 
+derived from a `litfit` object. This function is designed to provide 
+a quick visual check on the adequacy of model fitting.
+
+The plot displays data points from the `litfit` object along with 
+         the curve fit. The formula for the fit is displayed on the plot.
 }
 \examples{
 fit <- fit_litter(
-time=c(0,1,2,3,4,5,6),
-mass.remaining=c(1,0.9,1.01,0.4,0.6,0.2,0.01),
-'neg.exp',
-iters=250
+  time=c(0,1,2,3,4,5,6),
+  mass.remaining=c(1,0.9,1.01,0.4,0.6,0.2,0.01),
+  'neg.exp',
+  iters=250
 )
-
 plot(fit)
 }
 \seealso{
-\code{\link{fit_litter}}
+\code{\link{fit_litter}} for generating `litfit` objects.
 }
 \author{
 Will Cornwell

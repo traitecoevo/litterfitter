@@ -2,39 +2,47 @@
 % Please edit documentation in R/output-fxns.R
 \name{steady_state}
 \alias{steady_state}
-\title{Steady-state estimating from a lit fit object}
+\title{Estimate Steady State Biomass}
 \usage{
-steady_state(x=NULL, pars=NULL, model=NULL)
+steady_state(x = NULL, pars = NULL, model = NULL)
 }
 \arguments{
-\item{x}{litfit object}
+\item{x}{A `litfit` object. If provided, `pars` and `model` parameters are extracted from this object.}
 
-\item{pars}{(If x not specified) a vector of parameters for the model}
+\item{pars}{A numeric vector of parameters for the model. Only needed if `x` is not provided.}
 
-\item{model}{(If x not specified) one of "neg.exp", "weibull", "discrete.parallel",
-"discrete series", "cont.quality2"}
+\item{model}{A character string specifying the decomposition model. Must be one of the following:
+"neg.exp", "weibull", "discrete.parallel", "discrete.series", or "cont.quality2". 
+Only needed if `x` is not provided.}
 }
 \value{
-steady state values from specified model
+A named numeric value representing the estimated steady state biomass from the specified model.
 }
 \description{
-Estimate the steady state biomass as a proportion of the annual input,
-based on the particular model fit.
+Estimate Steady State Biomass
 }
 \details{
-Right now only implemented for a subset of models.  More coming soon...
+Computes the steady state biomass, as a proportion of the annual input, based on a given model fit or parameters.
+
+Currently, the function supports a subset of decomposition models. New model support is planned 
+  for future updates.
 }
 \examples{
-fit <- fit_litter(time = c(0,1,2,3,4,5,6),mass.remaining = c(1,0.9,1.01,0.4,0.6,0.2,0.01),
-'neg.exp',iters = 250)
+# Example with litfit object
+fit <- fit_litter(
+  time = c(0,1,2,3,4,5,6),
+  mass.remaining = c(1,0.9,1.01,0.4,0.6,0.2,0.01),
+  model = 'neg.exp',
+  iters = 250
+)
 steady_state(fit)
 
-# no litfit object specified, arbitrary model and parameter values
+# Example with specific model and parameter values
 steady_state(pars = c(6,2), model = "weibull")
 
 }
 \seealso{
-\code{\link{fit_litter}}
+\code{\link{fit_litter}} for generating `litfit` objects.
 }
 \author{
 Will Cornwell

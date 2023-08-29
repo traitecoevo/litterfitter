@@ -24,8 +24,8 @@ Manzoni, S., Pineiro, G., Jackson, R. B., Jobbagy, E. G., Kim, J. H., & Porporat
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/cornwell-lab-unsw/litterfitter}
-  \item \url{http://cornwell-lab-unsw.github.io/litterfitter/}
+  \item \url{https://github.com/traitecoevo/litterfitter/issues}
+  \item \url{http://traitecoevo.github.io/litterfitter/}
   \item Report bugs at \url{https://github.com/cornwell-lab-unsw/litterfitter/issues}
 }
 
