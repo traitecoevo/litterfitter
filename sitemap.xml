@@ -46,13 +46,13 @@
     <loc>http://cornwell-lab-unsw.github.io/litterfitter/reference/plot_multiple_fits.html</loc>
   </url>
   <url>
-    <loc>http://cornwell-lab-unsw.github.io/litterfitter/reference/predict.from.fit.html</loc>
-  </url>
-  <url>
     <loc>http://cornwell-lab-unsw.github.io/litterfitter/reference/predict.litfit.html</loc>
   </url>
   <url>
-    <loc>http://cornwell-lab-unsw.github.io/litterfitter/reference/simulate.and.check.html</loc>
+    <loc>http://cornwell-lab-unsw.github.io/litterfitter/reference/predict_from_fit.html</loc>
+  </url>
+  <url>
+    <loc>http://cornwell-lab-unsw.github.io/litterfitter/reference/simulate_and_check.html</loc>
   </url>
   <url>
     <loc>http://cornwell-lab-unsw.github.io/litterfitter/reference/steady_state.html</loc>
