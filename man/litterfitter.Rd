@@ -26,7 +26,7 @@ Useful links:
 \itemize{
   \item \url{https://github.com/traitecoevo/litterfitter/issues}
   \item \url{http://traitecoevo.github.io/litterfitter/}
-  \item Report bugs at \url{https://github.com/cornwell-lab-unsw/litterfitter/issues}
+  \item Report bugs at \url{https://github.com/traitecoevo/litterfitter/issues}
 }
 
 }
