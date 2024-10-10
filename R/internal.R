@@ -48,7 +48,7 @@ f_func_100<-function(a,b){
   (100/b)/(sqrt((2*a*100/b)^2+(1-(100/b)^2)^2))
 }
 
-import.model <- function(x,a,b,lower = c(0.01, 1),upper = c(10, 100)){
+import.model <- function(x,a,b,lower = c(0.1, 1),upper = c(10, 100)){
   f_func(x,a,b)/f_func_100(a,b)
 }
 

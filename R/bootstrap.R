@@ -138,7 +138,7 @@ bootstrap_parameters_element <-
     # extract necessary objects
     
     fit.model <- x$model
-    obs.time <- x$time
+    obs.time <- x$element.remaining
     obs.mass <- x$mass
     nobs <- length(obs.time)
     fit.params <- x$optimFit$par
