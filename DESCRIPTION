@@ -1,8 +1,8 @@
 Package: litterfitter
 Type: Package
-Title: Fit a Collection of Curves to Single Cohort Decomposition Data
-Version: 0.1.3
-Date: 2023-08-25
+Title: Fits a Collection of Curves to Single-Cohort Decomposition Data
+Version: 0.1.4
+Date: 2025-08-19
 Authors@R: 
     c(person(given = "Will",
              family = "Cornwell",
@@ -15,12 +15,17 @@ Authors@R:
       person(given = "Guofang",
              family = "Liu",
              role = "ctb"))
-Description: There is a long tradition of studying the flux of carbon from the biosphere to the atmosphere by following a particular cohort of litter (wood, leaves, roots, or other organic material) through time.  The resulting data are mass remaining and time. A variety of functional forms may be used to fit the resulting data. Some work better empirically. Some are better connected to a process-based understanding.  Some have a small number of free parameters; others have more. This package matches decomposition data to a family of these curves using likelihood--based fitting. This package is based on published research by Cornwell & Weedon (2013) <doi:10.1111/2041-210X.12138>.
-Depends: R (>= 3.1.0)
+Description: Fit different model forms to single-cohort litter 
+    decomposition data (mass remaining through time) using likelihood-based 
+    estimation. Models span simple empirical to process-motivated forms with 
+    differing numbers of free parameters. Provides parameter estimates, 
+    uncertainty, and tools for model comparison/selection. Based on 
+    Cornwell & Weedon (2013) <doi:10.1111/2041-210X.12138>.
+Depends: R (>= 3.5.0)
 LazyData: true
+LazyDataCompression: xz
 Encoding: UTF-8
 Imports: 
-    plyr,
     stats,
     graphics,
     grDevices,
@@ -32,8 +37,10 @@ Suggests:
     devtools,
     rmarkdown
 License: MIT + file LICENSE
-URL: https://github.com/traitecoevo/litterfitter/issues,
-    http://traitecoevo.github.io/litterfitter/
+URL: http://traitecoevo.github.io/litterfitter/,
+    https://github.com/traitecoevo/litterfitter
 RoxygenNote: 7.2.3
 VignetteBuilder: knitr
 BugReports: https://github.com/traitecoevo/litterfitter/issues
+Roxygen: list(markdown = TRUE)
+Config/testthat/edition: 3

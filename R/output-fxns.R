@@ -356,10 +356,12 @@ plot_multiple_fits <-
       )), col = color[i])
     }
     
-    values <-
-      plyr::ldply(mod.lst, function(x)
-        cbind(AIC = round(x$fitAIC, 2), BIC = round(x$fitBIC,
-                                                    2)))
+    values <- do.call(rbind, lapply(mod.lst, function(x) {
+      data.frame(
+        AIC = round(x$fitAIC, 2),
+        BIC = round(x$fitBIC, 2)
+      )
+    }))
     values <- data.frame(model, values)
     values <- values[order(values$AIC),]
     legend(
