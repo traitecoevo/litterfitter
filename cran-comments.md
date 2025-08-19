@@ -2,7 +2,8 @@
 
 This is a resubmission. In this version I have:
 
-- Fixed the package level documentation 
+- Removed plyr dependency
+- Updating testthat practices to be consistent with version 3
 
 ## R CMD check results
 
