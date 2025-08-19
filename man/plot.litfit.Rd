@@ -7,26 +7,26 @@
 \method{plot}{litfit}(x, formulae.cex = 1, ...)
 }
 \arguments{
-\item{x}{A `litfit` object.}
+\item{x}{A \code{litfit} object.}
 
 \item{formulae.cex}{Size scaling factor for the formula display on the plot.}
 
 \item{...}{Additional arguments passed to \code{\link[graphics]{plot.default}}.}
 }
 \value{
-A plot visualizing the data and curve fit from a `litfit` object. 
-        The result is returned invisibly.
+A plot visualizing the data and curve fit from a \code{litfit} object.
+The result is returned invisibly.
 }
 \description{
 Plot a Litter Decomposition Trajectory with Curve Fit
 }
 \details{
-Visualizes the litter decomposition trajectory data and its curve fit 
-derived from a `litfit` object. This function is designed to provide 
+Visualizes the litter decomposition trajectory data and its curve fit
+derived from a \code{litfit} object. This function is designed to provide
 a quick visual check on the adequacy of model fitting.
 
-The plot displays data points from the `litfit` object along with 
-         the curve fit. The formula for the fit is displayed on the plot.
+The plot displays data points from the \code{litfit} object along with
+the curve fit. The formula for the fit is displayed on the plot.
 }
 \examples{
 fit <- fit_litter(
@@ -39,7 +39,7 @@ plot(fit)
 
 }
 \seealso{
-\code{\link{fit_litter}} for generating `litfit` objects.
+\code{\link{fit_litter}} for generating \code{litfit} objects.
 }
 \author{
 Will Cornwell

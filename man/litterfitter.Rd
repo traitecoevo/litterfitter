@@ -2,18 +2,18 @@
 % Please edit documentation in R/litterFitter-package.R
 \docType{package}
 \name{litterfitter}
-\alias{litterfitter}
 \alias{litterfitter-package}
+\alias{litterfitter}
 \title{litterfitter: methods for fitting curves to litter decomposition trajectories}
 \description{
-There is a long tradition of studying the flux of carbon from 
+There is a long tradition of studying the flux of carbon from
 the biosphere to the atmosphere by following a particular cohort of litter
-(wood, leaves, roots, or other organic material) through time.  The 
+(wood, leaves, roots, or other organic material) through time.  The
 resulting data are mass remaining and time.  A variety of functional forms
-may be used to fit the resulting data.  Some work better empirically.  
-Some are better connected to a process-based understanding.  
-Some have a small number of free parameters; others have more. 
-This package matches decomposition data to a set of these curves 
+may be used to fit the resulting data.  Some work better empirically.
+Some are better connected to a process-based understanding.
+Some have a small number of free parameters; others have more.
+This package matches decomposition data to a set of these curves
 using likelihood--based fitting.
 }
 \references{
@@ -24,8 +24,8 @@ Manzoni, S., Pineiro, G., Jackson, R. B., Jobbagy, E. G., Kim, J. H., & Porporat
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/traitecoevo/litterfitter/issues}
   \item \url{http://traitecoevo.github.io/litterfitter/}
+  \item \url{https://github.com/traitecoevo/litterfitter}
   \item Report bugs at \url{https://github.com/traitecoevo/litterfitter/issues}
 }
 

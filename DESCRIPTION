@@ -39,7 +39,7 @@ Suggests:
 License: MIT + file LICENSE
 URL: http://traitecoevo.github.io/litterfitter/,
     https://github.com/traitecoevo/litterfitter
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 VignetteBuilder: knitr
 BugReports: https://github.com/traitecoevo/litterfitter/issues
 Roxygen: list(markdown = TRUE)

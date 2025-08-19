@@ -17,8 +17,8 @@ predict_from_fit(model_fn, params, target_time)
 Numeric. The predicted value computed by the model function.
 }
 \description{
-This function computes predictions by applying the specified model function (`model_fn`)
-with provided parameters (`params`) at a target time (`target_time`). It is an internal
+This function computes predictions by applying the specified model function (\code{model_fn})
+with provided parameters (\code{params}) at a target time (\code{target_time}). It is an internal
 utility function and is NOT a generic or S3 method.
 }
 \keyword{internal}

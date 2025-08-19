@@ -7,13 +7,13 @@
 steady_state(x = NULL, pars = NULL, model = NULL)
 }
 \arguments{
-\item{x}{A `litfit` object. If provided, `pars` and `model` parameters are extracted from this object.}
+\item{x}{A \code{litfit} object. If provided, \code{pars} and \code{model} parameters are extracted from this object.}
 
-\item{pars}{A numeric vector of parameters for the model. Only needed if `x` is not provided.}
+\item{pars}{A numeric vector of parameters for the model. Only needed if \code{x} is not provided.}
 
 \item{model}{A character string specifying the decomposition model. Must be one of the following:
-"neg.exp", "weibull", "discrete.parallel", "discrete.series", or "cont.quality2". 
-Only needed if `x` is not provided.}
+"neg.exp", "weibull", "discrete.parallel", "discrete.series", or "cont.quality2".
+Only needed if \code{x} is not provided.}
 }
 \value{
 A named numeric value representing the estimated steady state biomass from the specified model.
@@ -24,8 +24,8 @@ Estimate Steady State Biomass
 \details{
 Computes the steady state biomass, as a proportion of the annual input, based on a given model fit or parameters.
 
-Currently, the function supports a subset of decomposition models. New model support is planned 
-  for future updates.
+Currently, the function supports a subset of decomposition models. New model support is planned
+for future updates.
 }
 \examples{
 # Example with litfit object
@@ -42,7 +42,7 @@ steady_state(pars = c(6,2), model = "weibull")
 
 }
 \seealso{
-\code{\link{fit_litter}} for generating `litfit` objects.
+\code{\link{fit_litter}} for generating \code{litfit} objects.
 }
 \author{
 Will Cornwell

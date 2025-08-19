@@ -7,15 +7,15 @@
 simulate_and_check(model)
 }
 \arguments{
-\item{model}{A character string representing the model type to be fitted using `fit_litter`.}
+\item{model}{A character string representing the model type to be fitted using \code{fit_litter}.}
 }
 \value{
 Logical. TRUE if the time to proportion mass remaining values from the original and simulated
 fits are within ten percent of each other; FALSE otherwise.
 }
 \description{
-This internal function first fits a model to the `pineneedles` data from the `litterfitter` package
-using the `fit_litter` function. Next, it introduces random noise to the mass remaining data and refits 
+This internal function first fits a model to the \code{pineneedles} data from the \code{litterfitter} package
+using the \code{fit_litter} function. Next, it introduces random noise to the mass remaining data and refits
 the model to this perturbed data. The function returns whether the time to proportion mass remaining
 values from the two fits are within ten percent of each other.
 }
