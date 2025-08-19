@@ -21,7 +21,7 @@ library(litterfitter)
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/traitecoevo/litterfitter/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/traitecoevo/litterfitter/actions/workflows/R-CMD-check.yaml)
 [![Codecov test coverage](https://codecov.io/gh/traitecoevo/litterfitter/branch/master/graph/badge.svg)](https://app.codecov.io/gh/traitecoevo/litterfitter?branch=master)
-[![](https://img.shields.io/badge/doi-10.1111/2041--210X.12138-blue.svg)](https://doi.org/10.1111/2041-210X.12138)
+[![](https://img.shields.io/badge/doi-10.1111/2041--210X.12138-blue.svg)](\doi{10.1111/2041-210X.12138})
 `r badger::badge_cran_release("litterfitter", "orange")`
 <!-- badges: end -->
 

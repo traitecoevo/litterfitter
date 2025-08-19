@@ -11,7 +11,7 @@
 [![R-CMD-check](https://github.com/traitecoevo/litterfitter/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/traitecoevo/litterfitter/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
 coverage](https://codecov.io/gh/traitecoevo/litterfitter/branch/master/graph/badge.svg)](https://app.codecov.io/gh/traitecoevo/litterfitter?branch=master)
-[![](https://img.shields.io/badge/doi-10.1111/2041--210X.12138-blue.svg)](https://doi.org/10.1111/2041-210X.12138)
+[![](https://img.shields.io/badge/doi-10.1111/2041--210X.12138-blue.svg)](\doi%7B10.1111/2041-210X.12138%7D)
 [![](https://www.r-pkg.org/badges/version/litterfitter?color=orange)](https://cran.r-project.org/package=litterfitter)
 <!-- badges: end -->
 
