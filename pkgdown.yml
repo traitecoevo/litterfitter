@@ -3,7 +3,7 @@ pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
   litterfitter: litterfitter.html
-last_built: 2025-08-22T00:53Z
+last_built: 2025-08-22T00:55Z
 urls:
   reference: http://cornwell-lab-unsw.github.io/litterfitter/reference
   article: http://cornwell-lab-unsw.github.io/litterfitter/articles
