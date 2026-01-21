@@ -30,7 +30,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Estimate Steady State Biomass</h1>
-      <small class="dont-index">Source: <a href="https://github.com/traitecoevo/litterfitter/blob/v0.1.4/R/output-fxns.R" class="external-link"><code>R/output-fxns.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/traitecoevo/litterfitter/blob/master/R/output-fxns.R" class="external-link"><code>R/output-fxns.R</code></a></small>
       <div class="d-none name"><code>steady_state.Rd</code></div>
     </div>
 
@@ -84,9 +84,9 @@ for future updates.</p>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Example with litfit object</span></span></span>
 <span class="r-in"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="fit_litter.html">fit_litter</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">6</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  mass.remaining <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">0.9</span>,<span class="fl">1.01</span>,<span class="fl">0.4</span>,<span class="fl">0.6</span>,<span class="fl">0.2</span>,<span class="fl">0.01</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  model <span class="op">=</span> <span class="st">'neg.exp'</span>,</span></span>
+<span class="r-in"><span>  time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  mass.remaining <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.9</span>, <span class="fl">1.01</span>, <span class="fl">0.4</span>, <span class="fl">0.6</span>, <span class="fl">0.2</span>, <span class="fl">0.01</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  model <span class="op">=</span> <span class="st">"neg.exp"</span>,</span></span>
 <span class="r-in"><span>  iters <span class="op">=</span> <span class="fl">250</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Number of successful fits:  248  out of 250 </span>
@@ -95,7 +95,7 @@ for future updates.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4.60503 </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Example with specific model and parameter values</span></span></span>
-<span class="r-in"><span><span class="fu">steady_state</span><span class="op">(</span>pars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">6</span>,<span class="fl">2</span><span class="op">)</span>, model <span class="op">=</span> <span class="st">"weibull"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">steady_state</span><span class="op">(</span>pars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">6</span>, <span class="fl">2</span><span class="op">)</span>, model <span class="op">=</span> <span class="st">"weibull"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  weibull </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5.317362 </span>
 <span class="r-in"><span></span></span>
@@ -110,7 +110,7 @@ for future updates.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>

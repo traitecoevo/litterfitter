@@ -54,7 +54,7 @@
       <h1>litterfitter</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/traitecoevo/litterfitter/blob/v0.1.4/vignettes/litterfitter.Rmd" class="external-link"><code>vignettes/litterfitter.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/traitecoevo/litterfitter/blob/master/vignettes/litterfitter.Rmd" class="external-link"><code>vignettes/litterfitter.Rmd</code></a></small>
       <div class="d-none name"><code>litterfitter.Rmd</code></div>
     </div>
 
@@ -66,32 +66,36 @@
 <h3 id="getting-started">Getting started<a class="anchor" aria-label="anchor" href="#getting-started"></a>
 </h3>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://traitecoevo.github.io/litterfitter/" class="external-link">litterfitter</a></span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://traitecoevo.github.io/litterfitter/">litterfitter</a></span><span class="op">)</span></span></code></pre></div>
 <p>At the moment there is one key function which is
 <code>fit_litter</code> which can fit 6 different types of decomposition
 trajectories. Note that the fitted object is a <code>litfit</code>
 object</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_litter.html">fit_litter</a></span><span class="op">(</span>time<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">6</span><span class="op">)</span>,</span>
-<span>                  mass.remaining <span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">0.9</span>,<span class="fl">1.01</span>,<span class="fl">0.4</span>,<span class="fl">0.6</span>,<span class="fl">0.2</span>,<span class="fl">0.01</span><span class="op">)</span>,</span>
-<span>                  model<span class="op">=</span><span class="st">"weibull"</span>,</span>
-<span>                  iters<span class="op">=</span><span class="fl">500</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_litter.html">fit_litter</a></span><span class="op">(</span></span>
+<span>  time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span><span class="op">)</span>,</span>
+<span>  mass.remaining <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.9</span>, <span class="fl">1.01</span>, <span class="fl">0.4</span>, <span class="fl">0.6</span>, <span class="fl">0.2</span>, <span class="fl">0.01</span><span class="op">)</span>,</span>
+<span>  model <span class="op">=</span> <span class="st">"weibull"</span>,</span>
+<span>  iters <span class="op">=</span> <span class="fl">500</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre></div>
 <p>You can visually compare the fits of different non-linear equations
 with the <code>plot_multiple_fits</code> function:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_multiple_fits.html">plot_multiple_fits</a></span><span class="op">(</span>time<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">6</span><span class="op">)</span>,</span>
-<span>                   mass.remaining<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">0.9</span>,<span class="fl">1.01</span>,<span class="fl">0.4</span>,<span class="fl">0.6</span>,<span class="fl">0.2</span>,<span class="fl">0.01</span><span class="op">)</span>,</span>
-<span>                   model<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"neg.exp"</span>,<span class="st">"weibull"</span><span class="op">)</span>,</span>
-<span>                   iters<span class="op">=</span><span class="fl">500</span><span class="op">)</span></span></code></pre></div>
-<p><img src="litterfitter_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_multiple_fits.html">plot_multiple_fits</a></span><span class="op">(</span></span>
+<span>  time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span><span class="op">)</span>,</span>
+<span>  mass.remaining <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.9</span>, <span class="fl">1.01</span>, <span class="fl">0.4</span>, <span class="fl">0.6</span>, <span class="fl">0.2</span>, <span class="fl">0.01</span><span class="op">)</span>,</span>
+<span>  model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"neg.exp"</span>, <span class="st">"weibull"</span><span class="op">)</span>,</span>
+<span>  iters <span class="op">=</span> <span class="fl">500</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p><img src="litterfitter_files/figure-html/unnamed-chunk-3-1.png" class="r-plt" alt="" width="700"></p>
 <p>Calling <code>plot</code> on a <code>litfit</code> object will show
 you the data, the curve fit, and even the equation, with the estimated
 coefficients:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span>   <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre></div>
-<p><img src="litterfitter_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre></div>
+<p><img src="litterfitter_files/figure-html/unnamed-chunk-4-1.png" class="r-plt" alt="" width="700"></p>
 <p>The summary of a <code>litfit</code> object will show you some of the
 summary statistics for the fit.</p>
 <pre><code><span><span class="co">#&gt; Summary of litFit object</span></span>
@@ -106,7 +110,7 @@ summary statistics for the fit.</p>
 <span><span class="co">#&gt; BIC:  -3.9965</span></span></code></pre>
 <p>From the <code>litfit</code> object you can then see the uncertainty
 in the parameter estimate by bootstrapping</p>
-<p><img src="litterfitter_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
+<p><img src="litterfitter_files/figure-html/unnamed-chunk-6-1.png" class="r-plt" alt="" width="700"></p>
 </div>
   </main>
 </div>
@@ -118,7 +122,7 @@ in the parameter estimate by bootstrapping</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>
