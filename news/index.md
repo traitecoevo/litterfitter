@@ -3,6 +3,10 @@
 ## litterfitter 0.1.5
 
 - fixing url in the readme, which is causing a note in the cran checks
+- Modernized package structure and code style (styler, lintr)
+- Updated GitHub Actions workflows for better CI/CD support (Ubuntu,
+  macOS, Windows)
+- Updated dependencies (R \>= 4.1.0)
 
 ## litterfitter 0.1.4
 

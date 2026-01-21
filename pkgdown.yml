@@ -3,7 +3,7 @@ pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
   litterfitter: litterfitter.html
-last_built: 2026-01-21T03:59Z
+last_built: 2026-01-21T04:03Z
 urls:
   reference: http://traitecoevo.github.io/litterfitter/reference
   article: http://traitecoevo.github.io/litterfitter/articles
