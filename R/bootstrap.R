@@ -11,11 +11,11 @@
 #' @return litfit_bootstrap object
 #'
 #' @examples
-#' fit <- fit_litter(time=pineneedles$Year,
-#' mass.remaining=pineneedles$Mass.remaining, model='neg.exp', iters=100)
+#' fit <- fit_litter(
+#'   time = pineneedles$Year,
+#'   mass.remaining = pineneedles$Mass.remaining, model = "neg.exp", iters = 100
+#' )
 #' boot1 <- bootstrap_parameters(fit, nboot = 500)
-#'
-#'
 #'
 #' @export
 bootstrap_parameters <-
@@ -31,38 +31,42 @@ bootstrap_parameters <-
          takes a 'litfit' object"
       )
     }
-    
+
     # extract necessary objects
-    
+
     fit.model <- x$model
     obs.time <- x$time
     obs.mass <- x$mass
     nobs <- length(obs.time)
     fit.params <- x$optimFit$par
     fit.nparams <- x$nparams
-    
+
     output <- matrix(ncol = fit.nparams + 1, nrow = nboot)
-    
+
     for (i in 1:nboot)
     {
       # do bootstrapping
-      
-      boot.inds <- sample(x = nobs,
-                          size = nobs,
-                          replace = TRUE)
+
+      boot.inds <- sample(
+        x = nobs,
+        size = nobs,
+        replace = TRUE
+      )
       boot.time <- obs.time[boot.inds]
       boot.mass <- obs.mass[boot.inds]
-      
+
       ifelse(!is.null(upper),
-             upper_bounds <-
-               upper,
-             upper_bounds <- eval(as.list(formals(fit.model))$upper))
-      
+        upper_bounds <-
+          upper,
+        upper_bounds <- eval(as.list(formals(fit.model))$upper)
+      )
+
       ifelse(!is.null(lower),
-             lower_bounds <-
-               lower,
-             lower_bounds <- eval(as.list(formals(fit.model))$lower))
-      
+        lower_bounds <-
+          lower,
+        lower_bounds <- eval(as.list(formals(fit.model))$lower)
+      )
+
       boot.fit <-
         tryCatch(
           optim(
@@ -76,13 +80,13 @@ bootstrap_parameters <-
             upper = upper_bounds,
             ...
           ),
-          error = function(e)
+          error = function(e) {
             NULL
+          }
         )
       output[i, 1:fit.nparams] <- boot.fit$par
       output[i, fit.nparams + 1] <-
         steady_state(pars = boot.fit$par, model = fit.model)
-      
     }
     class(output) <- "litfit_bootstrap"
     return(output)
@@ -122,10 +126,10 @@ plot.litfit_bootstrap <- function(x,
   coef.of.interest <- x[, coef.index]
   dens <- density(coef.of.interest, bw = bw)
   plot(dens, main = "Bootstrap distribution", ...)
-  
+
   qfs <- quantile(coef.of.interest, probs = c(0.025, 0.975))
   x1 <- min(which(dens$x >= qfs[1]))
-  x2 <- max(which(dens$x <  qfs[2]))
+  x2 <- max(which(dens$x < qfs[2]))
   with(dens, polygon(
     x = c(x[c(x1, x1:x2, x2)]),
     y = c(0, y[x1:x2], 0),

@@ -1,3 +1,7 @@
+# litterfitter 0.1.5
+
+* fixing url in the readme, which is causing a note in the cran checks
+
 # litterfitter 0.1.4
 
 * removed plyr dependency for long term ease of maintanance 

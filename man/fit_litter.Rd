@@ -65,8 +65,10 @@ likelihood space (which is both data- and model-dependent) as well as the optimi
 }
 \examples{
 data(pineneedles)
-fit<-fit_litter(time=pineneedles$Year,mass.remaining=pineneedles$Mass.remaining,
-model='neg.exp',iters=1000)
+fit <- fit_litter(
+  time = pineneedles$Year, mass.remaining = pineneedles$Mass.remaining,
+  model = "neg.exp", iters = 1000
+)
 }
 \references{
 \itemize{ \item{Ågren, G. and Bosatta, E. (1996) Quality: a bridge between theory and experiment in soil organic matter studies. Oikos, 76, 522–528.}

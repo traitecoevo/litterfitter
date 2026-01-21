@@ -22,9 +22,11 @@ this function finds the time to a specified mass loss percentage
 }
 \examples{
 
- fit<-fit_litter(time=pineneedles$Year,mass.remaining=pineneedles$Mass.remaining,
- model='neg.exp',iters=1000)
- time_to_prop_mass_remaining(fit, threshold.mass = 0.5)
+fit <- fit_litter(
+  time = pineneedles$Year, mass.remaining = pineneedles$Mass.remaining,
+  model = "neg.exp", iters = 1000
+)
+time_to_prop_mass_remaining(fit, threshold.mass = 0.5)
 
 }
 \seealso{

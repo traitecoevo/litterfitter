@@ -25,10 +25,12 @@ library(litterfitter)
 At the moment there is one key function which is `fit_litter` which can fit 6 different types of decomposition trajectories. Note that the fitted object is a `litfit` object
 
 ```{R,results="hide",warning=FALSE,message = FALSE}
-fit <- fit_litter(time=c(0,1,2,3,4,5,6),
-                  mass.remaining =c(1,0.9,1.01,0.4,0.6,0.2,0.01),
-                  model="weibull",
-                  iters=500)
+fit <- fit_litter(
+  time = c(0, 1, 2, 3, 4, 5, 6),
+  mass.remaining = c(1, 0.9, 1.01, 0.4, 0.6, 0.2, 0.01),
+  model = "weibull",
+  iters = 500
+)
 
 class(fit)
 ```
@@ -36,28 +38,30 @@ class(fit)
 You can visually compare the fits of different non-linear equations with the `plot_multiple_fits` function:
 
 ```{R,fig.height=6,results='hide',fig.keep=TRUE,warning=FALSE,message = FALSE}
-plot_multiple_fits(time=c(0,1,2,3,4,5,6),
-                   mass.remaining=c(1,0.9,1.01,0.4,0.6,0.2,0.01),
-                   model=c("neg.exp","weibull"),
-                   iters=500)
+plot_multiple_fits(
+  time = c(0, 1, 2, 3, 4, 5, 6),
+  mass.remaining = c(1, 0.9, 1.01, 0.4, 0.6, 0.2, 0.01),
+  model = c("neg.exp", "weibull"),
+  iters = 500
+)
 ```
 
 Calling `plot` on a `litfit` object will show you the data, the curve fit, and even the equation, with the estimated coefficients:
 
 ```{R,fig.keep=TRUE}
-   plot(fit)
+plot(fit)
 ```
 
 The summary of a `litfit` object will show you some of the summary statistics for the fit.
 
 ```{R,echo=FALSE,fig.keep=TRUE}
-   summary(fit)
+summary(fit)
 ```
 
 From the `litfit` object you can then see the uncertainty in the parameter estimate by bootstrapping
 
 ```{R,echo=FALSE,fig.keep=TRUE}
-   post<-bootstrap_parameters(fit)
-   plot(post)
+post <- bootstrap_parameters(fit)
+plot(post)
 ```
 

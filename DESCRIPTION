@@ -21,7 +21,7 @@ Description: Fit different model forms to single-cohort litter
     differing numbers of free parameters. Provides parameter estimates, 
     uncertainty, and tools for model comparison/selection. Based on 
     Cornwell & Weedon (2013) <doi:10.1111/2041-210X.12138>.
-Depends: R (>= 3.5.0)
+Depends: R (>= 4.1.0)
 LazyData: true
 LazyDataCompression: xz
 Encoding: UTF-8

@@ -31,13 +31,14 @@ Plot multiple fits of decomposition trajectories on one graph with model selecti
 this function is designed to compare a variety of curve shapes visually and with AIC and BIC simultaneously
 }
 \examples{
-data(pineneedles,package='litterfitter')
+data(pineneedles, package = "litterfitter")
 
-plot_multiple_fits(time = pineneedles$Year,
-mass.remaining = pineneedles$Mass.remaining,
-bty = 'n', model = c('neg.exp', 'weibull'),
-xlab = 'Time', ylab = 'Proportion mass remaining',iters=200)
-
+plot_multiple_fits(
+  time = pineneedles$Year,
+  mass.remaining = pineneedles$Mass.remaining,
+  bty = "n", model = c("neg.exp", "weibull"),
+  xlab = "Time", ylab = "Proportion mass remaining", iters = 200
+)
 
 }
 \seealso{
