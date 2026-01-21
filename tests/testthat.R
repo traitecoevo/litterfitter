@@ -1,4 +1,4 @@
 library(testthat)
 library(litterfitter)
 
-test_check("litterfitter") 
+test_check("litterfitter")

@@ -2,8 +2,7 @@
 
 This is a resubmission. In this version I have:
 
-- Removed plyr dependency
-- Updating testthat practices to be consistent with version 3
+- fixing url in the readme, which is causing a note in the cran checks
 
 ## R CMD check results
 
