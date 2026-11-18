@@ -113,7 +113,13 @@ fit_litter <- function(
   }
 
   nparams_model <- length(model_param_names(model))
-  if (length(time) <= nparams_model) {
+  # Every curve except neg.exp.limit is pinned at mass 1 at time 0, so
+  # harvests at as many distinct positive times as there are parameters
+  # identify the fit, e.g. a single harvest for neg.exp.
+  pinned_at_origin <- model != "neg.exp.limit"
+  identified_from_origin <- pinned_at_origin &&
+    length(unique(time[time > 0])) >= nparams_model
+  if (length(time) <= nparams_model && !identified_from_origin) {
     stop(paste(
       "Too few observations to fit model", model, "- need more than",
       nparams_model, "data points"
@@ -127,8 +133,11 @@ fit_litter <- function(
   if (min(time) < 0) {
     stop("Check time vector; negative values detected.")
   }
-  if (length(unique(time)) < 2) {
+  if (length(unique(time)) < 2 && !identified_from_origin) {
     stop("Need observations at two or more distinct time points")
+  }
+  if (length(time) <= nparams_model || length(unique(time)) < 2) {
+    warn_once_origin_only(model, length(unique(time[time > 0])))
   }
 
   if (any(mass.remaining < -0.1) || max(mass.remaining) > 2) {

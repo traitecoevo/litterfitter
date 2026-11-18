@@ -42,7 +42,7 @@ fit_litter_all <- function(time, mass.remaining,
 
   data_warning_classes <- c(
     "litterfitter_mass_above_one", "litterfitter_mass_below_zero",
-    "litterfitter_missing_removed"
+    "litterfitter_missing_removed", "litterfitter_origin_only"
   )
   data_warnings <- list()
   model_warnings <- list()

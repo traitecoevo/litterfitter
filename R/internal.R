@@ -242,6 +242,8 @@ calculateAIC <- function(LL, nparams) {
 
 calculateAICc <- function(LL, nparams, samplesize) {
   AIC <- calculateAIC(LL, nparams)
+  # The small-sample correction is undefined unless n > k + 1
+  if (samplesize - nparams - 1 <= 0) return(NA_real_)
   AICc <- AIC + (2 * nparams * (nparams + 1)) / (samplesize - nparams - 1)
   return(AICc)
 }
@@ -325,4 +327,24 @@ simulate_and_check <- function(model) {
     model = model, iters = 1000, quiet = TRUE
   ))
   return(are.within.ten.percent.of(time_to_prop_mass_remaining(fit), time_to_prop_mass_remaining(simulated.fit)))
+}
+
+# Session state for warnings that are shown only once.
+warned_once <- new.env(parent = emptyenv())
+
+# Fits that are possible only because the curve is pinned at mass 1 at time 0
+# (e.g. a single harvest) are allowed, with a once-per-session warning.
+warn_once_origin_only <- function(model, n_times) {
+  if (isTRUE(warned_once$origin_only)) return(invisible())
+  warned_once$origin_only <- TRUE
+  warning(warningCondition(
+    paste0(
+      "Fitting ", model, " to harvests at ", n_times, " distinct time point",
+      if (n_times == 1) "" else "s",
+      ", relying on the curve starting at mass 1 at time 0. ",
+      "The data cannot test the curve's shape, and AICc may be undefined. ",
+      "This warning is shown once per session."
+    ),
+    class = "litterfitter_origin_only"
+  ))
 }
