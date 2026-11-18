@@ -13,7 +13,10 @@ bootstrap_parameters(x,nboot,upper,lower,...)
 
 - x:
 
-  an object of class "`litfit`"
+  an object of class "`litfit`" (from
+  [`fit_litter`](https://traitecoevo.github.io/litterfitter/reference/fit_litter.md))
+  or "`elementfit`" (from
+  [`fit_element`](https://traitecoevo.github.io/litterfitter/reference/fit_element.md))
 
 - nboot:
 
@@ -34,8 +37,10 @@ bootstrap_parameters(x,nboot,upper,lower,...)
 ## Value
 
 a `litfit_bootstrap` object: a matrix with one row per bootstrap
-replicate and one column per parameter plus the implied steady state.
-Failed replicates are recorded as `NA`.
+replicate and one column per parameter, plus derived quantities: the
+implied steady state for a `litfit`, or the peak element remaining and
+the mass remaining at the peak for an `elementfit`. Failed replicates
+are recorded as `NA`.
 
 ## Examples
 

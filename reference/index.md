@@ -7,6 +7,20 @@
 - [`bootstrap_parameters()`](https://traitecoevo.github.io/litterfitter/reference/bootstrap_parameters.md)
   : Create a bootstrap distribution of a particular coefficient from a
   model fit
+- [`print(`*`<elementfit>`*`)`](https://traitecoevo.github.io/litterfitter/reference/elementfit_methods.md)
+  [`plot(`*`<elementfit>`*`)`](https://traitecoevo.github.io/litterfitter/reference/elementfit_methods.md)
+  [`coef(`*`<elementfit>`*`)`](https://traitecoevo.github.io/litterfitter/reference/elementfit_methods.md)
+  [`fitted(`*`<elementfit>`*`)`](https://traitecoevo.github.io/litterfitter/reference/elementfit_methods.md)
+  [`residuals(`*`<elementfit>`*`)`](https://traitecoevo.github.io/litterfitter/reference/elementfit_methods.md)
+  [`nobs(`*`<elementfit>`*`)`](https://traitecoevo.github.io/litterfitter/reference/elementfit_methods.md)
+  [`logLik(`*`<elementfit>`*`)`](https://traitecoevo.github.io/litterfitter/reference/elementfit_methods.md)
+  [`predict(`*`<elementfit>`*`)`](https://traitecoevo.github.io/litterfitter/reference/elementfit_methods.md)
+  [`tidy(`*`<elementfit>`*`)`](https://traitecoevo.github.io/litterfitter/reference/elementfit_methods.md)
+  [`glance(`*`<elementfit>`*`)`](https://traitecoevo.github.io/litterfitter/reference/elementfit_methods.md)
+  [`augment(`*`<elementfit>`*`)`](https://traitecoevo.github.io/litterfitter/reference/elementfit_methods.md)
+  : Methods for elementfit objects
+- [`fit_element()`](https://traitecoevo.github.io/litterfitter/reference/fit_element.md)
+  : Fit element (nutrient) dynamics during decomposition
 - [`fit_litter()`](https://traitecoevo.github.io/litterfitter/reference/fit_litter.md)
   : Fit different models to single cohort decomposition data
 - [`fit_litter_all()`](https://traitecoevo.github.io/litterfitter/reference/fit_litter_all.md)

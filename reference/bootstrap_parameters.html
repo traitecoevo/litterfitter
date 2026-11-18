@@ -48,7 +48,8 @@
 
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p>an object of class "<code>litfit</code>"</p></dd>
+<dd><p>an object of class "<code>litfit</code>" (from <code><a href="fit_litter.html">fit_litter</a></code>) or
+"<code>elementfit</code>" (from <code><a href="fit_element.html">fit_element</a></code>)</p></dd>
 
 
 <dt id="arg-nboot">nboot<a class="anchor" aria-label="anchor" href="#arg-nboot"></a></dt>
@@ -70,7 +71,9 @@
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>a <code>litfit_bootstrap</code> object: a matrix with one row per bootstrap
-replicate and one column per parameter plus the implied steady state.
+replicate and one column per parameter, plus derived quantities: the implied
+steady state for a <code>litfit</code>, or the peak element remaining and the mass
+remaining at the peak for an <code>elementfit</code>.
 Failed replicates are recorded as <code>NA</code>.</p>
     </div>
 

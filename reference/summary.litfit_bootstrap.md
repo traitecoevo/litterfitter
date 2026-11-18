@@ -41,7 +41,7 @@ fit <- fit_litter(
 #> Number of successful fits:  100  out of 100
 boot1 <- bootstrap_parameters(fit, nboot = 200)
 summary(boot1)
-#>                  mean      2.5%       50%     97.5%
-#> k            0.274218 0.2362721 0.2744283 0.3117579
-#> steady_state 3.676353 3.2076175 3.6439388 4.2324078
+#>                   mean      2.5%       50%     97.5%
+#> k            0.2763719 0.2362788 0.2764302 0.3117582
+#> steady_state 3.6355295 3.2076148 3.6175500 4.2322890
 ```

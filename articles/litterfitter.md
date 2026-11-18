@@ -109,7 +109,7 @@ coef(fit)
 #> 4.185250 2.470686
 residuals(fit)
 #> [1]  0.00000000 -0.07131745  0.15897526 -0.24450225  0.19105538 -0.01185021
-#> [7] -0.07760268
+#> [7] -0.07760267
 predict(fit, newdata = c(7, 8, 9))
 #> [1] 0.028335593 0.007037663 0.001319326
 ```
@@ -151,13 +151,13 @@ fits
 #>              model nparams logLik    AICc delta_AICc
 #>            neg.exp       1  9.197 -15.395      0.000
 #>            weibull       2  9.459 -10.918      4.477
-#>       cont.quality       2  9.192 -10.385      5.010
+#>       cont.quality       2  9.193 -10.385      5.010
 #>  discrete.parallel       3  9.227  -0.454     14.940
 glance(fits)[, c("fit", "nparams", "logLik", "AICc", "delta_AICc", "time_to_50")]
 #>                 fit nparams   logLik        AICc delta_AICc time_to_50
 #> 1           neg.exp       1 9.197395 -15.3947904   0.000000   2.493138
 #> 2           weibull       2 9.458945 -10.9178902   4.476900   2.517099
-#> 3      cont.quality       2 9.192424 -10.3848483   5.009942   2.485853
+#> 3      cont.quality       2 9.192621 -10.3852413   5.009549   2.486052
 #> 4 discrete.parallel       3 9.227192  -0.4543834  14.940407   2.467509
 ```
 
@@ -230,3 +230,57 @@ ggplot(curves, aes(time, .fitted, colour = fit)) +
 ```
 
 ![](litterfitter_files/figure-html/unnamed-chunk-13-1.png)
+
+### Element (nutrient) dynamics
+
+[`fit_element()`](https://traitecoevo.github.io/litterfitter/reference/fit_element.md)
+fits how the proportion of an element remaining (for example nitrogen,
+N/N₀) changes as litter mass is lost. Elements are often immobilised
+early in decomposition (element remaining rises above 1) and released
+later. The `import.model` of Parton et al. (2007) describes this
+pattern:
+
+``` r
+
+efit <- fit_element(
+  mass.remaining = pineneedles$Mass.remaining,
+  element.remaining = c(1.1, 1.2, 1.3, 1, 0.8, 0.6),
+  iters = 500, quiet = TRUE
+)
+efit
+#> elementfit object: model import.model fit to 6 observations
+#> Parameters:
+#>      a      b 
+#> 0.4920 0.6457 
+#> Peak element remaining: 1.36 at mass remaining 0.646
+#> logLik: 7.608   AIC: -11.217   AICc: -7.217   BIC: -11.633
+```
+
+The plot shows mass remaining decreasing from left to right, so
+decomposition proceeds along the x axis; the dashed line marks the
+initial amount of the element:
+
+``` r
+
+plot(efit)
+```
+
+![](litterfitter_files/figure-html/unnamed-chunk-15-1.png)
+
+[`glance()`](https://generics.r-lib.org/reference/glance.html) reports
+the peak element remaining and the mass remaining at which it occurs,
+and bootstrapping gives their uncertainty:
+
+``` r
+
+glance(efit)[, c("model", "AICc", "peak_element", "mass_at_peak")]
+#>          model      AICc peak_element mass_at_peak
+#> 1 import.model -7.216568     1.357312    0.6456784
+eboot <- bootstrap_parameters(efit, nboot = 500)
+summary(eboot)
+#>                   mean      2.5%       50%     97.5%
+#> a            0.4386399 0.1000000 0.4746850 0.5714846
+#> b            0.6430370 0.6165116 0.6442553 0.6768554
+#> peak_element 1.7654645 1.3199628 1.3593187 5.0984716
+#> mass_at_peak 0.6430265 0.6165114 0.6442454 0.6768470
+```
