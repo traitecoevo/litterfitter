@@ -41,12 +41,23 @@ remotes::install_github("traitecoevo/litterfitter")
 
 ### Getting started 
 
-At the moment there is one key function which is `fit_litter` which can fit 6 different types of decomposition trajectories. Note that the fitted object is a `litfit` object
+The key function is `fit_litter`, which can fit 6 different types of decomposition trajectories. As a toy example, take a litterbag study with three replicate bags harvested at each of nine times (in years). Decomposition is slow at first, then speeds up, as often happens while decomposers colonise the litter:
+
+```{R}
+toy <- data.frame(
+  time = rep(c(0, 0.5, 1, 1.5, 2, 3, 4, 5, 6), each = 3),
+  mass.remaining = c(1, 1, 1, 1, 0.99, 0.95, 0.96, 0.87, 0.99,
+                     0.75, 0.83, 0.89, 0.53, 0.6, 0.61, 0.41, 0.35, 0.21,
+                     0.04, 0.27, 0.17, 0.01, 0.07, 0.15, 0.14, 0.01, 0.02)
+)
+```
+
+Fit a Weibull curve to it. The fitted object is a `litfit` object:
 
 ```{R,results="hide",warning=FALSE,message = FALSE}
 fit <- fit_litter(
-  time = c(0, 1, 2, 3, 4, 5, 6),
-  mass.remaining = c(1, 0.9, 1.01, 0.4, 0.6, 0.2, 0.01),
+  time = toy$time,
+  mass.remaining = toy$mass.remaining,
   model = "weibull",
   iters = 500
 )
@@ -54,12 +65,12 @@ fit <- fit_litter(
 class(fit)
 ```
 
-You can visually compare the fits of different non-linear equations with the `plot_multiple_fits` function:
+You can visually compare the fits of different non-linear equations with the `plot_multiple_fits` function. The single-rate negative exponential cannot capture the early lag that the Weibull curve fits:
 
 ```{R,fig.height=6,results='hide',fig.keep=TRUE,warning=FALSE,message = FALSE}
 plot_multiple_fits(
-  time = c(0, 1, 2, 3, 4, 5, 6),
-  mass.remaining = c(1, 0.9, 1.01, 0.4, 0.6, 0.2, 0.01),
+  time = toy$time,
+  mass.remaining = toy$mass.remaining,
   model = c("neg.exp", "weibull"),
   iters = 500
 )
@@ -90,13 +101,15 @@ plot(fit, boot = boot)
 
 ```{R,warning=FALSE}
 fits <- fit_litter_all(
-  time = c(0, 1, 2, 3, 4, 5, 6),
-  mass.remaining = c(1, 0.9, 1.01, 0.4, 0.6, 0.2, 0.01),
-  models = c("neg.exp", "weibull", "cont.quality"),
+  time = toy$time,
+  mass.remaining = toy$mass.remaining,
+  models = c("neg.exp", "weibull", "discrete.series"),
   iters = 500
 )
 glance(fits)[, c("fit", "nparams", "AICc", "delta_AICc", "time_to_50")]
 ```
+
+The Weibull model is strongly preferred here. The two-pool `discrete.series` model can produce some lag, but it fits less well despite having an extra parameter, and the single-rate `neg.exp` model fits worst.
 
 With ggplot2 installed, `autoplot()` draws fits, model comparisons and bootstrap distributions as ggplot objects:
 
