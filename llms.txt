@@ -88,11 +88,26 @@ parameter estimate by bootstrapping
 
 ## All functions
 
+- [`as_litfit_list()`](https://traitecoevo.github.io/litterfitter/reference/as_litfit_list.md)
+  : Combine existing fits into a litfit_list
 - [`bootstrap_parameters()`](https://traitecoevo.github.io/litterfitter/reference/bootstrap_parameters.md)
   : Create a bootstrap distribution of a particular coefficient from a
   model fit
 - [`fit_litter()`](https://traitecoevo.github.io/litterfitter/reference/fit_litter.md)
   : Fit different models to single cohort decomposition data
+- [`fit_litter_all()`](https://traitecoevo.github.io/litterfitter/reference/fit_litter_all.md)
+  : Fit several decomposition models to the same data
+- [`print(`*`<litfit_list>`*`)`](https://traitecoevo.github.io/litterfitter/reference/litfit_list_methods.md)
+  [`glance(`*`<litfit_list>`*`)`](https://traitecoevo.github.io/litterfitter/reference/litfit_list_methods.md)
+  [`tidy(`*`<litfit_list>`*`)`](https://traitecoevo.github.io/litterfitter/reference/litfit_list_methods.md)
+  [`augment(`*`<litfit_list>`*`)`](https://traitecoevo.github.io/litterfitter/reference/litfit_list_methods.md)
+  [`coef(`*`<litfit_list>`*`)`](https://traitecoevo.github.io/litterfitter/reference/litfit_list_methods.md)
+  [`` `[`( ``*`<litfit_list>`*`)`](https://traitecoevo.github.io/litterfitter/reference/litfit_list_methods.md)
+  : Methods for litfit_list objects
+- [`tidy(`*`<litfit>`*`)`](https://traitecoevo.github.io/litterfitter/reference/litfit_tidiers.md)
+  [`glance(`*`<litfit>`*`)`](https://traitecoevo.github.io/litterfitter/reference/litfit_tidiers.md)
+  [`augment(`*`<litfit>`*`)`](https://traitecoevo.github.io/litterfitter/reference/litfit_tidiers.md)
+  : Tidy, glance and augment methods for litfit objects
 - [`litterfitter-package`](https://traitecoevo.github.io/litterfitter/reference/litterfitter.md)
   [`litterfitter`](https://traitecoevo.github.io/litterfitter/reference/litterfitter.md)
   : litterfitter: methods for fitting curves to litter decomposition
@@ -115,6 +130,8 @@ parameter estimate by bootstrapping
 - [`summary(`*`<litfit_bootstrap>`*`)`](https://traitecoevo.github.io/litterfitter/reference/summary.litfit_bootstrap.md)
   : Summarise a bootstrap distribution of parameters from a litfit
   object
+- [`tidy(`*`<litfit_bootstrap>`*`)`](https://traitecoevo.github.io/litterfitter/reference/tidy.litfit_bootstrap.md)
+  : Tidy a bootstrap distribution
 - [`time_to_prop_mass_remaining()`](https://traitecoevo.github.io/litterfitter/reference/time_to_prop_mass_remaining.md)
   : Get the predicted time until half mass loss for a litter
   decomposition trajectory

@@ -129,45 +129,104 @@ steady_state(fit)
 
 ### Comparing models
 
-Because `litfit` objects have a `logLik` method, the base R functions
-[`AIC()`](https://rdrr.io/r/stats/AIC.html) and
-[`BIC()`](https://rdrr.io/r/stats/AIC.html) can be used to compare
-several models fit to the same data. Here we fit a set of models to the
-`pineneedles` data that ships with the package:
+[`fit_litter_all()`](https://traitecoevo.github.io/litterfitter/reference/fit_litter_all.md)
+fits several models to the same data and returns them together.
+[`glance()`](https://generics.r-lib.org/reference/glance.html) then
+gives a model-comparison table, sorted by AICc, with the difference from
+the best model (`delta_AICc`). Here we use the `pineneedles` data that
+ships with the package:
 
 ``` r
 
 data(pineneedles)
-models <- c("neg.exp", "weibull", "discrete.parallel", "cont.quality")
-fits <- lapply(models, function(m) {
-  fit_litter(
-    time = pineneedles$Year,
-    mass.remaining = pineneedles$Mass.remaining,
-    model = m, iters = 500, quiet = TRUE
-  )
-})
-names(fits) <- models
-
-data.frame(
-  model = models,
-  df = sapply(fits, function(f) attr(logLik(f), "df")),
-  AIC = sapply(fits, AIC),
-  AICc = sapply(fits, function(f) f$fitAICc),
-  BIC = sapply(fits, BIC),
-  row.names = NULL
+fits <- fit_litter_all(
+  time = pineneedles$Year,
+  mass.remaining = pineneedles$Mass.remaining,
+  models = c("neg.exp", "weibull", "discrete.parallel", "cont.quality"),
+  iters = 500
 )
-#>               model df       AIC        AICc       BIC
-#> 1           neg.exp  1 -16.39479 -15.3947904 -16.60303
-#> 2           weibull  2 -14.91789 -10.9178902 -15.33437
-#> 3 discrete.parallel  3 -12.45438  -0.4543834 -13.07910
-#> 4      cont.quality  2 -14.38485 -10.3848483 -14.80133
+fits
+#> litfit_list: 4 models fit to 6 observations
+#> 
+#>              model nparams logLik    AICc delta_AICc
+#>            neg.exp       1  9.197 -15.395      0.000
+#>            weibull       2  9.459 -10.918      4.477
+#>       cont.quality       2  9.192 -10.385      5.010
+#>  discrete.parallel       3  9.227  -0.454     14.940
+glance(fits)[, c("fit", "nparams", "logLik", "AICc", "delta_AICc", "time_to_50")]
+#>                 fit nparams   logLik        AICc delta_AICc time_to_50
+#> 1           neg.exp       1 9.197395 -15.3947904   0.000000   2.493138
+#> 2           weibull       2 9.458945 -10.9178902   4.476900   2.517099
+#> 3      cont.quality       2 9.192424 -10.3848483   5.009942   2.485853
+#> 4 discrete.parallel       3 9.227192  -0.4543834  14.940407   2.467509
 ```
 
-For two fits you can also call
-[`AIC()`](https://rdrr.io/r/stats/AIC.html) directly,
-e.g. `AIC(fits$neg.exp, fits$weibull)`. The small-sample corrected AICc
-is stored in each fit as `fitAICc`.
+Because `litfit` objects have a `logLik` method, the base R functions
+[`AIC()`](https://rdrr.io/r/stats/AIC.html) and
+[`BIC()`](https://rdrr.io/r/stats/AIC.html) also work,
+e.g. `AIC(fits$neg.exp, fits$weibull)`. `tidy(fits)` gives the parameter
+estimates of every model in one table.
 
 Note that with only a handful of observations the more complex models
 are often poorly identified; see Cornwell & Weedon (2013) for a
 discussion.
+
+### Tidy output and custom plots
+
+[`tidy()`](https://generics.r-lib.org/reference/tidy.html),
+[`glance()`](https://generics.r-lib.org/reference/glance.html) and
+[`augment()`](https://generics.r-lib.org/reference/augment.html) return
+fits as data frames, following the conventions of the
+[broom](https://broom.tidymodels.org/) package.
+[`augment()`](https://generics.r-lib.org/reference/augment.html) with
+`newdata` gives predictions on a grid of times, and with a bootstrap it
+adds a pointwise uncertainty band (`.lower`, `.upper`):
+
+``` r
+
+best <- fits$neg.exp
+boot <- bootstrap_parameters(best, nboot = 500)
+tidy(best, boot = boot)
+#>   term estimate  std.error  conf.low conf.high
+#> 1    k 0.278022 0.02032293 0.2411624 0.3105982
+grid <- augment(best, newdata = seq(0, 5, length.out = 100), boot = boot)
+head(grid)
+#>         time   .fitted    .lower    .upper
+#> 1 0.00000000 1.0000000 1.0000000 1.0000000
+#> 2 0.05050505 0.9860566 0.9844356 0.9878940
+#> 3 0.10101010 0.9723076 0.9691135 0.9759345
+#> 4 0.15151515 0.9587504 0.9540298 0.9641198
+#> 5 0.20202020 0.9453821 0.9391809 0.9524481
+#> 6 0.25252525 0.9322003 0.9245632 0.9409177
+```
+
+These data frames make it straightforward to build your own figures, for
+example with ggplot2:
+
+``` r
+
+library(ggplot2)
+ggplot(grid, aes(time)) +
+  geom_ribbon(aes(ymin = .lower, ymax = .upper), fill = "grey85") +
+  geom_line(aes(y = .fitted)) +
+  geom_point(data = augment(best), aes(y = mass)) +
+  labs(x = "Time (years)", y = "Proportion mass remaining")
+```
+
+![](litterfitter_files/figure-html/unnamed-chunk-12-1.png)
+
+To compare the curves of several models, use
+[`augment()`](https://generics.r-lib.org/reference/augment.html) on the
+`litfit_list`, which stacks the predictions with a `fit` column to map
+to colour:
+
+``` r
+
+curves <- augment(fits, newdata = seq(0, 5, length.out = 100))
+ggplot(curves, aes(time, .fitted, colour = fit)) +
+  geom_line() +
+  geom_point(data = augment(best), aes(y = mass), colour = "black") +
+  labs(x = "Time (years)", y = "Proportion mass remaining", colour = "Model")
+```
+
+![](litterfitter_files/figure-html/unnamed-chunk-13-1.png)

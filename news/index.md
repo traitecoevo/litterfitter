@@ -1,6 +1,6 @@
 # Changelog
 
-## litterfitter 0.2.0
+## litterfitter 0.2.0 (GitHub only; not released to CRAN)
 
 ### Behaviour changes
 

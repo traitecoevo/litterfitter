@@ -19,7 +19,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">litterfitter</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -159,42 +159,85 @@ implied steady-state litter mass (in units of yearly input):</p>
 <div class="section level3">
 <h3 id="comparing-models">Comparing models<a class="anchor" aria-label="anchor" href="#comparing-models"></a>
 </h3>
-<p>Because <code>litfit</code> objects have a <code>logLik</code>
-method, the base R functions <code><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">AIC()</a></code> and <code><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">BIC()</a></code>
-can be used to compare several models fit to the same data. Here we fit
-a set of models to the <code>pineneedles</code> data that ships with the
-package:</p>
+<p><code><a href="../reference/fit_litter_all.html">fit_litter_all()</a></code> fits several models to the same data
+and returns them together. <code><a href="https://generics.r-lib.org/reference/glance.html" class="external-link">glance()</a></code> then gives a
+model-comparison table, sorted by AICc, with the difference from the
+best model (<code>delta_AICc</code>). Here we use the
+<code>pineneedles</code> data that ships with the package:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">pineneedles</span><span class="op">)</span></span>
-<span><span class="va">models</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"neg.exp"</span>, <span class="st">"weibull"</span>, <span class="st">"discrete.parallel"</span>, <span class="st">"cont.quality"</span><span class="op">)</span></span>
-<span><span class="va">fits</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">models</span>, <span class="kw">function</span><span class="op">(</span><span class="va">m</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu"><a href="../reference/fit_litter.html">fit_litter</a></span><span class="op">(</span></span>
-<span>    time <span class="op">=</span> <span class="va">pineneedles</span><span class="op">$</span><span class="va">Year</span>,</span>
-<span>    mass.remaining <span class="op">=</span> <span class="va">pineneedles</span><span class="op">$</span><span class="va">Mass.remaining</span>,</span>
-<span>    model <span class="op">=</span> <span class="va">m</span>, iters <span class="op">=</span> <span class="fl">500</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="op">}</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">fits</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">models</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span>  model <span class="op">=</span> <span class="va">models</span>,</span>
-<span>  df <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">fits</span>, <span class="kw">function</span><span class="op">(</span><span class="va">f</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/logLik.html" class="external-link">logLik</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span>, <span class="st">"df"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  AIC <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">fits</span>, <span class="va">AIC</span><span class="op">)</span>,</span>
-<span>  AICc <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">fits</span>, <span class="kw">function</span><span class="op">(</span><span class="va">f</span><span class="op">)</span> <span class="va">f</span><span class="op">$</span><span class="va">fitAICc</span><span class="op">)</span>,</span>
-<span>  BIC <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">fits</span>, <span class="va">BIC</span><span class="op">)</span>,</span>
-<span>  row.names <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="va">fits</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_litter_all.html">fit_litter_all</a></span><span class="op">(</span></span>
+<span>  time <span class="op">=</span> <span class="va">pineneedles</span><span class="op">$</span><span class="va">Year</span>,</span>
+<span>  mass.remaining <span class="op">=</span> <span class="va">pineneedles</span><span class="op">$</span><span class="va">Mass.remaining</span>,</span>
+<span>  models <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"neg.exp"</span>, <span class="st">"weibull"</span>, <span class="st">"discrete.parallel"</span>, <span class="st">"cont.quality"</span><span class="op">)</span>,</span>
+<span>  iters <span class="op">=</span> <span class="fl">500</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt;               model df       AIC        AICc       BIC</span></span>
-<span><span class="co">#&gt; 1           neg.exp  1 -16.39479 -15.3947904 -16.60303</span></span>
-<span><span class="co">#&gt; 2           weibull  2 -14.91789 -10.9178902 -15.33437</span></span>
-<span><span class="co">#&gt; 3 discrete.parallel  3 -12.45438  -0.4543834 -13.07910</span></span>
-<span><span class="co">#&gt; 4      cont.quality  2 -14.38485 -10.3848483 -14.80133</span></span></code></pre></div>
-<p>For two fits you can also call <code><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">AIC()</a></code> directly,
-e.g. <code>AIC(fits$neg.exp, fits$weibull)</code>. The small-sample
-corrected AICc is stored in each fit as <code>fitAICc</code>.</p>
+<span><span class="va">fits</span></span>
+<span><span class="co">#&gt; litfit_list: 4 models fit to 6 observations</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;              model nparams logLik    AICc delta_AICc</span></span>
+<span><span class="co">#&gt;            neg.exp       1  9.197 -15.395      0.000</span></span>
+<span><span class="co">#&gt;            weibull       2  9.459 -10.918      4.477</span></span>
+<span><span class="co">#&gt;       cont.quality       2  9.192 -10.385      5.010</span></span>
+<span><span class="co">#&gt;  discrete.parallel       3  9.227  -0.454     14.940</span></span>
+<span><span class="fu"><a href="https://generics.r-lib.org/reference/glance.html" class="external-link">glance</a></span><span class="op">(</span><span class="va">fits</span><span class="op">)</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fit"</span>, <span class="st">"nparams"</span>, <span class="st">"logLik"</span>, <span class="st">"AICc"</span>, <span class="st">"delta_AICc"</span>, <span class="st">"time_to_50"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt;                 fit nparams   logLik        AICc delta_AICc time_to_50</span></span>
+<span><span class="co">#&gt; 1           neg.exp       1 9.197395 -15.3947904   0.000000   2.493138</span></span>
+<span><span class="co">#&gt; 2           weibull       2 9.458945 -10.9178902   4.476900   2.517099</span></span>
+<span><span class="co">#&gt; 3      cont.quality       2 9.192424 -10.3848483   5.009942   2.485853</span></span>
+<span><span class="co">#&gt; 4 discrete.parallel       3 9.227192  -0.4543834  14.940407   2.467509</span></span></code></pre></div>
+<p>Because <code>litfit</code> objects have a <code>logLik</code>
+method, the base R functions <code><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">AIC()</a></code> and <code><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">BIC()</a></code>
+also work, e.g. <code>AIC(fits$neg.exp, fits$weibull)</code>.
+<code>tidy(fits)</code> gives the parameter estimates of every model in
+one table.</p>
 <p>Note that with only a handful of observations the more complex models
 are often poorly identified; see Cornwell &amp; Weedon (2013) for a
 discussion.</p>
+</div>
+<div class="section level3">
+<h3 id="tidy-output-and-custom-plots">Tidy output and custom plots<a class="anchor" aria-label="anchor" href="#tidy-output-and-custom-plots"></a>
+</h3>
+<p><code><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy()</a></code>, <code><a href="https://generics.r-lib.org/reference/glance.html" class="external-link">glance()</a></code> and <code><a href="https://generics.r-lib.org/reference/augment.html" class="external-link">augment()</a></code>
+return fits as data frames, following the conventions of the <a href="https://broom.tidymodels.org/" class="external-link">broom</a> package.
+<code><a href="https://generics.r-lib.org/reference/augment.html" class="external-link">augment()</a></code> with <code>newdata</code> gives predictions on a
+grid of times, and with a bootstrap it adds a pointwise uncertainty band
+(<code>.lower</code>, <code>.upper</code>):</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">best</span> <span class="op">&lt;-</span> <span class="va">fits</span><span class="op">$</span><span class="va">neg.exp</span></span>
+<span><span class="va">boot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bootstrap_parameters.html">bootstrap_parameters</a></span><span class="op">(</span><span class="va">best</span>, nboot <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">best</span>, boot <span class="op">=</span> <span class="va">boot</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   term estimate  std.error  conf.low conf.high</span></span>
+<span><span class="co">#&gt; 1    k 0.278022 0.02032293 0.2411624 0.3105982</span></span>
+<span><span class="va">grid</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/augment.html" class="external-link">augment</a></span><span class="op">(</span><span class="va">best</span>, newdata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">5</span>, length.out <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>, boot <span class="op">=</span> <span class="va">boot</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">grid</span><span class="op">)</span></span>
+<span><span class="co">#&gt;         time   .fitted    .lower    .upper</span></span>
+<span><span class="co">#&gt; 1 0.00000000 1.0000000 1.0000000 1.0000000</span></span>
+<span><span class="co">#&gt; 2 0.05050505 0.9860566 0.9844356 0.9878940</span></span>
+<span><span class="co">#&gt; 3 0.10101010 0.9723076 0.9691135 0.9759345</span></span>
+<span><span class="co">#&gt; 4 0.15151515 0.9587504 0.9540298 0.9641198</span></span>
+<span><span class="co">#&gt; 5 0.20202020 0.9453821 0.9391809 0.9524481</span></span>
+<span><span class="co">#&gt; 6 0.25252525 0.9322003 0.9245632 0.9409177</span></span></code></pre></div>
+<p>These data frames make it straightforward to build your own figures,
+for example with ggplot2:</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">grid</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">time</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_ribbon.html" class="external-link">geom_ribbon</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>ymin <span class="op">=</span> <span class="va">.lower</span>, ymax <span class="op">=</span> <span class="va">.upper</span><span class="op">)</span>, fill <span class="op">=</span> <span class="st">"grey85"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">.fitted</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://generics.r-lib.org/reference/augment.html" class="external-link">augment</a></span><span class="op">(</span><span class="va">best</span><span class="op">)</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">mass</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Time (years)"</span>, y <span class="op">=</span> <span class="st">"Proportion mass remaining"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="litterfitter_files/figure-html/unnamed-chunk-12-1.png" class="r-plt" alt="" width="700"></p>
+<p>To compare the curves of several models, use <code><a href="https://generics.r-lib.org/reference/augment.html" class="external-link">augment()</a></code>
+on the <code>litfit_list</code>, which stacks the predictions with a
+<code>fit</code> column to map to colour:</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">curves</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/augment.html" class="external-link">augment</a></span><span class="op">(</span><span class="va">fits</span>, newdata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">5</span>, length.out <span class="op">=</span> <span class="fl">100</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">curves</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">time</span>, <span class="va">.fitted</span>, colour <span class="op">=</span> <span class="va">fit</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://generics.r-lib.org/reference/augment.html" class="external-link">augment</a></span><span class="op">(</span><span class="va">best</span><span class="op">)</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">mass</span><span class="op">)</span>, colour <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Time (years)"</span>, y <span class="op">=</span> <span class="st">"Proportion mass remaining"</span>, colour <span class="op">=</span> <span class="st">"Model"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="litterfitter_files/figure-html/unnamed-chunk-13-1.png" class="r-plt" alt="" width="700"></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
