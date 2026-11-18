@@ -53,6 +53,23 @@ predict_from_fit <- function(model_fn, params, target_time) {
   return(prediction)
 }
 
+# ---- element (nutrient) models ----
+# x is proportional mass remaining (M/M0); the result is proportional element
+# remaining (N/N0).
+
+# Parton et al. (2007) import model, reparameterised for proportional mass
+# remaining (the original was written for percent mass remaining, normalised at
+# 100). b is the mass remaining at which the immobilisation peak is centred and
+# a controls the peak's height and width.
+import.f <- function(x, a, b) {
+  r <- x / b
+  r / sqrt((2 * a * r)^2 + (1 - r^2)^2)
+}
+
+import.model <- function(x, a, b, upper = c(10, 1), lower = c(0.1, 0.01)) {
+  import.f(x, a, b) / import.f(1, a, b)
+}
+
 # Functions for steady state calculation (according to Reviewer 2)
 weibull.steadystate <- function(beta, alpha) {
   beta / alpha * gamma(1 / alpha)
@@ -167,6 +184,39 @@ run_optim <- function(par, fn, lower, upper, ...) {
     list(par = par, fn = fn, method = "L-BFGS-B", lower = lower, upper = upper, control = control),
     dots
   ))
+}
+
+# Observations of a fit as x (predictor) and y (response)
+fit_xy <- function(fit) {
+  if (inherits(fit, "elementfit")) {
+    list(x = fit$mass, y = fit$element)
+  } else {
+    list(x = fit$time, y = fit$mass)
+  }
+}
+
+# Derived quantities recorded alongside parameters in bootstrap output
+derived_names <- function(fit) {
+  if (inherits(fit, "elementfit")) c("peak_element", "mass_at_peak") else "steady_state"
+}
+
+derived_values <- function(fit, pars) {
+  if (inherits(fit, "elementfit")) {
+    unlist(element_peak(fit$model, pars))
+  } else {
+    suppressWarnings(unname(steady_state(pars = pars, model = fit$model)))
+  }
+}
+
+# Peak of an element curve over proportional mass remaining in (0, 1]
+element_peak <- function(model, pars) {
+  f <- function(x) do.call(model, c(list(x), as.list(unname(pars))))
+  opt <- stats::optimize(f, interval = c(0, 1), maximum = TRUE)
+  # optimize() does not evaluate the end points; the peak may be at x = 1
+  if (f(1) >= opt$objective) {
+    return(list(peak_element = f(1), mass_at_peak = 1))
+  }
+  list(peak_element = opt$objective, mass_at_peak = opt$maximum)
 }
 
 # Names of the free parameters for a given model function

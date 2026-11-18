@@ -36,11 +36,18 @@ boot_param_matrix <- function(fit, boot) {
   m <- unclass(boot)
   attr(m, "model") <- NULL
   par_names <- names(coef(fit))
-  if (ncol(m) != length(par_names) + 1) {
-    stop("boot does not have the right number of parameters for this fit")
+  if (!is.null(colnames(m))) {
+    if (!all(par_names %in% colnames(m))) {
+      stop("boot does not have the right parameters for this fit")
+    }
+    m <- m[, par_names, drop = FALSE]
+  } else {
+    if (ncol(m) < length(par_names)) {
+      stop("boot does not have the right parameters for this fit")
+    }
+    m <- m[, seq_along(par_names), drop = FALSE]
+    colnames(m) <- par_names
   }
-  m <- m[, seq_along(par_names), drop = FALSE]
-  colnames(m) <- par_names
   m <- m[stats::complete.cases(m), , drop = FALSE]
   if (nrow(m) < 2) {
     stop("boot has fewer than 2 successful replicates")
@@ -70,19 +77,21 @@ predict_band <- function(fit, boot, times, conf.level = 0.95) {
   )
 }
 
-newdata_times <- function(newdata) {
+newdata_times <- function(newdata, var = "time") {
   if (is.data.frame(newdata)) {
-    if (!"time" %in% names(newdata)) {
-      stop("newdata must have a 'time' column")
+    if (!var %in% names(newdata)) {
+      stop(sprintf("newdata must have a '%s' column", var))
     }
-    times <- newdata$time
+    times <- newdata[[var]]
   } else if (is.numeric(newdata)) {
     times <- newdata
   } else {
-    stop("newdata must be a numeric vector of times or a data frame with a 'time' column")
+    stop(sprintf(
+      "newdata must be a numeric vector or a data frame with a '%s' column", var
+    ))
   }
   if (!is.numeric(times)) {
-    stop("the 'time' column of newdata must be numeric")
+    stop(sprintf("the '%s' column of newdata must be numeric", var))
   }
   times
 }

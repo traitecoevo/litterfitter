@@ -142,3 +142,31 @@ ggplot(curves, aes(time, .fitted, colour = fit)) +
   geom_point(data = augment(best), aes(y = mass), colour = "black") +
   labs(x = "Time (years)", y = "Proportion mass remaining", colour = "Model")
 ```
+
+### Element (nutrient) dynamics
+
+`fit_element()` fits how the proportion of an element remaining (for example nitrogen, N/N~0~) changes as litter mass is lost. Elements are often immobilised early in decomposition (element remaining rises above 1) and released later. The `import.model` of Parton et al. (2007) describes this pattern:
+
+```{R}
+efit <- fit_element(
+  mass.remaining = pineneedles$Mass.remaining,
+  element.remaining = c(1.1, 1.2, 1.3, 1, 0.8, 0.6),
+  iters = 500, quiet = TRUE
+)
+efit
+```
+
+The plot shows mass remaining decreasing from left to right, so decomposition proceeds along the x axis; the dashed line marks the initial amount of the element:
+
+```{R, fig.height = 4}
+plot(efit)
+```
+
+`glance()` reports the peak element remaining and the mass remaining at which it occurs, and bootstrapping gives their uncertainty:
+
+```{R, warning = FALSE}
+glance(efit)[, c("model", "AICc", "peak_element", "mass_at_peak")]
+eboot <- bootstrap_parameters(efit, nboot = 500)
+summary(eboot)
+```
+
