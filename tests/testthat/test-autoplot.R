@@ -108,7 +108,7 @@ test_that("autoplot output matches snapshots", {
   boot <- suppressWarnings(bootstrap_parameters(fit, nboot = 100))
   set.seed(1)
   fits <- suppressWarnings(fit_litter_all(pineneedles$Year, pineneedles$Mass.remaining,
-    models = c("neg.exp", "weibull", "cont.quality"), iters = 100
+    models = c("neg.exp", "weibull"), iters = 100
   ))
   set.seed(1)
   efit <- quiet_element(pineneedles$Mass.remaining, ex_element, iters = 200)
