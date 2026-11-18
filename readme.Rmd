@@ -24,7 +24,7 @@ library(litterfitter)
 ```{r, echo = FALSE, results = 'asis'}
 # On CI/pkgdown/GitHub: show a clickable badge
 if (identical(Sys.getenv("IN_PKGDOWN"), "true") || identical(Sys.getenv("NOT_CRAN"), "true")) {
-  cat("[![DOI](https://img.shields.io/badge/DOI-10.1111--2041--210X.12138-blue.svg)](https://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12138)\n")
+  cat("[![DOI](https://img.shields.io/badge/DOI-10.1111--2041--210X.12138-blue.svg)](https://doi.org/10.1111/2041-210X.12138)\n")
 } else {
   # On CRAN checks: show a non-clickable badge + plain-text DOI (no URL to hit)
   cat("![DOI](https://img.shields.io/badge/DOI-10.1111--2041--210X.12138-blue.svg)\n")

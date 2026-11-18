@@ -1,12 +1,17 @@
-## Resubmission
+## Submission
 
-This is a resubmission. In this version I have:
+This is an update from 0.1.5 to 0.2.0. In this version I have:
 
-- fixing url in the readme, which is causing a note in the cran checks
-- Modernized package structure, applied code styling and linting
-- Updated CI/CD workflows and package dependencies
+- Fixed several bugs (default model selection, convergence check, steady state
+  for the `neg.exp.limit` model, bootstrap failures, time-to-threshold calculation)
+- Added standard S3 methods (`print`, `logLik`, `nobs`, `residuals`) for fitted objects
+- Made model fitting roughly 3-4x faster
+- Removed the dependency on `methods`
 
 ## R CMD check results
 
-There were no ERRORs, WARNINGs.  
+0 errors | 0 warnings | 0 notes
 
+## Reverse dependencies
+
+There are no reverse dependencies on CRAN.
