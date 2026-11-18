@@ -96,3 +96,32 @@ test_that("model functions are looked up in the package, not the caller", {
   neg.exp <- function(...) stop("user object should not be used")
   expect_s3_class(quiet_fit(pineneedles$Year, pineneedles$Mass.remaining, "neg.exp", iters = 5), "litfit")
 })
+
+test_that("fit_litter errors when every start fails", {
+  failing_gr <- function(p) stop("gradient unavailable")
+  set.seed(1)
+  expect_error(
+    fit_litter(pineneedles$Year, pineneedles$Mass.remaining, "neg.exp",
+               iters = 5, quiet = TRUE, gr = failing_gr),
+    "All attempts failed to converge"
+  )
+})
+
+test_that("fit_litter warns when the best starts disagree", {
+  # A zero gradient stops each start where it began, so the five best
+  # objective values are spread out rather than on one optimum.
+  flat_gr <- function(p) numeric(length(p))
+  set.seed(1)
+  expect_warning(
+    fit_litter(pineneedles$Year, pineneedles$Mass.remaining, "weibull",
+               iters = 20, quiet = TRUE, gr = flat_gr),
+    "May not have found global best fit"
+  )
+  # a well-behaved fit does not warn
+  set.seed(1)
+  expect_no_warning(
+    fit_litter(pineneedles$Year, pineneedles$Mass.remaining, "neg.exp",
+               iters = 20, quiet = TRUE),
+    message = "global best"
+  )
+})
