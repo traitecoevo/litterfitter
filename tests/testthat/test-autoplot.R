@@ -101,6 +101,7 @@ test_that("autoplot methods are registered for ggplot2's generic", {
 
 test_that("autoplot output matches snapshots", {
   skip_on_cran()
+  skip_on_covr()
   skip_if_not_installed("vdiffr")
   set.seed(1)
   fit <- quiet_fit(pineneedles$Year, pineneedles$Mass.remaining, "weibull", iters = 100)

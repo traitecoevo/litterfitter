@@ -175,6 +175,7 @@ test_that("bootstrap plots skip non-finite values and columns", {
 
 test_that("base plots match snapshots", {
   skip_on_cran()
+  skip_on_covr()
   skip_if_not_installed("vdiffr")
   fit <- pine_fit("weibull", iters = 100)
   set.seed(3)
