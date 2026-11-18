@@ -3,6 +3,8 @@
 ## Behaviour changes
 
 * `fit_litter()` now defaults to `model = "neg.exp"` when no model is given.
+* `fit_litter()` warns when mass remaining values are above 1 or below 0 (see Bug fixes).
+* Fits can differ slightly from earlier versions because of the smaller optimiser step.
 * `steady_state()` returns `Inf` for `neg.exp.limit` fits with B > 0 (previously a string).
 * `time_to_prop_mass_remaining()` returns `NA` (with a warning) when the threshold is never
   reached, and its result is now exact rather than read off a grid, so values may differ slightly.
@@ -12,13 +14,23 @@
 
 * `fit_litter()` now defaults to `model = "neg.exp"` and rejects unknown model names
   (previously omitting `model` gave "first argument has length > 1").
-* `fit_litter()` now rejects clearly negative mass, warns (rather than failing) on slightly
-  negative values arising from measurement error (#21), drops missing observations with a
-  warning, and requires more observations than model parameters.
+* Proportional mass remaining values above 1 (apparent mass gain from measurement error, common
+  early in decomposition or when decomposition is slow) are kept in the fit but now trigger an
+  informative warning of class `litterfitter_mass_above_one`; when the data also show little
+  overall mass loss the warning says that parameters may be poorly constrained and derived
+  quantities are extrapolations (#21). Slightly negative values (down to -0.1) are kept with a
+  `litterfitter_mass_below_zero` warning; clearly negative values or percentages are errors.
+* `fit_litter()` now rejects infinite values, invalid `iters`, and data with a single time point;
+  drops missing observations with a warning; and requires more observations than parameters.
+* Boundary warnings now name the parameters on a bound, and hint that the default bounds assume
+  time in years when time values are large.
+* Fits are much more accurate when rates are small (e.g. time in days): the finite-difference
+  step used by `optim` now defaults to `ndeps = 1e-4` (previously 1e-3); a user-supplied
+  `control$ndeps` still takes precedence.
 * The "may not have found global best fit" check now compares the 5 *best* fits
   (it previously compared the 5 worst) and no longer errors when fewer than 5 starts succeed.
-* `steady_state()` for `neg.exp.limit` now returns a number (`Inf` when B > 0) instead of a
-  string, fixing errors in `summary()` and `bootstrap_parameters()` for that model.
+* `steady_state()` for `neg.exp.limit` now returns a number (`Inf` when B > 1e-4, otherwise
+  A / k) instead of a string, fixing errors in `summary()` and `bootstrap_parameters()`.
 * `bootstrap_parameters()` records failed replicates as `NA` instead of erroring.
 * `time_to_prop_mass_remaining()` now uses `uniroot()`: exact, fast, independent of time
   units, and returns `NA` with a warning when the threshold is never reached.
@@ -28,7 +40,10 @@
 * `plot.litfit()` always shows the (0, 1) starting point on the y axis (#7).
 * All six models are now documented in `?fit_litter`; `neg.exp` had been accidentally
   commented out and `neg.exp.limit` was missing (#22).
-* Restored input-validation tests that were lost in 0.1.5.
+* `time_to_prop_mass_remaining()` gives a clear error for a missing `threshold.mass`.
+* Restored input-validation tests that were lost in 0.1.5, and greatly expanded the test suite
+  (edge cases for inputs, every model, derived quantities checked against closed-form results,
+  bootstrap failures, methods and plots).
 
 ## New features
 

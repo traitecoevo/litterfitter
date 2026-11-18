@@ -270,7 +270,9 @@ predict.litfit <- function(object, newdata = NULL, ...) {
 #'   Only needed if `x` is not provided.
 #' @return A named numeric value representing the estimated steady state biomass from the specified model.
 #' @details For \code{neg.exp.limit}, a fraction \eqn{B} of the litter never decomposes, so
-#'   the implied steady state is infinite whenever \eqn{B > 0}.
+#'   the implied steady state is infinite whenever \eqn{B > 0}. Because \eqn{B} is bounded just
+#'   above zero during fitting, values of \eqn{B < 10^{-4}} are treated as zero and the steady
+#'   state is \eqn{A / k}.
 #' @seealso \code{\link{fit_litter}} for generating `litfit` objects.
 #' @examples
 #' # Example with litfit object
@@ -477,7 +479,7 @@ time_to_prop_mass_remaining <- function(x, threshold.mass = 0.5) {
     stop("litterfitter::time_to_prop_mass_remaining takes a 'litfit' object")
   }
   if (!is.numeric(threshold.mass) || length(threshold.mass) != 1 ||
-    threshold.mass <= 0 || threshold.mass >= 1) {
+    is.na(threshold.mass) || threshold.mass <= 0 || threshold.mass >= 1) {
     stop("threshold.mass must be a single number between 0 and 1")
   }
   f <- function(t) predict(x, newdata = t) - threshold.mass

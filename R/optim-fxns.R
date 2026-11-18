@@ -7,8 +7,9 @@
 #'
 #' @param time time since decomposition began, that is, ti-t0
 #'
-#' @param  mass.remaining proportional mass remaining, that is, mi/m0. Values slightly above 1
-#'   or slightly below 0 (down to -0.1) are allowed, to accommodate measurement error.
+#' @param  mass.remaining proportional mass remaining, that is, mi/m0. Values above 1 (apparent
+#'   mass gain, up to 2) or slightly below 0 (down to -0.1) are kept and treated as measurement
+#'   error, with an informative warning (see Details).
 #'
 #' @param model there are six models currently implemented (see below); defaults to \code{"neg.exp"}
 #'
@@ -52,6 +53,17 @@
 #' \emph{Warning}: difficulty in finding the optimal solution is determined by an interaction between the nature and complexity of the
 #' likelihood space (which is both data- and model-dependent) as well as the optimization methods.  There can never be a guarantee that the optimal solution is found, but using many random starting points will increase these odds.  It should be noted that there is significant variation among models in identifiability, with some models inherently less identifiable likely due to a tendency to form for flat ridges in likelihood space.  The confidence in the fit should be very low in these cases (see Cornwell and Weedon 2013).   A number of random starting points are used in optimization and are given through the iters.  The function checks whether the best 5 optimizations have converged on the same likelihood, and if they have not this function will return a warning.
 #'
+#' \emph{Values outside 0--1}: measurement error, especially early in decomposition or when
+#' decomposition is slow, can produce proportional mass remaining values slightly above 1
+#' (i.e. negative mass loss). These values are kept in the fit, since removing or truncating
+#' them would bias the estimates, but \code{fit_litter} warns (class
+#' \code{litterfitter_mass_above_one}). If the data also show little overall mass loss, the
+#' warning notes that parameters may be poorly constrained and that derived quantities such as
+#' \code{\link{time_to_prop_mass_remaining}} and \code{\link{steady_state}} are extrapolations.
+#' Slightly negative values (down to -0.1) are similarly kept with a warning (class
+#' \code{litterfitter_mass_below_zero}). Use \code{suppressWarnings(..., classes = ...)} to
+#' silence these once checked.
+#'
 #' @author Will Cornwell and James Weedon
 #'
 #' @references \itemize{ \item{Ågren, G. and Bosatta, E. (1996) Quality: a bridge between theory and experiment in soil organic matter studies. Oikos, 76, 522–528.}
@@ -86,24 +98,15 @@ fit_litter <- function(
     stop("time and mass.remaining must be numeric vectors")
   }
 
+  if (!is.numeric(iters) || length(iters) != 1 || is.na(iters) || iters < 1) {
+    stop("iters must be a single positive number")
+  }
+
   missing_obs <- is.na(time) | is.na(mass.remaining)
   if (any(missing_obs)) {
     warning(paste(sum(missing_obs), "observation(s) with missing time or mass removed"))
     time <- time[!missing_obs]
     mass.remaining <- mass.remaining[!missing_obs]
-  }
-
-  if (any(mass.remaining < -0.1) || max(mass.remaining) > 2) {
-    stop("Check mass remaining vector; must be in proportional mass remaining (between 0 and ~1).")
-  }
-  if (any(mass.remaining < 0)) {
-    # small negative values can arise from measurement error when little mass
-    # remains; they are kept so the error structure is not biased (issue #21)
-    warning("Slightly negative mass remaining values detected; treating them as measurement error")
-  }
-
-  if (min(time) < 0) {
-    stop("Check time vector; negative values detected.")
   }
 
   nparams_model <- length(model_param_names(model))
@@ -113,6 +116,22 @@ fit_litter <- function(
       nparams_model, "data points"
     ))
   }
+
+  if (any(!is.finite(time)) || any(!is.finite(mass.remaining))) {
+    stop("time and mass.remaining must not contain infinite values")
+  }
+
+  if (min(time) < 0) {
+    stop("Check time vector; negative values detected.")
+  }
+  if (length(unique(time)) < 2) {
+    stop("Need observations at two or more distinct time points")
+  }
+
+  if (any(mass.remaining < -0.1) || max(mass.remaining) > 2) {
+    stop("Check mass remaining vector; must be in proportional mass remaining (between 0 and ~1).")
+  }
+  check_mass_range(mass.remaining)
 
   # test that if user supplied bounds, there are enough of them
   default_upper <- model_bounds(model, "upper")
@@ -130,7 +149,7 @@ fit_litter <- function(
   }
 
   fit <- multioptimFit(time, mass.remaining, model,
-    iters = iters, upper = upper,
+    iters = as.integer(iters), upper = upper,
     lower = lower, quiet = quiet, ...
   )
   names(fit$par) <- model_param_names(model)
@@ -149,8 +168,20 @@ fit_litter <- function(
   class(fit.out) <- "litfit"
 
   # test if best fits are on boundary values
-  if (any(fit.out$optimFit$par == test.lower | fit.out$optimFit$par == test.upper)) {
-    warning("one or more parameters fit on the boundary, check fit closely")
+  on_bound <- fit.out$optimFit$par == test.lower | fit.out$optimFit$par == test.upper
+  if (any(on_bound)) {
+    msg <- paste0(
+      "one or more parameters fit on the boundary (",
+      paste(names(fit.out$optimFit$par)[on_bound], collapse = ", "),
+      "), check fit closely"
+    )
+    if (is.null(upper) && is.null(lower) && max(time) > 20) {
+      msg <- paste0(
+        msg, ". The default bounds assume time is measured in years; ",
+        "if time is in days or months, convert it to years or supply 'upper' and 'lower'."
+      )
+    }
+    warning(msg)
   }
   return(fit.out)
 }

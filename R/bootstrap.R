@@ -47,12 +47,11 @@ bootstrap_parameters <-
       boot.inds <- sample(x = nobs, size = nobs, replace = TRUE)
 
       boot.fit <- tryCatch(
-        optim(
+        run_optim(
           fit.params,
           make_objective(fit.model, obs.time[boot.inds], obs.mass[boot.inds]),
-          method = "L-BFGS-B",
-          lower = lower_bounds,
-          upper = upper_bounds,
+          lower_bounds,
+          upper_bounds,
           ...
         ),
         error = function(e) NULL

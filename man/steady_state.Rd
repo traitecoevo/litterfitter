@@ -25,7 +25,9 @@ Estimate Steady State Biomass
 Computes the steady state biomass, as a proportion of the annual input, based on a given model fit or parameters.
 
 For \code{neg.exp.limit}, a fraction \eqn{B} of the litter never decomposes, so
-the implied steady state is infinite whenever \eqn{B > 0}.
+the implied steady state is infinite whenever \eqn{B > 0}. Because \eqn{B} is bounded just
+above zero during fitting, values of \eqn{B < 10^{-4}} are treated as zero and the steady
+state is \eqn{A / k}.
 }
 \examples{
 # Example with litfit object

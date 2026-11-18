@@ -74,10 +74,54 @@ cont.quality.steadystate <- function(b, a) {
   1 / b * 1 / (a - 1)
 }
 
-# A fraction B never decomposes, so steady state is unbounded when B > 0.
-# When B == 0 the decomposing pool (A) behaves like a negative exponential.
-neg.exp.limit.steadystate <- function(k, A, B) {
-  if (B > 0) Inf else A / k
+# A fraction B never decomposes, so the steady state (the integral of mass
+# remaining over time) is A / k + B * Inf. B's lower bound is just above zero,
+# so a B below `tol` is treated as zero and the steady state is A / k.
+neg.exp.limit.steadystate <- function(k, A, B, tol = 1e-4) {
+  if (B > tol) Inf else A / k
+}
+
+# Warn (with classed conditions) about proportional mass remaining values
+# outside 0-1, which are kept in the fit and treated as measurement error.
+check_mass_range <- function(mass) {
+  n <- length(mass)
+  above <- mass > 1
+  if (any(above)) {
+    msg <- sprintf(
+      paste0(
+        "%d of %d mass remaining values are above 1 (max %s), i.e. apparent mass gain. ",
+        "They are kept in the fit and treated as measurement error."
+      ),
+      sum(above), n, format(signif(max(mass), 3))
+    )
+    if (min(mass) > 0.8) {
+      msg <- paste0(
+        msg, sprintf(
+          paste0(
+            " The data also show little mass loss (minimum %s), so parameters may be ",
+            "poorly constrained and time to mass loss thresholds and steady state ",
+            "will be extrapolations."
+          ),
+          format(signif(min(mass), 3))
+        )
+      )
+    }
+    warning(warningCondition(msg, class = "litterfitter_mass_above_one"))
+  }
+  below <- mass < 0
+  if (any(below)) {
+    warning(warningCondition(
+      sprintf(
+        paste0(
+          "%d of %d mass remaining values are below 0 (min %s). ",
+          "They are kept in the fit and treated as measurement error."
+        ),
+        sum(below), n, format(signif(min(mass), 3))
+      ),
+      class = "litterfitter_mass_below_zero"
+    ))
+  }
+  invisible(NULL)
 }
 
 
@@ -106,6 +150,23 @@ make_objective <- function(curve, ind, dep) {
     function(p) sse(f(ind, p[1], p[2], p[3])),
     stop("models with more than 3 parameters are not supported")
   )
+}
+
+# Run L-BFGS-B with a finite-difference step suited to the small rate
+# parameters these models often have. optim's default step (ndeps = 1e-3) is
+# too coarse when rates are ~1e-3 (e.g. time measured in days); 1e-4 gives
+# equal or better fits on all models. A user-supplied control$ndeps wins.
+run_optim <- function(par, fn, lower, upper, ...) {
+  dots <- list(...)
+  control <- if (is.null(dots$control)) list() else dots$control
+  dots$control <- NULL
+  if (is.null(control$ndeps)) {
+    control$ndeps <- rep(1e-4, length(par))
+  }
+  do.call(stats::optim, c(
+    list(par = par, fn = fn, method = "L-BFGS-B", lower = lower, upper = upper, control = control),
+    dots
+  ))
 }
 
 # Names of the free parameters for a given model function
@@ -155,10 +216,10 @@ multioptimFit <- function(
       min = lower_bounds,
       max = pmin(lower_bounds + 0.9998, upper_bounds)
     )
-    fit[[i]] <- tryCatch(stats::optim(starter, objective,
-      method = "L-BFGS-B", lower = lower_bounds, upper = upper_bounds,
-      ...
-    ), error = function(e) NULL)
+    fit[[i]] <- tryCatch(
+      run_optim(starter, objective, lower_bounds, upper_bounds, ...),
+      error = function(e) NULL
+    )
   }
   successes <- vapply(fit, function(x) {
     !is.null(x) && x$convergence == 0 && x$value < obj_penalty
@@ -203,7 +264,7 @@ rnd.to.text <- function(x, digits = 4) {
 simulate_and_check <- function(model) {
   suppressWarnings(fit <- fit_litter(
     time = litterfitter::pineneedles$Year, mass.remaining = litterfitter::pineneedles$Mass.remaining,
-    model = model, iters = 1000
+    model = model, iters = 1000, quiet = TRUE
   ))
   mass.with.error <- pmax(litterfitter::pineneedles$Mass.remaining + rnorm(
     length(predict(fit)), 0,
@@ -211,7 +272,7 @@ simulate_and_check <- function(model) {
   ), 0)
   suppressWarnings(simulated.fit <- fit_litter(
     time = litterfitter::pineneedles$Year, mass.remaining = mass.with.error,
-    model = model, iters = 1000
+    model = model, iters = 1000, quiet = TRUE
   ))
   return(are.within.ten.percent.of(time_to_prop_mass_remaining(fit), time_to_prop_mass_remaining(simulated.fit)))
 }

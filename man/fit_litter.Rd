@@ -19,8 +19,9 @@ fit_litter(
 \arguments{
 \item{time}{time since decomposition began, that is, ti-t0}
 
-\item{mass.remaining}{proportional mass remaining, that is, mi/m0. Values slightly above 1
-or slightly below 0 (down to -0.1) are allowed, to accommodate measurement error.}
+\item{mass.remaining}{proportional mass remaining, that is, mi/m0. Values above 1 (apparent
+mass gain, up to 2) or slightly below 0 (down to -0.1) are kept and treated as measurement
+error, with an informative warning (see Details).}
 
 \item{model}{there are six models currently implemented (see below); defaults to \code{"neg.exp"}}
 
@@ -68,6 +69,17 @@ the model likelihood is maximized using methods available in \code{\link[stats]{
 }
 \emph{Warning}: difficulty in finding the optimal solution is determined by an interaction between the nature and complexity of the
 likelihood space (which is both data- and model-dependent) as well as the optimization methods.  There can never be a guarantee that the optimal solution is found, but using many random starting points will increase these odds.  It should be noted that there is significant variation among models in identifiability, with some models inherently less identifiable likely due to a tendency to form for flat ridges in likelihood space.  The confidence in the fit should be very low in these cases (see Cornwell and Weedon 2013).   A number of random starting points are used in optimization and are given through the iters.  The function checks whether the best 5 optimizations have converged on the same likelihood, and if they have not this function will return a warning.
+
+\emph{Values outside 0--1}: measurement error, especially early in decomposition or when
+decomposition is slow, can produce proportional mass remaining values slightly above 1
+(i.e. negative mass loss). These values are kept in the fit, since removing or truncating
+them would bias the estimates, but \code{fit_litter} warns (class
+\code{litterfitter_mass_above_one}). If the data also show little overall mass loss, the
+warning notes that parameters may be poorly constrained and that derived quantities such as
+\code{\link{time_to_prop_mass_remaining}} and \code{\link{steady_state}} are extrapolations.
+Slightly negative values (down to -0.1) are similarly kept with a warning (class
+\code{litterfitter_mass_below_zero}). Use \code{suppressWarnings(..., classes = ...)} to
+silence these once checked.
 }
 \examples{
 data(pineneedles)
