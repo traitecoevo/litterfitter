@@ -20,9 +20,10 @@ This vignette provides an overview of the main functions in `litterfitter`
 
 ```{r setup}
 library(litterfitter)
+set.seed(1)
 ```
 
-At the moment there is one key function which is `fit_litter` which can fit 6 different types of decomposition trajectories. Note that the fitted object is a `litfit` object
+The key function is `fit_litter`, which can fit 6 different types of decomposition trajectories: `neg.exp`, `weibull`, `discrete.parallel`, `discrete.series`, `cont.quality` and `neg.exp.limit` (see `?fit_litter`). The fitted object is a `litfit` object
 
 ```{R,results="hide",warning=FALSE,message = FALSE}
 fit <- fit_litter(
@@ -60,8 +61,62 @@ summary(fit)
 
 From the `litfit` object you can then see the uncertainty in the parameter estimate by bootstrapping
 
-```{R,echo=FALSE,fig.keep=TRUE}
-post <- bootstrap_parameters(fit)
+```{R,fig.keep=TRUE,warning=FALSE}
+post <- bootstrap_parameters(fit, nboot = 500)
 plot(post)
 ```
+
+and summarise the bootstrap distribution of each parameter (and of the implied steady state) as a mean with quantiles:
+
+```{R}
+summary(post)
+```
+
+### Working with fitted models
+
+Printing a `litfit` object gives the fitted parameters and information criteria, and the standard extractor functions work as you would expect:
+
+```{R}
+fit
+coef(fit)
+residuals(fit)
+predict(fit, newdata = c(7, 8, 9))
+```
+
+Two quantities that are often of ecological interest can be derived from any fit: the time until a given proportion of mass remains, and the implied steady-state litter mass (in units of yearly input):
+
+```{R}
+time_to_prop_mass_remaining(fit, threshold.mass = 0.5)
+steady_state(fit)
+```
+
+### Comparing models
+
+Because `litfit` objects have a `logLik` method, the base R functions `AIC()` and `BIC()` can be used to compare several models fit to the same data. Here we fit a set of models to the `pineneedles` data that ships with the package:
+
+```{R,warning=FALSE}
+data(pineneedles)
+models <- c("neg.exp", "weibull", "discrete.parallel", "cont.quality")
+fits <- lapply(models, function(m) {
+  fit_litter(
+    time = pineneedles$Year,
+    mass.remaining = pineneedles$Mass.remaining,
+    model = m, iters = 500, quiet = TRUE
+  )
+})
+names(fits) <- models
+
+data.frame(
+  model = models,
+  df = sapply(fits, function(f) attr(logLik(f), "df")),
+  AIC = sapply(fits, AIC),
+  AICc = sapply(fits, function(f) f$fitAICc),
+  BIC = sapply(fits, BIC),
+  row.names = NULL
+)
+```
+
+For two fits you can also call `AIC()` directly, e.g. `AIC(fits$neg.exp, fits$weibull)`. The small-sample corrected AICc is stored in each fit as `fitAICc`.
+
+Note that with only a handful of observations the more complex models are often poorly identified; see Cornwell & Weedon (2013) for a discussion.
 
