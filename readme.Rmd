@@ -20,27 +20,23 @@ library(litterfitter)
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/traitecoevo/litterfitter/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/traitecoevo/litterfitter/actions/workflows/R-CMD-check.yaml)
-[![Codecov test coverage](https://codecov.io/gh/traitecoevo/litterfitter/branch/master/graph/badge.svg)](https://app.codecov.io/gh/traitecoevo/litterfitter?branch=master)
-```{r, echo = FALSE, results = 'asis'}
-# On CI/pkgdown/GitHub: show a clickable badge
-if (identical(Sys.getenv("IN_PKGDOWN"), "true") || identical(Sys.getenv("NOT_CRAN"), "true")) {
-  cat("[![DOI](https://img.shields.io/badge/DOI-10.1111--2041--210X.12138-blue.svg)](https://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12138)\n")
-} else {
-  # On CRAN checks: show a non-clickable badge + plain-text DOI (no URL to hit)
-  cat("![DOI](https://img.shields.io/badge/DOI-10.1111--2041--210X.12138-blue.svg)\n")
-  cat("DOI: 10.1111/2041-210X.12138\n")
-}
-```
+[![DOI](https://img.shields.io/badge/DOI-10.1111--2041--210X.12138-blue.svg)](https://doi.org/10.1111/2041-210X.12138)
 `r badger::badge_cran_release("litterfitter", "orange")`
 <!-- badges: end -->
 
 ### Installation 
 
+Install the released version from CRAN:
+
+```{R, eval = FALSE}
+install.packages("litterfitter")
+```
+
+or the development version from GitHub:
+
 ```{R, eval = FALSE}
 # install.packages("remotes")
-remotes::install_github("cornwell-lab-unsw/litterfitter")
-
-library(litterfitter)
+remotes::install_github("traitecoevo/litterfitter")
 ```
 
 ### Getting started 

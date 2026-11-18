@@ -18,7 +18,9 @@ bootstrap_parameters(x,nboot,upper,lower,...)
 \item{...}{passed to \code{\link{optim}}}
 }
 \value{
-litfit_bootstrap object
+a \code{litfit_bootstrap} object: a matrix with one row per bootstrap
+replicate and one column per parameter plus the implied steady state.
+Failed replicates are recorded as \code{NA}.
 }
 \description{
 Create a bootstrap distribution of a particular coefficient from a model fit

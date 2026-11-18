@@ -8,7 +8,9 @@
 #' @param lower optional vector of lower bounds for the bootstrap replicates
 #' @param ... passed to \code{\link{optim}}
 #'
-#' @return litfit_bootstrap object
+#' @return a \code{litfit_bootstrap} object: a matrix with one row per bootstrap
+#'   replicate and one column per parameter plus the implied steady state.
+#'   Failed replicates are recorded as \code{NA}.
 #'
 #' @examples
 #' fit <- fit_litter(
@@ -24,15 +26,9 @@ bootstrap_parameters <-
            upper = NULL,
            lower = NULL,
            ...) {
-    # basic error checking
-    if (!is(x, "litfit")) {
-      stop(
-        "Something went wrong -- litterfitter::bootstrap.parameters
-         takes a 'litfit' object"
-      )
+    if (!inherits(x, "litfit")) {
+      stop("litterfitter::bootstrap_parameters takes a 'litfit' object")
     }
-
-    # extract necessary objects
 
     fit.model <- x$model
     obs.time <- x$time
@@ -41,56 +37,68 @@ bootstrap_parameters <-
     fit.params <- x$optimFit$par
     fit.nparams <- x$nparams
 
-    output <- matrix(ncol = fit.nparams + 1, nrow = nboot)
+    upper_bounds <- if (!is.null(upper)) upper else model_bounds(fit.model, "upper")
+    lower_bounds <- if (!is.null(lower)) lower else model_bounds(fit.model, "lower")
 
-    for (i in 1:nboot)
-    {
-      # do bootstrapping
+    output <- matrix(NA_real_, ncol = fit.nparams + 1, nrow = nboot)
+    colnames(output) <- c(model_param_names(fit.model), "steady_state")
 
-      boot.inds <- sample(
-        x = nobs,
-        size = nobs,
-        replace = TRUE
+    for (i in seq_len(nboot)) {
+      boot.inds <- sample(x = nobs, size = nobs, replace = TRUE)
+
+      boot.fit <- tryCatch(
+        run_optim(
+          fit.params,
+          make_objective(fit.model, obs.time[boot.inds], obs.mass[boot.inds]),
+          lower_bounds,
+          upper_bounds,
+          ...
+        ),
+        error = function(e) NULL
       )
-      boot.time <- obs.time[boot.inds]
-      boot.mass <- obs.mass[boot.inds]
-
-      ifelse(!is.null(upper),
-        upper_bounds <-
-          upper,
-        upper_bounds <- eval(as.list(formals(fit.model))$upper)
-      )
-
-      ifelse(!is.null(lower),
-        lower_bounds <-
-          lower,
-        lower_bounds <- eval(as.list(formals(fit.model))$lower)
-      )
-
-      boot.fit <-
-        tryCatch(
-          optim(
-            fit.params,
-            obj_func,
-            ind = boot.time,
-            dep = boot.mass,
-            curve = fit.model,
-            method = "L-BFGS-B",
-            lower = lower_bounds,
-            upper = upper_bounds,
-            ...
-          ),
-          error = function(e) {
-            NULL
-          }
-        )
-      output[i, 1:fit.nparams] <- boot.fit$par
+      if (is.null(boot.fit) || boot.fit$value >= obj_penalty) {
+        next
+      }
+      output[i, seq_len(fit.nparams)] <- boot.fit$par
       output[i, fit.nparams + 1] <-
-        steady_state(pars = boot.fit$par, model = fit.model)
+        suppressWarnings(steady_state(pars = boot.fit$par, model = fit.model))
+    }
+
+    n_failed <- sum(is.na(output[, 1]))
+    if (n_failed > 0) {
+      warning(paste(n_failed, "of", nboot, "bootstrap replicates failed and are recorded as NA"))
     }
     class(output) <- "litfit_bootstrap"
+    attr(output, "model") <- fit.model
     return(output)
   }
+
+
+#' Summarise a bootstrap distribution of parameters from a litfit object
+#'
+#' @param object a \code{litfit_bootstrap} object from \code{\link{bootstrap_parameters}}
+#' @param probs quantiles to report (default gives a 95 percent interval and the median)
+#' @param ... unused
+#'
+#' @return a matrix with one row per parameter (plus steady state) giving the mean
+#'   and the requested quantiles of the bootstrap distribution, ignoring failed replicates
+#'
+#' @examples
+#' fit <- fit_litter(
+#'   time = pineneedles$Year,
+#'   mass.remaining = pineneedles$Mass.remaining, model = "neg.exp", iters = 100
+#' )
+#' boot1 <- bootstrap_parameters(fit, nboot = 200)
+#' summary(boot1)
+#'
+#' @export
+summary.litfit_bootstrap <- function(object, probs = c(0.025, 0.5, 0.975), ...) {
+  m <- unclass(object)
+  attr(m, "model") <- NULL
+  t(apply(m, 2, function(col) {
+    c(mean = mean(col, na.rm = TRUE), stats::quantile(col, probs = probs, na.rm = TRUE))
+  }))
+}
 
 
 ##' Plot a bootstrap distribution of a particular coefficient
@@ -117,13 +125,18 @@ bootstrap_parameters <-
 ##' boot1 <- bootstrap_parameters(fit, nboot = 500)
 ##' plot(boot1)
 ##'
+##' @importFrom graphics polygon
 ##' @export
 
 plot.litfit_bootstrap <- function(x,
                                   coef.index = 1,
                                   bw = "nrd0",
                                   ...) {
-  coef.of.interest <- x[, coef.index]
+  coef.of.interest <- unclass(x)[, coef.index]
+  coef.of.interest <- coef.of.interest[is.finite(coef.of.interest)]
+  if (length(coef.of.interest) < 2) {
+    stop("Not enough finite bootstrap values to plot this coefficient")
+  }
   dens <- density(coef.of.interest, bw = bw)
   plot(dens, main = "Bootstrap distribution", ...)
 
@@ -135,6 +148,7 @@ plot.litfit_bootstrap <- function(x,
     y = c(0, y[x1:x2], 0),
     col = "gray"
   ))
-  abline(v = mean(x[, coef.index]), col = "red", lty = 2)
-  abline(v = median(x[, coef.index]), col = "blue", lty = 2)
+  abline(v = mean(coef.of.interest), col = "red", lty = 2)
+  abline(v = median(coef.of.interest), col = "blue", lty = 2)
+  invisible(x)
 }

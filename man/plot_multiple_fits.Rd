@@ -22,7 +22,7 @@ plot_multiple_fits(time,mass.remaining,model,color,iters,bty,...)
 \item{...}{additional parameters passed to \code{\link{plot}}}
 }
 \value{
-plot of multiple fits, returns invisibly
+plot of multiple fits; invisibly returns the list of \code{litfit} objects
 }
 \description{
 Plot multiple fits of decomposition trajectories on one graph with model selection results displayed
