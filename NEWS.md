@@ -1,4 +1,25 @@
-# litterfitter 0.2.0
+# litterfitter (development version, to be released as 0.3.0)
+
+## New features
+
+* New `tidy()`, `glance()` and `augment()` methods (from the `generics` package, compatible
+  with `broom`) return fits as data frames (#29):
+  * `tidy()`: parameter estimates, with bootstrap standard errors and percentile intervals
+    when a `bootstrap_parameters()` result is supplied.
+  * `glance()`: a one-row summary with information criteria, time to 50% mass loss and
+    steady state.
+  * `augment()`: data with fitted values and residuals, or predictions at new times, with an
+    optional bootstrap uncertainty band (`.lower`, `.upper`).
+  * `tidy()` for bootstrap output gives the replicates in long format.
+* New `fit_litter_all()` fits several models to the same data and returns a `litfit_list`;
+  `as_litfit_list()` combines existing fits. `glance()` on a `litfit_list` gives a model
+  comparison table sorted by AICc with `delta_AICc`; `tidy()`, `augment()`, `coef()`,
+  `print()` and `[` also work on it.
+* The missing-value warning from `fit_litter()` now has class `litterfitter_missing_removed`.
+* New dependency: `generics` (Imports).
+
+# litterfitter 0.2.0 (GitHub only; not released to CRAN)
+
 
 ## Behaviour changes
 
