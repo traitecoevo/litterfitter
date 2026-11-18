@@ -104,7 +104,10 @@ fit_litter <- function(
 
   missing_obs <- is.na(time) | is.na(mass.remaining)
   if (any(missing_obs)) {
-    warning(paste(sum(missing_obs), "observation(s) with missing time or mass removed"))
+    warning(warningCondition(
+      paste(sum(missing_obs), "observation(s) with missing time or mass removed"),
+      class = "litterfitter_missing_removed"
+    ))
     time <- time[!missing_obs]
     mass.remaining <- mass.remaining[!missing_obs]
   }
