@@ -31,6 +31,7 @@ Imports:
     graphics,
     grDevices
 Suggests: 
+    ggplot2,
     testthat (>= 3.0.0),
     knitr,
     rmarkdown

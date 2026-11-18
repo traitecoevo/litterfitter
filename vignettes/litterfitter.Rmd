@@ -92,31 +92,53 @@ steady_state(fit)
 
 ### Comparing models
 
-Because `litfit` objects have a `logLik` method, the base R functions `AIC()` and `BIC()` can be used to compare several models fit to the same data. Here we fit a set of models to the `pineneedles` data that ships with the package:
+`fit_litter_all()` fits several models to the same data and returns them together. `glance()` then gives a model-comparison table, sorted by AICc, with the difference from the best model (`delta_AICc`). Here we use the `pineneedles` data that ships with the package:
 
 ```{R,warning=FALSE}
 data(pineneedles)
-models <- c("neg.exp", "weibull", "discrete.parallel", "cont.quality")
-fits <- lapply(models, function(m) {
-  fit_litter(
-    time = pineneedles$Year,
-    mass.remaining = pineneedles$Mass.remaining,
-    model = m, iters = 500, quiet = TRUE
-  )
-})
-names(fits) <- models
-
-data.frame(
-  model = models,
-  df = sapply(fits, function(f) attr(logLik(f), "df")),
-  AIC = sapply(fits, AIC),
-  AICc = sapply(fits, function(f) f$fitAICc),
-  BIC = sapply(fits, BIC),
-  row.names = NULL
+fits <- fit_litter_all(
+  time = pineneedles$Year,
+  mass.remaining = pineneedles$Mass.remaining,
+  models = c("neg.exp", "weibull", "discrete.parallel", "cont.quality"),
+  iters = 500
 )
+fits
+glance(fits)[, c("fit", "nparams", "logLik", "AICc", "delta_AICc", "time_to_50")]
 ```
 
-For two fits you can also call `AIC()` directly, e.g. `AIC(fits$neg.exp, fits$weibull)`. The small-sample corrected AICc is stored in each fit as `fitAICc`.
+Because `litfit` objects have a `logLik` method, the base R functions `AIC()` and `BIC()` also work, e.g. `AIC(fits$neg.exp, fits$weibull)`. `tidy(fits)` gives the parameter estimates of every model in one table.
 
 Note that with only a handful of observations the more complex models are often poorly identified; see Cornwell & Weedon (2013) for a discussion.
 
+### Tidy output and custom plots
+
+`tidy()`, `glance()` and `augment()` return fits as data frames, following the conventions of the [broom](https://broom.tidymodels.org/) package. `augment()` with `newdata` gives predictions on a grid of times, and with a bootstrap it adds a pointwise uncertainty band (`.lower`, `.upper`):
+
+```{R}
+best <- fits$neg.exp
+boot <- bootstrap_parameters(best, nboot = 500)
+tidy(best, boot = boot)
+grid <- augment(best, newdata = seq(0, 5, length.out = 100), boot = boot)
+head(grid)
+```
+
+These data frames make it straightforward to build your own figures, for example with ggplot2:
+
+```{R, eval = requireNamespace("ggplot2", quietly = TRUE), fig.height = 4}
+library(ggplot2)
+ggplot(grid, aes(time)) +
+  geom_ribbon(aes(ymin = .lower, ymax = .upper), fill = "grey85") +
+  geom_line(aes(y = .fitted)) +
+  geom_point(data = augment(best), aes(y = mass)) +
+  labs(x = "Time (years)", y = "Proportion mass remaining")
+```
+
+To compare the curves of several models, use `augment()` on the `litfit_list`, which stacks the predictions with a `fit` column to map to colour:
+
+```{R, eval = requireNamespace("ggplot2", quietly = TRUE), fig.height = 4}
+curves <- augment(fits, newdata = seq(0, 5, length.out = 100))
+ggplot(curves, aes(time, .fitted, colour = fit)) +
+  geom_line() +
+  geom_point(data = augment(best), aes(y = mass), colour = "black") +
+  labs(x = "Time (years)", y = "Proportion mass remaining", colour = "Model")
+```
