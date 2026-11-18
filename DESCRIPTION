@@ -29,9 +29,11 @@ Imports:
     generics,
     stats,
     graphics,
-    grDevices
+    grDevices,
+    utils
 Suggests: 
     ggplot2,
+    vdiffr,
     testthat (>= 3.0.0),
     knitr,
     rmarkdown

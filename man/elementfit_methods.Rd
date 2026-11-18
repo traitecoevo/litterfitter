@@ -3,7 +3,6 @@
 \name{elementfit_methods}
 \alias{elementfit_methods}
 \alias{print.elementfit}
-\alias{plot.elementfit}
 \alias{coef.elementfit}
 \alias{fitted.elementfit}
 \alias{residuals.elementfit}
@@ -16,8 +15,6 @@
 \title{Methods for elementfit objects}
 \usage{
 \method{print}{elementfit}(x, ...)
-
-\method{plot}{elementfit}(x, ...)
 
 \method{coef}{elementfit}(object, ...)
 
@@ -40,7 +37,7 @@
 \arguments{
 \item{x, object}{an \code{elementfit} object}
 
-\item{...}{further arguments; for \code{plot()} passed to \code{\link{plot.default}}}
+\item{...}{unused}
 
 \item{newdata}{optional numeric vector of mass remaining values, or (for
 \code{augment()}) a data frame with a \code{mass} column}

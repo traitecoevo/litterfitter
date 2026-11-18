@@ -110,6 +110,31 @@ Because `litfit` objects have a `logLik` method, the base R functions `AIC()` an
 
 Note that with only a handful of observations the more complex models are often poorly identified; see Cornwell & Weedon (2013) for a discussion.
 
+### Plotting
+
+Every fitted object has a `plot()` method using base graphics. Supplying a bootstrap adds a pointwise uncertainty band, and a `litfit_list` plots all models together with a table of information criteria:
+
+```{R, fig.height = 4, warning = FALSE}
+boot_neg <- bootstrap_parameters(fits$neg.exp, nboot = 500)
+plot(fits$neg.exp, boot = boot_neg)
+plot(fits)
+```
+
+`plot()` on a bootstrap shows its distributions; use `coef.index = "all"` to see every parameter and derived quantity:
+
+```{R, fig.height = 5}
+plot(boot_neg, coef.index = "all")
+```
+
+If ggplot2 is installed, `autoplot()` gives the same plots as ggplot objects, which can be customised with the usual layers, scales and themes:
+
+```{R, eval = requireNamespace("ggplot2", quietly = TRUE), fig.height = 4}
+library(ggplot2)
+autoplot(fits$neg.exp, boot = boot_neg)
+autoplot(fits) + theme_bw()
+autoplot(boot_neg)
+```
+
 ### Tidy output and custom plots
 
 `tidy()`, `glance()` and `augment()` return fits as data frames, following the conventions of the [broom](https://broom.tidymodels.org/) package. `augment()` with `newdata` gives predictions on a grid of times, and with a bootstrap it adds a pointwise uncertainty band (`.lower`, `.upper`):

@@ -3,3 +3,45 @@ template:
   bootstrap: 5
   bootswatch: sandstone
 
+reference:
+- title: Fitting mass loss
+  desc: Fit decomposition models to single-cohort mass loss data.
+  contents:
+  - fit_litter
+  - fit_litter_all
+  - as_litfit_list
+  - litfit_list_methods
+  - predict.litfit
+  - logLik.litfit
+- title: Element dynamics
+  desc: Fit element (nutrient) remaining as a function of mass remaining.
+  contents:
+  - fit_element
+  - elementfit_methods
+- title: Derived quantities
+  contents:
+  - time_to_prop_mass_remaining
+  - steady_state
+- title: Uncertainty
+  contents:
+  - bootstrap_parameters
+  - summary.litfit_bootstrap
+- title: Plotting
+  desc: Base graphics methods and ggplot2 `autoplot()` methods.
+  contents:
+  - plot.litfit
+  - plot.elementfit
+  - plot.litfit_list
+  - plot_multiple_fits
+  - plot.litfit_bootstrap
+  - litterfitter_autoplot
+- title: Tidy output
+  desc: Results as data frames, following the conventions of the broom package.
+  contents:
+  - litfit_tidiers
+  - tidy.litfit_bootstrap
+  - reexports
+- title: Data and package
+  contents:
+  - pineneedles
+  - litterfitter
