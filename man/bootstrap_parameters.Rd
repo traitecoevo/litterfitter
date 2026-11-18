@@ -7,7 +7,8 @@
 bootstrap_parameters(x,nboot,upper,lower,...)
 }
 \arguments{
-\item{x}{an object of class "\code{litfit}"}
+\item{x}{an object of class "\code{litfit}" (from \code{\link{fit_litter}}) or
+"\code{elementfit}" (from \code{\link{fit_element}})}
 
 \item{nboot}{number of bootstrap replications}
 
@@ -19,7 +20,9 @@ bootstrap_parameters(x,nboot,upper,lower,...)
 }
 \value{
 a \code{litfit_bootstrap} object: a matrix with one row per bootstrap
-replicate and one column per parameter plus the implied steady state.
+replicate and one column per parameter, plus derived quantities: the implied
+steady state for a \code{litfit}, or the peak element remaining and the mass
+remaining at the peak for an \code{elementfit}.
 Failed replicates are recorded as \code{NA}.
 }
 \description{

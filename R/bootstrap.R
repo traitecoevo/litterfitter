@@ -2,14 +2,17 @@
 #'
 #' @usage bootstrap_parameters(x,nboot,upper,lower,...)
 #'
-#' @param x an object of class "\code{litfit}"
+#' @param x an object of class "\code{litfit}" (from \code{\link{fit_litter}}) or
+#'   "\code{elementfit}" (from \code{\link{fit_element}})
 #' @param nboot number of bootstrap replications
 #' @param upper optional vector of upper bounds for the bootstrap replicates
 #' @param lower optional vector of lower bounds for the bootstrap replicates
 #' @param ... passed to \code{\link{optim}}
 #'
 #' @return a \code{litfit_bootstrap} object: a matrix with one row per bootstrap
-#'   replicate and one column per parameter plus the implied steady state.
+#'   replicate and one column per parameter, plus derived quantities: the implied
+#'   steady state for a \code{litfit}, or the peak element remaining and the mass
+#'   remaining at the peak for an \code{elementfit}.
 #'   Failed replicates are recorded as \code{NA}.
 #'
 #' @examples
@@ -26,22 +29,24 @@ bootstrap_parameters <-
            upper = NULL,
            lower = NULL,
            ...) {
-    if (!inherits(x, "litfit")) {
-      stop("litterfitter::bootstrap_parameters takes a 'litfit' object")
+    if (!inherits(x, c("litfit", "elementfit"))) {
+      stop("litterfitter::bootstrap_parameters takes a 'litfit' or 'elementfit' object")
     }
 
     fit.model <- x$model
-    obs.time <- x$time
-    obs.mass <- x$mass
+    xy <- fit_xy(x)
+    obs.time <- xy$x
+    obs.mass <- xy$y
     nobs <- length(obs.time)
+    derived <- derived_names(x)
     fit.params <- x$optimFit$par
     fit.nparams <- x$nparams
 
     upper_bounds <- if (!is.null(upper)) upper else model_bounds(fit.model, "upper")
     lower_bounds <- if (!is.null(lower)) lower else model_bounds(fit.model, "lower")
 
-    output <- matrix(NA_real_, ncol = fit.nparams + 1, nrow = nboot)
-    colnames(output) <- c(model_param_names(fit.model), "steady_state")
+    output <- matrix(NA_real_, ncol = fit.nparams + length(derived), nrow = nboot)
+    colnames(output) <- c(model_param_names(fit.model), derived)
 
     for (i in seq_len(nboot)) {
       boot.inds <- sample(x = nobs, size = nobs, replace = TRUE)
@@ -60,8 +65,7 @@ bootstrap_parameters <-
         next
       }
       output[i, seq_len(fit.nparams)] <- boot.fit$par
-      output[i, fit.nparams + 1] <-
-        suppressWarnings(steady_state(pars = boot.fit$par, model = fit.model))
+      output[i, fit.nparams + seq_along(derived)] <- derived_values(x, boot.fit$par)
     }
 
     n_failed <- sum(is.na(output[, 1]))

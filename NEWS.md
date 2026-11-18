@@ -15,6 +15,13 @@
   `as_litfit_list()` combines existing fits. `glance()` on a `litfit_list` gives a model
   comparison table sorted by AICc with `delta_AICc`; `tidy()`, `augment()`, `coef()`,
   `print()` and `[` also work on it.
+* New `fit_element()` fits element (nutrient) dynamics: proportional element remaining
+  (e.g. N/N0) as a function of proportional mass remaining, using the Parton et al. (2007)
+  import model (reparameterised for proportional mass). It returns an `elementfit` object with
+  `print`, `plot`, `coef`, `fitted`, `residuals`, `predict`, `nobs`, `logLik`, `tidy`, `glance`
+  (including the peak element remaining and the mass at the peak) and `augment` methods, and
+  is supported by `bootstrap_parameters()`. Based on work by Baptiste Wijas on the `import`
+  branch (#30).
 * The missing-value warning from `fit_litter()` now has class `litterfitter_missing_removed`.
 * New dependency: `generics` (Imports).
 

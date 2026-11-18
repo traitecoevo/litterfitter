@@ -61,7 +61,7 @@ test_that("boot without a model attribute is checked by its number of columns", 
   other <- fit_and_boot("neg.exp")
   b2 <- other$boot
   attr(b2, "model") <- NULL
-  expect_error(tidy(fb$fit, boot = b2), "number of parameters")
+  expect_error(tidy(fb$fit, boot = b2), "right parameters")
 })
 
 test_that("boot with too few successful replicates is an error", {
