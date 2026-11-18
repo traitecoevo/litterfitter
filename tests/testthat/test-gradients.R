@@ -78,11 +78,14 @@ test_that("fixed-start litter fits agree across time units and gradient methods"
     units <- expected_param_names[[m]]
     day_scale <- ifelse(units == "beta", 365,
                         ifelse(units %in% c("k", "K1", "K2", "b"), 1/365, 1))
+    # Tight stopping: cont.quality has a shallow minimum, and the default
+    # factr leaves platform-dependent slack along it (~1e-5 on Windows).
     fit <- function(time, scale, analytic) {
       run_optim(p * scale, make_objective(m, time, y),
                 model_bounds(m, "lower") * scale, model_bounds(m, "upper") * scale,
                 gr = if (analytic) make_gradient(m, time, y),
-                control = list(parscale = scale, maxit = 500, ndeps = rep(1e-6, length(p))))
+                control = list(parscale = scale, maxit = 500, factr = 1e3,
+                               ndeps = rep(1e-6, length(p))))
     }
     years <- fit(t, rep(1, length(p)), TRUE)
     days <- fit(t * 365, day_scale, TRUE)
