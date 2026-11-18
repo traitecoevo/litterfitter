@@ -29,6 +29,16 @@ test_that("failed bootstrap replicates are recorded as NA with a warning", {
   expect_no_error(summary(out))
 })
 
+test_that("bootstrap discards finite estimates when optim hits its iteration limit", {
+  set.seed(19)
+  fit <- quiet_fit(pineneedles$Year, pineneedles$Mass.remaining, "weibull", iters = 10)
+  set.seed(27)
+  expect_warning(out <- bootstrap_parameters(fit, nboot = 1, control = list(maxit = 1)), "1 of 1")
+  expect_true(all(is.na(out[1, ])))
+  set.seed(27)
+  expect_true(all(is.finite(bootstrap_parameters(fit, nboot = 1)[1, ])))
+})
+
 test_that("bootstrap rejects non-litfit input", {
   expect_error(bootstrap_parameters(list(a = 1)), "litfit")
 })

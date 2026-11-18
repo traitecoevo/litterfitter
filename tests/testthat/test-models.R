@@ -58,8 +58,7 @@ test_that("time units only rescale the rate", {
   set.seed(1)
   f_years <- quiet_fit(pineneedles$Year, pineneedles$Mass.remaining, "neg.exp", iters = 50)
   f_days <- quiet_fit(pineneedles$Year * 365, pineneedles$Mass.remaining, "neg.exp", iters = 200)
-  # within 1%: L-BFGS-B's relative stopping rule limits precision for tiny rates
-  expect_equal(unname(coef(f_days)) * 365, unname(coef(f_years)), tolerance = 0.01)
+  expect_equal(unname(coef(f_days)) * 365, unname(coef(f_years)), tolerance = 1e-5)
 })
 
 test_that("model curves start at 1 (except neg.exp.limit, which starts at A + B)", {
@@ -82,9 +81,8 @@ test_that("discrete.parallel with equal rates reduces to neg.exp", {
 })
 
 test_that("objective returns a finite penalty where the model is undefined", {
-  # discrete.series divides by K1 - K2, so equal rates give NaN predictions
   obj <- litterfitter:::make_objective("discrete.series", 0:3, c(1, .8, .6, .4))
-  expect_equal(obj(c(0.5, 1, 1)), litterfitter:::obj_penalty)
+  expect_equal(obj(c(0.5, -1000, 1)), litterfitter:::obj_penalty)
   expect_true(is.finite(obj(c(0.5, 1, 0.5))))
   # obj_func wrapper gives the same answer
   expect_equal(
@@ -97,4 +95,33 @@ test_that("model functions are looked up in the package, not the caller", {
   set.seed(1)
   neg.exp <- function(...) stop("user object should not be used")
   expect_s3_class(quiet_fit(pineneedles$Year, pineneedles$Mass.remaining, "neg.exp", iters = 5), "litfit")
+})
+
+test_that("fit_litter errors when every start fails", {
+  failing_gr <- function(p) stop("gradient unavailable")
+  set.seed(1)
+  expect_error(
+    fit_litter(pineneedles$Year, pineneedles$Mass.remaining, "neg.exp",
+               iters = 5, quiet = TRUE, gr = failing_gr),
+    "All attempts failed to converge"
+  )
+})
+
+test_that("fit_litter warns when the best starts disagree", {
+  # A zero gradient stops each start where it began, so the five best
+  # objective values are spread out rather than on one optimum.
+  flat_gr <- function(p) numeric(length(p))
+  set.seed(1)
+  expect_warning(
+    fit_litter(pineneedles$Year, pineneedles$Mass.remaining, "weibull",
+               iters = 20, quiet = TRUE, gr = flat_gr),
+    "May not have found global best fit"
+  )
+  # a well-behaved fit does not warn
+  set.seed(1)
+  expect_no_warning(
+    fit_litter(pineneedles$Year, pineneedles$Mass.remaining, "neg.exp",
+               iters = 20, quiet = TRUE),
+    message = "global best"
+  )
 })
