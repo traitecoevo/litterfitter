@@ -1,4 +1,12 @@
-# litterfitter 0.1.6
+# litterfitter 0.2.0
+
+## Behaviour changes
+
+* `fit_litter()` now defaults to `model = "neg.exp"` when no model is given.
+* `steady_state()` returns `Inf` for `neg.exp.limit` fits with B > 0 (previously a string).
+* `time_to_prop_mass_remaining()` returns `NA` (with a warning) when the threshold is never
+  reached, and its result is now exact rather than read off a grid, so values may differ slightly.
+* `coef()` now returns a named vector.
 
 ## Bug fixes
 
