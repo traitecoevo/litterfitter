@@ -44,6 +44,7 @@ bootstrap_parameters <-
 
     upper_bounds <- if (!is.null(upper)) upper else model_bounds(fit.model, "upper")
     lower_bounds <- if (!is.null(lower)) lower else model_bounds(fit.model, "lower")
+    check_weibull_scale_bound(fit.model, lower_bounds)
 
     output <- matrix(NA_real_, ncol = fit.nparams + length(derived), nrow = nboot)
     colnames(output) <- c(model_param_names(fit.model), derived)
@@ -62,7 +63,7 @@ bootstrap_parameters <-
         ),
         error = function(e) NULL
       )
-      if (is.null(boot.fit) || boot.fit$value >= obj_penalty) {
+      if (is.null(boot.fit) || boot.fit$convergence != 0 || boot.fit$value >= obj_penalty) {
         next
       }
       output[i, seq_len(fit.nparams)] <- boot.fit$par

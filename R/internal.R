@@ -264,6 +264,12 @@ model_bounds <- function(model, which = c("upper", "lower")) {
   eval(formals(model)[[which]])
 }
 
+check_weibull_scale_bound <- function(model, lower) {
+  if (identical(model, "weibull") && !isTRUE(is.finite(lower[1]) && lower[1] > 0)) {
+    stop("The Weibull scale parameter beta requires a finite, positive lower bound.")
+  }
+}
+
 
 calculateLL <- function(predicted, observed, sigma) {
   return(sum(stats::dnorm(observed, mean = predicted, sd = sigma, log = T)))
@@ -290,6 +296,7 @@ multioptimFit <- function(
   nArgs <- length(model_param_names(model))
   upper_bounds <- if (!is.null(upper)) upper else model_bounds(model, "upper")
   lower_bounds <- if (!is.null(lower)) lower else model_bounds(model, "lower")
+  check_weibull_scale_bound(model, lower_bounds)
 
   objective <- make_objective(model, time_data, mass_data)
   gradient <- make_gradient(model, time_data, mass_data)

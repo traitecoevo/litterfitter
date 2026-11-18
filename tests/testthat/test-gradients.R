@@ -56,6 +56,17 @@ test_that("Weibull tail and origin have finite derivatives", {
                matrix(0, 2, 2))
 })
 
+test_that("Weibull fits and bootstraps reject a nonpositive beta bound before optimization", {
+  t <- 0:5
+  y <- exp(-(t / 2)^1.5)
+  fit <- fake_fit("weibull", c(2, 1.5), time = t)
+  for (beta_min in c(0, -0.1)) {
+    lower <- c(beta_min, 0.1)
+    expect_error(quiet_fit(t, y, "weibull", iters = 2, lower = lower), "beta.*positive")
+    expect_error(bootstrap_parameters(fit, nboot = 1, lower = lower), "beta.*positive")
+  }
+})
+
 test_that("fixed-start litter fits agree across time units and gradient methods", {
   t <- pineneedles$Year
   y <- pineneedles$Mass.remaining

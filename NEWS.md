@@ -78,6 +78,9 @@
   In a local benchmark on `pineneedles` (median of three fixed-seed runs),
   the 200-start `discrete.series` fit took 0.078 s versus 0.109 s previously,
   and 200 bootstrap replicates took 0.053 s versus 0.080 s.
+* Weibull fits and bootstraps require a strictly positive lower bound for the
+  scale parameter `beta`. Bootstrap replicates that reach the optimizer's
+  iteration limit or otherwise fail to converge are recorded as `NA`.
 * The "may not have found global best fit" check now compares the 5 *best* fits
   (it previously compared the 5 worst) and no longer errors when fewer than 5 starts succeed.
 * `steady_state()` for `neg.exp.limit` now returns a number (`Inf` when B > 1e-4, otherwise

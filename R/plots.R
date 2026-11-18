@@ -29,6 +29,15 @@ fmt_num <- function(v, digits = 3) {
 model_equation <- function(fit, type = c("plotmath", "text")) {
   type <- match.arg(type)
   p <- unname(fit$optimFit$par)
+  if (fit$model == "discrete.series" && p[2] == p[3]) {
+    k <- p[2]
+    transfer <- (1 - p[1]) * k
+    if (type == "text") {
+      return(sprintf("y = exp(-%s t) (1 + %s t)", fmt_num(k), fmt_num(transfer)))
+    }
+    return(substitute(y == e^(-K * t) * (1 + C * t),
+                      list(K = signif(k, 3), C = signif(transfer, 3))))
+  }
   if (type == "text") {
     return(switch(fit$model,
       neg.exp = sprintf("y = exp(-%s t)", fmt_num(p[1])),

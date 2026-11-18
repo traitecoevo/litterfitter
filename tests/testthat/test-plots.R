@@ -13,6 +13,14 @@ pine_fit <- function(model = "weibull", seed = 1, iters = 50) {
 
 # ---- model_equation ----
 
+test_that("equal-rate series labels show the limiting curve in both plot formats", {
+  fit <- fake_fit("discrete.series", c(0.25, 0.8, 0.8))
+  expect_equal(model_equation(fit, "text"), "y = exp(-0.8 t) (1 + 0.6 t)")
+  rhs <- model_equation(fit, "plotmath")[[3]]
+  t <- c(0, 0.5, 2)
+  expect_equal(eval(rhs, list(t = t, e = exp(1))), predict(fit, newdata = t))
+})
+
 test_that("model_equation gives text and plotmath for every model", {
   set.seed(1)
   for (m in all_models) {
