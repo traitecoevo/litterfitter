@@ -5,7 +5,37 @@ discrete.series <- function(x, R, K1, K2, upper = c((1 - 1e-04), 1000, 1000), lo
                               1e-04,
                               1e-04, 1e-04
                             )) {
-  (((1 - R) * K1 * exp(-K2 * x)) - ((K2 - K1 * R) * exp(-K1 * x))) / (K1 - K2)
+  series_eval(x, R, K1, K2)
+}
+
+# The transferred pool is proportional to the divided difference of the two
+# exponentials. Factor out the slower decay so expm1 only sees nonpositive
+# arguments. Its rate derivatives have the same limit from either side.
+series_eval <- function(t, R, K1, K2, jacobian = FALSE) {
+  first <- exp(-K1 * t)
+  gap <- abs(K1 - K2)
+  z <- -gap * t
+  slow <- exp(-min(K1, K2) * t)
+  transfer <- if (gap == 0) t * slow else slow * (-expm1(z) / gap)
+  if (!jacobian) return(first + ((1 - R) * K1) * transfer)
+
+  # For h(z) = expm1(z)/z, h'(0) = 1/2. The fast-rate
+  # derivative of transfer is -t^2 * slow * h'(z).
+  near <- abs(z) < 0.001
+  s <- z[near]
+  d_fast <- numeric(length(t))
+  d_fast[near] <- -(t[near] * slow[near]) * t[near] *
+    (1/2 + s * (1/3 + s * (1/8 + s/30)))
+  far <- !near
+  if (any(far)) {
+    d_fast[far] <- (t[far] * exp(-max(K1, K2) * t[far]) - transfer[far]) / gap
+  }
+  d_slow <- -t * transfer - d_fast
+  d1 <- if (K1 >= K2) d_fast else d_slow
+  d2 <- if (K1 >= K2) d_slow else d_fast
+  cbind(R = -K1 * transfer,
+        K1 = -t * first + (1 - R) * (transfer + K1 * d1),
+        K2 = ((1 - R) * K1) * d2)
 }
 
 discrete.parallel <- function(t, A, K1, K2, upper = c((1 - 1e-04), 100, 100), lower = c(
@@ -173,15 +203,18 @@ make_objective <- function(curve, ind, dep) {
 # parameters these models often have. optim's default step (ndeps = 1e-3) is
 # too coarse when rates are ~1e-3 (e.g. time measured in days); 1e-4 gives
 # equal or better fits on all models. A user-supplied control$ndeps wins.
-run_optim <- function(par, fn, lower, upper, ...) {
+run_optim <- function(par, fn, lower, upper, ..., default_gr = NULL, gr = default_gr) {
   dots <- list(...)
   control <- if (is.null(dots$control)) list() else dots$control
   dots$control <- NULL
-  if (is.null(control$ndeps)) {
+  # Exact gradients can follow the shallow cont.quality valley beyond
+  # optim's default 100 iterations. Honour an explicit caller budget.
+  if (missing(gr) && !is.null(gr) && is.null(control$maxit)) control$maxit <- 500L
+  if (is.null(gr) && is.null(control$ndeps)) {
     control$ndeps <- rep(1e-4, length(par))
   }
   do.call(stats::optim, c(
-    list(par = par, fn = fn, method = "L-BFGS-B", lower = lower, upper = upper, control = control),
+    list(par = par, fn = fn, gr = gr, method = "L-BFGS-B", lower = lower, upper = upper, control = control),
     dots
   ))
 }
@@ -259,6 +292,7 @@ multioptimFit <- function(
   lower_bounds <- if (!is.null(lower)) lower else model_bounds(model, "lower")
 
   objective <- make_objective(model, time_data, mass_data)
+  gradient <- make_gradient(model, time_data, mass_data)
   fit <- vector("list", iters)
   for (i in seq_len(iters)) {
     # always start near lower bound--empirically works better
@@ -267,7 +301,7 @@ multioptimFit <- function(
       max = pmin(lower_bounds + 0.9998, upper_bounds)
     )
     fit[[i]] <- tryCatch(
-      run_optim(starter, objective, lower_bounds, upper_bounds, ...),
+      run_optim(starter, objective, lower_bounds, upper_bounds, ..., default_gr = gradient),
       error = function(e) NULL
     )
   }

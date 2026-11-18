@@ -68,9 +68,16 @@
   drops missing observations with a warning; and requires more observations than parameters.
 * Boundary warnings now name the parameters on a bound, and hint that the default bounds assume
   time in years when time values are large.
-* Fits are much more accurate when rates are small (e.g. time in days): the finite-difference
-  step used by `optim` now defaults to `ndeps = 1e-4` (previously 1e-3); a user-supplied
-  `control$ndeps` still takes precedence.
+* Litter fits and their bootstrap replicates use analytic gradients for all six
+  curves (#27), improving accuracy for small rates such as rates per day.
+  `discrete.series` now supports equal pool rates. Element fits and calls with
+  `gr = NULL` use finite differences (default `ndeps = 1e-4`). Built-in
+  gradients use a default limit of 500 optimizer iterations so that
+  `cont.quality` fits can converge along a shallow minimum. An explicit
+  `control$maxit` takes precedence.
+  In a local benchmark on `pineneedles` (median of three fixed-seed runs),
+  the 200-start `discrete.series` fit took 0.078 s versus 0.109 s previously,
+  and 200 bootstrap replicates took 0.053 s versus 0.080 s.
 * The "may not have found global best fit" check now compares the 5 *best* fits
   (it previously compared the 5 worst) and no longer errors when fewer than 5 starts succeed.
 * `steady_state()` for `neg.exp.limit` now returns a number (`Inf` when B > 1e-4, otherwise

@@ -57,7 +57,8 @@ bootstrap_parameters <-
           make_objective(fit.model, obs.time[boot.inds], obs.mass[boot.inds]),
           lower_bounds,
           upper_bounds,
-          ...
+          ...,
+          default_gr = make_gradient(fit.model, obs.time[boot.inds], obs.mass[boot.inds])
         ),
         error = function(e) NULL
       )
