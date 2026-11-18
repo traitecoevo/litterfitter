@@ -68,67 +68,76 @@
 <div class="section level3">
 <h3 id="getting-started">Getting started<a class="anchor" aria-label="anchor" href="#getting-started"></a>
 </h3>
-<p>At the moment there is one key function which is <code>fit_litter</code> which can fit 6 different types of decomposition trajectories. Note that the fitted object is a <code>litfit</code> object</p>
+<p>The key function is <code>fit_litter</code>, which can fit 6 different types of decomposition trajectories. As a toy example, take a litterbag study with three replicate bags harvested at each of nine times (in years). Decomposition is slow at first, then speeds up, as often happens while decomposers colonise the litter:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">toy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0.5</span>, <span class="fl">1</span>, <span class="fl">1.5</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,</span>
+<span>  mass.remaining <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">0.99</span>, <span class="fl">0.95</span>, <span class="fl">0.96</span>, <span class="fl">0.87</span>, <span class="fl">0.99</span>,</span>
+<span>                     <span class="fl">0.75</span>, <span class="fl">0.83</span>, <span class="fl">0.89</span>, <span class="fl">0.53</span>, <span class="fl">0.6</span>, <span class="fl">0.61</span>, <span class="fl">0.41</span>, <span class="fl">0.35</span>, <span class="fl">0.21</span>,</span>
+<span>                     <span class="fl">0.04</span>, <span class="fl">0.27</span>, <span class="fl">0.17</span>, <span class="fl">0.01</span>, <span class="fl">0.07</span>, <span class="fl">0.15</span>, <span class="fl">0.14</span>, <span class="fl">0.01</span>, <span class="fl">0.02</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>Fit a Weibull curve to it. The fitted object is a <code>litfit</code> object:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fit_litter.html">fit_litter</a></span><span class="op">(</span></span>
-<span>  time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span><span class="op">)</span>,</span>
-<span>  mass.remaining <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.9</span>, <span class="fl">1.01</span>, <span class="fl">0.4</span>, <span class="fl">0.6</span>, <span class="fl">0.2</span>, <span class="fl">0.01</span><span class="op">)</span>,</span>
+<span>  time <span class="op">=</span> <span class="va">toy</span><span class="op">$</span><span class="va">time</span>,</span>
+<span>  mass.remaining <span class="op">=</span> <span class="va">toy</span><span class="op">$</span><span class="va">mass.remaining</span>,</span>
 <span>  model <span class="op">=</span> <span class="st">"weibull"</span>,</span>
 <span>  iters <span class="op">=</span> <span class="fl">500</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre></div>
-<p>You can visually compare the fits of different non-linear equations with the <code>plot_multiple_fits</code> function:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<p>You can visually compare the fits of different non-linear equations with the <code>plot_multiple_fits</code> function. The single-rate negative exponential cannot capture the early lag that the Weibull curve fits:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/plot_multiple_fits.html">plot_multiple_fits</a></span><span class="op">(</span></span>
-<span>  time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span><span class="op">)</span>,</span>
-<span>  mass.remaining <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.9</span>, <span class="fl">1.01</span>, <span class="fl">0.4</span>, <span class="fl">0.6</span>, <span class="fl">0.2</span>, <span class="fl">0.01</span><span class="op">)</span>,</span>
+<span>  time <span class="op">=</span> <span class="va">toy</span><span class="op">$</span><span class="va">time</span>,</span>
+<span>  mass.remaining <span class="op">=</span> <span class="va">toy</span><span class="op">$</span><span class="va">mass.remaining</span>,</span>
 <span>  model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"neg.exp"</span>, <span class="st">"weibull"</span><span class="op">)</span>,</span>
 <span>  iters <span class="op">=</span> <span class="fl">500</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-5-1.png" alt="" width="100%"></p>
-<p>Calling <code>plot</code> on a <code>litfit</code> object will show you the data, the curve fit, and even the equation, with the estimated coefficients:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-6-1.png" alt="" width="100%"></p>
+<p>Calling <code>plot</code> on a <code>litfit</code> object will show you the data, the curve fit, and even the equation, with the estimated coefficients:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-7-1.png" alt="" width="100%"></p>
 <p>The summary of a <code>litfit</code> object will show you some of the summary statistics for the fit.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co">#&gt; Summary of litFit object</span></span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="co">#&gt; Model type: weibull </span></span>
-<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="co">#&gt; Number of observations:  7 </span></span>
-<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="co">#&gt; Parameter fit (beta): 4.19</span></span>
-<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="co">#&gt; Parameter fit (alpha): 2.47</span></span>
-<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a><span class="co">#&gt; Time to 50% mass loss: 3.61 </span></span>
-<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a><span class="co">#&gt; Implied steady state litter mass: 3.71 in units of yearly input </span></span>
-<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="co">#&gt; AIC:  -3.8883 </span></span>
-<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a><span class="co">#&gt; AICc:  -0.8883 </span></span>
-<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a><span class="co">#&gt; BIC:  -3.9965</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co">#&gt; Summary of litFit object</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="co">#&gt; Model type: weibull </span></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="co">#&gt; Number of observations:  27 </span></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="co">#&gt; Parameter fit (beta): 2.92</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="co">#&gt; Parameter fit (alpha): 2.07</span></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a><span class="co">#&gt; Time to 50% mass loss: 2.44 </span></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="co">#&gt; Implied steady state litter mass: 2.58 in units of yearly input </span></span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="co">#&gt; AIC:  -65.1217 </span></span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a><span class="co">#&gt; AICc:  -64.6217 </span></span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a><span class="co">#&gt; BIC:  -62.53</span></span></code></pre></div>
 <p>Bootstrapping shows the uncertainty in the parameter estimates and in the fitted curve:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">boot</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/bootstrap_parameters.html">bootstrap_parameters</a></span><span class="op">(</span><span class="va">fit</span>, nboot <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fit</span>, boot <span class="op">=</span> <span class="va">boot</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-8-1.png" alt="" width="100%"></p>
+<p><img src="reference/figures/README-unnamed-chunk-9-1.png" alt="" width="100%"></p>
 </div>
 <div class="section level3">
 <h3 id="comparing-models-and-tidy-output">Comparing models and tidy output<a class="anchor" aria-label="anchor" href="#comparing-models-and-tidy-output"></a>
 </h3>
 <p><code><a href="reference/fit_litter_all.html">fit_litter_all()</a></code> fits several models at once, and <code><a href="https://generics.r-lib.org/reference/glance.html" class="external-link">glance()</a></code> gives a model comparison table. <code><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy()</a></code>, <code><a href="https://generics.r-lib.org/reference/glance.html" class="external-link">glance()</a></code> and <code><a href="https://generics.r-lib.org/reference/augment.html" class="external-link">augment()</a></code> return results as data frames for further analysis or custom plots:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fits</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/fit_litter_all.html">fit_litter_all</a></span><span class="op">(</span></span>
-<span>  time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span><span class="op">)</span>,</span>
-<span>  mass.remaining <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.9</span>, <span class="fl">1.01</span>, <span class="fl">0.4</span>, <span class="fl">0.6</span>, <span class="fl">0.2</span>, <span class="fl">0.01</span><span class="op">)</span>,</span>
-<span>  models <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"neg.exp"</span>, <span class="st">"weibull"</span>, <span class="st">"cont.quality"</span><span class="op">)</span>,</span>
+<span>  time <span class="op">=</span> <span class="va">toy</span><span class="op">$</span><span class="va">time</span>,</span>
+<span>  mass.remaining <span class="op">=</span> <span class="va">toy</span><span class="op">$</span><span class="va">mass.remaining</span>,</span>
+<span>  models <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"neg.exp"</span>, <span class="st">"weibull"</span>, <span class="st">"discrete.series"</span><span class="op">)</span>,</span>
 <span>  iters <span class="op">=</span> <span class="fl">500</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://generics.r-lib.org/reference/glance.html" class="external-link">glance</a></span><span class="op">(</span><span class="va">fits</span><span class="op">)</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fit"</span>, <span class="st">"nparams"</span>, <span class="st">"AICc"</span>, <span class="st">"delta_AICc"</span>, <span class="st">"time_to_50"</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="co">#&gt;            fit nparams         AICc delta_AICc time_to_50</span></span>
-<span><span class="co">#&gt; 1      weibull       2 -0.888323046  0.0000000   3.608246</span></span>
-<span><span class="co">#&gt; 2      neg.exp       1  0.007982282  0.8963053   3.191964</span></span>
-<span><span class="co">#&gt; 3 cont.quality       2  4.234370138  5.1226932   3.187782</span></span></code></pre></div>
+<span><span class="co">#&gt;               fit nparams      AICc delta_AICc time_to_50</span></span>
+<span><span class="co">#&gt; 1         weibull       2 -64.62170    0.00000   2.444290</span></span>
+<span><span class="co">#&gt; 2 discrete.series       3 -50.24970   14.37200   2.341991</span></span>
+<span><span class="co">#&gt; 3         neg.exp       1 -27.15226   37.46945   2.206548</span></span></code></pre></div>
+<p>The Weibull model is strongly preferred here. The two-pool <code>discrete.series</code> model can produce some lag, but it fits less well despite having an extra parameter, and the single-rate <code>neg.exp</code> model fits worst.</p>
 <p>With ggplot2 installed, <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot()</a></code> draws fits, model comparisons and bootstrap distributions as ggplot objects:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">fits</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-10-1.png" alt="" width="100%"></p>
+<p><img src="reference/figures/README-unnamed-chunk-11-1.png" alt="" width="100%"></p>
 </div>
 <div class="section level3">
 <h3 id="element-dynamics">Element dynamics<a class="anchor" aria-label="anchor" href="#element-dynamics"></a>

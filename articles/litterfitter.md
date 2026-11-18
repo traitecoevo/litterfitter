@@ -109,7 +109,7 @@ coef(fit)
 #> 4.185250 2.470686
 residuals(fit)
 #> [1]  0.00000000 -0.07131745  0.15897526 -0.24450225  0.19105538 -0.01185021
-#> [7] -0.07760268
+#> [7] -0.07760267
 predict(fit, newdata = c(7, 8, 9))
 #> [1] 0.028335593 0.007037663 0.001319326
 ```
@@ -151,13 +151,13 @@ fits
 #>              model nparams logLik    AICc delta_AICc
 #>            neg.exp       1  9.197 -15.395      0.000
 #>            weibull       2  9.459 -10.918      4.477
-#>       cont.quality       2  9.192 -10.385      5.010
+#>       cont.quality       2  9.193 -10.385      5.010
 #>  discrete.parallel       3  9.227  -0.454     14.940
 glance(fits)[, c("fit", "nparams", "logLik", "AICc", "delta_AICc", "time_to_50")]
 #>                 fit nparams   logLik        AICc delta_AICc time_to_50
 #> 1           neg.exp       1 9.197395 -15.3947904   0.000000   2.493138
 #> 2           weibull       2 9.458945 -10.9178902   4.476900   2.517099
-#> 3      cont.quality       2 9.192424 -10.3848483   5.009942   2.485853
+#> 3      cont.quality       2 9.192621 -10.3852413   5.009549   2.486052
 #> 4 discrete.parallel       3 9.227192  -0.4543834  14.940407   2.467509
 ```
 

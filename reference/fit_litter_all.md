@@ -85,9 +85,9 @@ glance(fits)
 #>            fit        model nobs nparams      sigma   logLik       AIC
 #> 1      neg.exp      neg.exp    6       1 0.05224361 9.197395 -16.39479
 #> 2      weibull      weibull    6       2 0.05001515 9.458945 -14.91789
-#> 3 cont.quality cont.quality    6       2 0.05228728 9.192382 -14.38476
+#> 3 cont.quality cont.quality    6       2 0.05228643 9.192479 -14.38496
 #>        AICc       BIC converged time_to_50 steady_state delta_AICc
 #> 1 -15.39479 -16.60303      TRUE   2.493138     3.596837   0.000000
 #> 2 -10.91789 -15.33437      TRUE   2.517099     3.405444   4.476900
-#> 3 -10.38476 -14.80124      TRUE   2.486051     3.669323   5.010027
+#> 3 -10.38496 -14.80144      TRUE   2.485657     3.667869   5.009832
 ```

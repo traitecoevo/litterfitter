@@ -143,7 +143,7 @@ would expect:</p>
 <span><span class="co">#&gt; 4.185250 2.470686</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/residuals.html" class="external-link">residuals</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1]  0.00000000 -0.07131745  0.15897526 -0.24450225  0.19105538 -0.01185021</span></span>
-<span><span class="co">#&gt; [7] -0.07760268</span></span>
+<span><span class="co">#&gt; [7] -0.07760267</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit</span>, newdata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">7</span>, <span class="fl">8</span>, <span class="fl">9</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 0.028335593 0.007037663 0.001319326</span></span></code></pre></div>
 <p>Two quantities that are often of ecological interest can be derived
@@ -178,13 +178,13 @@ best model (<code>delta_AICc</code>). Here we use the
 <span><span class="co">#&gt;              model nparams logLik    AICc delta_AICc</span></span>
 <span><span class="co">#&gt;            neg.exp       1  9.197 -15.395      0.000</span></span>
 <span><span class="co">#&gt;            weibull       2  9.459 -10.918      4.477</span></span>
-<span><span class="co">#&gt;       cont.quality       2  9.192 -10.385      5.010</span></span>
+<span><span class="co">#&gt;       cont.quality       2  9.193 -10.385      5.010</span></span>
 <span><span class="co">#&gt;  discrete.parallel       3  9.227  -0.454     14.940</span></span>
 <span><span class="fu"><a href="https://generics.r-lib.org/reference/glance.html" class="external-link">glance</a></span><span class="op">(</span><span class="va">fits</span><span class="op">)</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fit"</span>, <span class="st">"nparams"</span>, <span class="st">"logLik"</span>, <span class="st">"AICc"</span>, <span class="st">"delta_AICc"</span>, <span class="st">"time_to_50"</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="co">#&gt;                 fit nparams   logLik        AICc delta_AICc time_to_50</span></span>
 <span><span class="co">#&gt; 1           neg.exp       1 9.197395 -15.3947904   0.000000   2.493138</span></span>
 <span><span class="co">#&gt; 2           weibull       2 9.458945 -10.9178902   4.476900   2.517099</span></span>
-<span><span class="co">#&gt; 3      cont.quality       2 9.192424 -10.3848483   5.009942   2.485853</span></span>
+<span><span class="co">#&gt; 3      cont.quality       2 9.192621 -10.3852413   5.009549   2.486052</span></span>
 <span><span class="co">#&gt; 4 discrete.parallel       3 9.227192  -0.4543834  14.940407   2.467509</span></span></code></pre></div>
 <p>Because <code>litfit</code> objects have a <code>logLik</code>
 method, the base R functions <code><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">AIC()</a></code> and <code><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">BIC()</a></code>
