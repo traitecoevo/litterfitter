@@ -20,3 +20,8 @@
 "_PACKAGE"
 
 NULL
+
+# Column names used in ggplot2 aesthetics (autoplot methods)
+utils::globalVariables(c(
+  "time", "mass", "element", ".fitted", ".lower", ".upper", "fit", "x", "y"
+))

@@ -22,8 +22,24 @@
   (including the peak element remaining and the mass at the peak) and `augment` methods, and
   is supported by `bootstrap_parameters()`. Based on work by Baptiste Wijas on the `import`
   branch (#30).
+* Plotting has been modernised (#28):
+  * New `autoplot()` methods (ggplot2, in Suggests) for `litfit`, `elementfit`,
+    `litfit_list` and `litfit_bootstrap` objects, with optional bootstrap uncertainty
+    bands, the fitted equation as subtitle, models labelled by their difference in AICc,
+    and bootstrap distributions of all parameters in facets.
+  * `plot()` for `litfit` and `elementfit` objects accepts `boot` to draw an uncertainty
+    band; user arguments such as `xlab` or `main` override the defaults; the equation is
+    placed in a corner so it no longer overlaps the data.
+  * New `plot()` method for `litfit_list` with a colour-blind safe (Okabe-Ito) palette and
+    an aligned table of AIC, AICc and BIC.
+  * `plot_multiple_fits()` keeps its interface but now uses `fit_litter_all()` and the
+    new `plot()` method, returns a `litfit_list`, and can plot existing fits without
+    refitting.
+  * `plot()` on a bootstrap can show several columns by number or name, or all of them
+    (`coef.index = "all"`), and the shaded interval is set by `conf.level`.
+  * Base plots now look slightly different (palette, legend layout, equation position).
 * The missing-value warning from `fit_litter()` now has class `litterfitter_missing_removed`.
-* New dependency: `generics` (Imports).
+* New dependencies: `generics` and `utils` (Imports); `ggplot2` and `vdiffr` (Suggests).
 
 # litterfitter 0.2.0 (GitHub only; not released to CRAN)
 

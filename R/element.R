@@ -179,7 +179,7 @@ fit_element <- function(mass.remaining, element.remaining, model = c("import.mod
 #' @param boot optional \code{litfit_bootstrap} object from
 #'   \code{\link{bootstrap_parameters}} for the same fit
 #' @param conf.level confidence level for intervals and bands
-#' @param ... further arguments; for \code{plot()} passed to \code{\link{plot.default}}
+#' @param ... unused
 #'
 #' @return \code{tidy()}, \code{glance()} and \code{augment()} return a \code{data.frame}
 #'   (see \code{\link{litfit_tidiers}} for the shared columns; \code{augment()} uses
@@ -216,26 +216,6 @@ print.elementfit <- function(x, ...) {
     "logLik: ", round(x$logLik, 3), "   AIC: ", round(x$fitAIC, 3),
     "   AICc: ", round(x$fitAICc, 3), "   BIC: ", round(x$fitBIC, 3), "\n"
   ))
-  invisible(x)
-}
-
-#' @rdname elementfit_methods
-#' @export
-plot.elementfit <- function(x, ...) {
-  mass.vec <- seq(0, max(1, x$mass), length.out = 500)
-  curve <- predict(x, newdata = mass.vec)
-  plot(
-    x$element ~ x$mass,
-    pch = 16,
-    xlab = "Proportion mass remaining",
-    ylab = "Proportion element remaining",
-    xlim = c(max(1, x$mass), 0),
-    ylim = c(0, max(1, x$element, curve, na.rm = TRUE)),
-    main = x$model,
-    ...
-  )
-  graphics::abline(h = 1, lty = 2, col = "grey50")
-  graphics::lines(mass.vec, curve)
   invisible(x)
 }
 

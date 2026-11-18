@@ -82,7 +82,48 @@ statistics for the fit.
     #> AICc:  -0.8883 
     #> BIC:  -3.9965
 
-From the `litfit` object you can then see the uncertainty in the
-parameter estimate by bootstrapping
+Bootstrapping shows the uncertainty in the parameter estimates and in
+the fitted curve:
+
+``` r
+boot <- bootstrap_parameters(fit, nboot = 500)
+plot(fit, boot = boot)
+```
 
 <img src="man/figures/README-unnamed-chunk-8-1.png" alt="" width="100%" />
+
+### Comparing models and tidy output
+
+`fit_litter_all()` fits several models at once, and `glance()` gives a
+model comparison table. `tidy()`, `glance()` and `augment()` return
+results as data frames for further analysis or custom plots:
+
+``` r
+fits <- fit_litter_all(
+  time = c(0, 1, 2, 3, 4, 5, 6),
+  mass.remaining = c(1, 0.9, 1.01, 0.4, 0.6, 0.2, 0.01),
+  models = c("neg.exp", "weibull", "cont.quality"),
+  iters = 500
+)
+glance(fits)[, c("fit", "nparams", "AICc", "delta_AICc", "time_to_50")]
+#>            fit nparams         AICc delta_AICc time_to_50
+#> 1      weibull       2 -0.888323046  0.0000000   3.608246
+#> 2      neg.exp       1  0.007982282  0.8963053   3.191964
+#> 3 cont.quality       2  4.234370138  5.1226932   3.187782
+```
+
+With ggplot2 installed, `autoplot()` draws fits, model comparisons and
+bootstrap distributions as ggplot objects:
+
+``` r
+library(ggplot2)
+autoplot(fits) + theme_bw()
+```
+
+<img src="man/figures/README-unnamed-chunk-10-1.png" alt="" width="100%" />
+
+### Element dynamics
+
+`fit_element()` fits how the proportion of an element remaining
+(e.g. nitrogen) changes as mass is lost, using the model of Parton et
+al. (2007). See the vignette for details.
