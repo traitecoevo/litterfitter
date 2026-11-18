@@ -20,7 +20,7 @@ test_that("length, type and finiteness are checked", {
 
 test_that("time values are checked", {
   expect_error(fit_litter(c(0, -1, 2, 3, 4, 5, 6), ex_mass, "weibull", iters = 10), "negative")
-  expect_error(fit_litter(rep(1, 5), c(1, .8, .6, .5, .4), iters = 10), "distinct time")
+  expect_error(fit_litter(rep(1, 5), c(1, .8, .6, .5, .4), "weibull", iters = 10), "distinct time")
 })
 
 test_that("mass values are checked", {
@@ -120,6 +120,52 @@ test_that("number of observations must exceed number of parameters", {
   set.seed(1)
   # exactly one more observation than parameters is allowed
   expect_s3_class(quiet_fit(0:1, c(1, 0.5), "neg.exp", iters = 10), "litfit")
+})
+
+test_that("curves pinned at the origin can be fitted from a single harvest", {
+  reset <- function() {
+    if (exists("origin_only", envir = litterfitter:::warned_once)) {
+      rm("origin_only", envir = litterfitter:::warned_once)
+    }
+  }
+  reset()
+  on.exit(reset())
+  set.seed(1)
+  # one observation: neg.exp passes exactly through it
+  expect_warning(
+    fit <- fit_litter(0.5, 0.7, "neg.exp", iters = 10, quiet = TRUE),
+    class = "litterfitter_origin_only"
+  )
+  expect_equal(unname(coef(fit)), -log(0.7) / 0.5, tolerance = 1e-6)
+  expect_true(is.na(fit$fitAICc))
+  # the warning is shown once per session
+  expect_no_warning(
+    rep_fit <- fit_litter(c(1, 1, 1), c(0.5, 0.6, 0.55), "neg.exp", iters = 10, quiet = TRUE)
+  )
+  expect_true(is.finite(rep_fit$fitAICc))
+  expect_equal(nobs(rep_fit), 3)
+  # Weibull needs two distinct harvest times
+  expect_s3_class(suppressWarnings(fit_litter(c(0.5, 1), c(0.7, 0.5), "weibull", iters = 10,
+                                              quiet = TRUE)), "litfit")
+  expect_error(fit_litter(c(1, 1, 1), c(0.5, 0.4, 0.45), "weibull", iters = 10),
+               "distinct time points")
+  # neg.exp.limit is not pinned at the origin, so the old rules apply
+  expect_error(fit_litter(rep(1, 4), c(0.5, 0.4, 0.5, 0.4), "neg.exp.limit", iters = 10),
+               "distinct time points")
+  # data only at time 0 cannot identify anything
+  expect_error(fit_litter(c(0, 0), c(1, 1), "neg.exp", iters = 10), "distinct time points")
+})
+
+test_that("fit_litter_all reports the single-harvest warning once", {
+  if (exists("origin_only", envir = litterfitter:::warned_once)) {
+    rm("origin_only", envir = litterfitter:::warned_once)
+  }
+  set.seed(1)
+  w <- testthat::capture_warnings(
+    fits <- fit_litter_all(c(1, 1), c(0.5, 0.6), models = c("neg.exp", "cont.quality"), iters = 10)
+  )
+  expect_equal(sum(grepl("relying on the curve starting at mass 1", w)), 1)
+  expect_s3_class(fits, "litfit_list")
 })
 
 test_that("iters is validated", {

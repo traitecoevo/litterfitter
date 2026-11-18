@@ -41,6 +41,19 @@
 * The missing-value warning from `fit_litter()` now has class `litterfitter_missing_removed`.
 * New dependencies: `generics` and `utils` (Imports); `ggplot2` and `vdiffr` (Suggests).
 
+## Behaviour changes
+
+* `fit_litter()` again fits a single harvest, or replicates at a single time,
+  for models whose curve starts at mass 1 at time 0 (all except
+  `neg.exp.limit`), as 0.1.x did. 0.2.0 rejected these data, which broke
+  workflows that fit `neg.exp` k for each species and site. A fit is now
+  allowed when there are at least as many distinct harvest times after
+  time 0 as parameters. Fits that are possible only because of this rule
+  give a once-per-session warning of class `litterfitter_origin_only`.
+* AICc is `NA` when it is undefined (fewer than the number of parameters
+  plus two observations), instead of a value with a zero or negative
+  denominator.
+
 # litterfitter 0.2.0 (GitHub only; not released to CRAN)
 
 
