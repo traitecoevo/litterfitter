@@ -1,47 +1,54 @@
-# Plot Decomposition Trajectory and Curve Fit
+# Plot a decomposition trajectory and its fitted curve
 
-Plot a Litter Decomposition Trajectory with Curve Fit
+Plots the data and fitted curve from a `litfit` object, with the fitted
+equation. If a bootstrap is supplied, a pointwise percentile band for
+the curve is added.
 
 ## Usage
 
 ``` r
 # S3 method for class 'litfit'
-plot(x, formulae.cex = 1, ...)
+plot(x, formulae.cex = 1, boot = NULL, conf.level = 0.95, ...)
 ```
 
 ## Arguments
 
 - x:
 
-  A `litfit` object.
+  a `litfit` object from
+  [`fit_litter`](https://traitecoevo.github.io/litterfitter/reference/fit_litter.md)
 
 - formulae.cex:
 
-  Size scaling factor for the formula display on the plot.
+  size of the equation text; use `NA` to omit the equation
+
+- boot:
+
+  optional `litfit_bootstrap` object from
+  [`bootstrap_parameters`](https://traitecoevo.github.io/litterfitter/reference/bootstrap_parameters.md)
+  for the same fit, to draw an uncertainty band
+
+- conf.level:
+
+  confidence level for the band (default 0.95)
 
 - ...:
 
-  Additional arguments passed to
-  [`plot.default`](https://rdrr.io/r/graphics/plot.default.html).
+  additional arguments passed to
+  [`plot.default`](https://rdrr.io/r/graphics/plot.default.html), which
+  override the defaults (e.g. `xlab`, `ylab`, `main`, `pch`)
 
 ## Value
 
-A plot visualizing the data and curve fit from a `litfit` object. The
-result is returned invisibly.
-
-## Details
-
-Visualizes the litter decomposition trajectory data and its curve fit
-derived from a `litfit` object. This function is designed to provide a
-quick visual check on the adequacy of model fitting.
-
-The plot displays data points from the `litfit` object along with the
-curve fit. The formula for the fit is displayed on the plot.
+`x`, invisibly
 
 ## See also
 
-[`fit_litter`](https://traitecoevo.github.io/litterfitter/reference/fit_litter.md)
-for generating `litfit` objects.
+[`fit_litter`](https://traitecoevo.github.io/litterfitter/reference/fit_litter.md),
+[`plot.litfit_list`](https://traitecoevo.github.io/litterfitter/reference/plot.litfit_list.md);
+[`autoplot()`](https://ggplot2.tidyverse.org/reference/autoplot.html)
+methods for ggplot2 output
+([`litterfitter_autoplot`](https://traitecoevo.github.io/litterfitter/reference/litterfitter_autoplot.md))
 
 ## Author
 
@@ -51,13 +58,13 @@ Will Cornwell
 
 ``` r
 fit <- fit_litter(
-  time = c(0, 1, 2, 3, 4, 5, 6),
-  mass.remaining = c(1, 0.9, 1.01, 0.4, 0.6, 0.2, 0.01),
-  "neg.exp",
-  iters = 250
+  time = pineneedles$Year, mass.remaining = pineneedles$Mass.remaining,
+  model = "weibull", iters = 100, quiet = TRUE
 )
-#> Warning: 1 of 7 mass remaining values are above 1 (max 1.01), i.e. apparent mass gain. They are kept in the fit and treated as measurement error.
-#> Number of successful fits:  250  out of 250
 plot(fit)
+
+
+boot <- bootstrap_parameters(fit, nboot = 100)
+plot(fit, boot = boot, main = "Weibull fit with 95% band")
 
 ```

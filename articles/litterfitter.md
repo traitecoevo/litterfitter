@@ -109,7 +109,7 @@ coef(fit)
 #> 4.185250 2.470686
 residuals(fit)
 #> [1]  0.00000000 -0.07131745  0.15897526 -0.24450225  0.19105538 -0.01185021
-#> [7] -0.07760267
+#> [7] -0.07760268
 predict(fit, newdata = c(7, 8, 9))
 #> [1] 0.028335593 0.007037663 0.001319326
 ```
@@ -151,13 +151,13 @@ fits
 #>              model nparams logLik    AICc delta_AICc
 #>            neg.exp       1  9.197 -15.395      0.000
 #>            weibull       2  9.459 -10.918      4.477
-#>       cont.quality       2  9.193 -10.385      5.010
+#>       cont.quality       2  9.192 -10.385      5.010
 #>  discrete.parallel       3  9.227  -0.454     14.940
 glance(fits)[, c("fit", "nparams", "logLik", "AICc", "delta_AICc", "time_to_50")]
 #>                 fit nparams   logLik        AICc delta_AICc time_to_50
 #> 1           neg.exp       1 9.197395 -15.3947904   0.000000   2.493138
 #> 2           weibull       2 9.458945 -10.9178902   4.476900   2.517099
-#> 3      cont.quality       2 9.192621 -10.3852413   5.009549   2.486052
+#> 3      cont.quality       2 9.192424 -10.3848483   5.009942   2.485853
 #> 4 discrete.parallel       3 9.227192  -0.4543834  14.940407   2.467509
 ```
 
@@ -170,6 +170,67 @@ estimates of every model in one table.
 Note that with only a handful of observations the more complex models
 are often poorly identified; see Cornwell & Weedon (2013) for a
 discussion.
+
+### Plotting
+
+Every fitted object has a
+[`plot()`](https://rdrr.io/r/graphics/plot.default.html) method using
+base graphics. Supplying a bootstrap adds a pointwise uncertainty band,
+and a `litfit_list` plots all models together with a table of
+information criteria:
+
+``` r
+
+boot_neg <- bootstrap_parameters(fits$neg.exp, nboot = 500)
+plot(fits$neg.exp, boot = boot_neg)
+```
+
+![](litterfitter_files/figure-html/unnamed-chunk-11-1.png)
+
+``` r
+
+plot(fits)
+```
+
+![](litterfitter_files/figure-html/unnamed-chunk-11-2.png)
+
+[`plot()`](https://rdrr.io/r/graphics/plot.default.html) on a bootstrap
+shows its distributions; use `coef.index = "all"` to see every parameter
+and derived quantity:
+
+``` r
+
+plot(boot_neg, coef.index = "all")
+```
+
+![](litterfitter_files/figure-html/unnamed-chunk-12-1.png)
+
+If ggplot2 is installed,
+[`autoplot()`](https://ggplot2.tidyverse.org/reference/autoplot.html)
+gives the same plots as ggplot objects, which can be customised with the
+usual layers, scales and themes:
+
+``` r
+
+library(ggplot2)
+autoplot(fits$neg.exp, boot = boot_neg)
+```
+
+![](litterfitter_files/figure-html/unnamed-chunk-13-1.png)
+
+``` r
+
+autoplot(fits) + theme_bw()
+```
+
+![](litterfitter_files/figure-html/unnamed-chunk-13-2.png)
+
+``` r
+
+autoplot(boot_neg)
+```
+
+![](litterfitter_files/figure-html/unnamed-chunk-13-3.png)
 
 ### Tidy output and custom plots
 
@@ -188,16 +249,16 @@ best <- fits$neg.exp
 boot <- bootstrap_parameters(best, nboot = 500)
 tidy(best, boot = boot)
 #>   term estimate  std.error  conf.low conf.high
-#> 1    k 0.278022 0.02032293 0.2411624 0.3105982
+#> 1    k 0.278022 0.01965681 0.2365035 0.3137168
 grid <- augment(best, newdata = seq(0, 5, length.out = 100), boot = boot)
 head(grid)
 #>         time   .fitted    .lower    .upper
 #> 1 0.00000000 1.0000000 1.0000000 1.0000000
-#> 2 0.05050505 0.9860566 0.9844356 0.9878940
-#> 3 0.10101010 0.9723076 0.9691135 0.9759345
-#> 4 0.15151515 0.9587504 0.9540298 0.9641198
-#> 5 0.20202020 0.9453821 0.9391809 0.9524481
-#> 6 0.25252525 0.9322003 0.9245632 0.9409177
+#> 2 0.05050505 0.9860566 0.9842806 0.9881264
+#> 3 0.10101010 0.9723076 0.9688083 0.9763938
+#> 4 0.15151515 0.9587504 0.9535792 0.9648006
+#> 5 0.20202020 0.9453821 0.9385895 0.9533450
+#> 6 0.25252525 0.9322003 0.9238354 0.9420253
 ```
 
 These data frames make it straightforward to build your own figures, for
@@ -213,7 +274,7 @@ ggplot(grid, aes(time)) +
   labs(x = "Time (years)", y = "Proportion mass remaining")
 ```
 
-![](litterfitter_files/figure-html/unnamed-chunk-12-1.png)
+![](litterfitter_files/figure-html/unnamed-chunk-15-1.png)
 
 To compare the curves of several models, use
 [`augment()`](https://generics.r-lib.org/reference/augment.html) on the
@@ -229,7 +290,7 @@ ggplot(curves, aes(time, .fitted, colour = fit)) +
   labs(x = "Time (years)", y = "Proportion mass remaining", colour = "Model")
 ```
 
-![](litterfitter_files/figure-html/unnamed-chunk-13-1.png)
+![](litterfitter_files/figure-html/unnamed-chunk-16-1.png)
 
 ### Element (nutrient) dynamics
 
@@ -265,7 +326,7 @@ initial amount of the element:
 plot(efit)
 ```
 
-![](litterfitter_files/figure-html/unnamed-chunk-15-1.png)
+![](litterfitter_files/figure-html/unnamed-chunk-18-1.png)
 
 [`glance()`](https://generics.r-lib.org/reference/glance.html) reports
 the peak element remaining and the mass remaining at which it occurs,
@@ -279,8 +340,8 @@ glance(efit)[, c("model", "AICc", "peak_element", "mass_at_peak")]
 eboot <- bootstrap_parameters(efit, nboot = 500)
 summary(eboot)
 #>                   mean      2.5%       50%     97.5%
-#> a            0.4386399 0.1000000 0.4746850 0.5714846
-#> b            0.6430370 0.6165116 0.6442553 0.6768554
-#> peak_element 1.7654645 1.3199628 1.3593187 5.0984716
-#> mass_at_peak 0.6430265 0.6165114 0.6442454 0.6768470
+#> a            0.4428565 0.1000000 0.4728605 0.5851202
+#> b            0.6415515 0.6156219 0.6383721 0.6770069
+#> peak_element 1.7410779 1.3141080 1.3586614 5.0988436
+#> mass_at_peak 0.6415417 0.6156127 0.6383652 0.6769985
 ```

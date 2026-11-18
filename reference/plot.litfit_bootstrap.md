@@ -1,49 +1,58 @@
-# Plot the bootstrap distribution for a parameter from a litfit object
+# Plot bootstrap distributions
 
-Plot a bootstrap distribution of a particular coefficient
+Plots the density of the bootstrap distribution of one or more
+parameters (or derived quantities) from
+[`bootstrap_parameters`](https://traitecoevo.github.io/litterfitter/reference/bootstrap_parameters.md).
 
 ## Usage
 
 ``` r
 # S3 method for class 'litfit_bootstrap'
-plot(x,coef.index,bw,...)
+plot(x, coef.index = 1, bw = "nrd0", conf.level = 0.95, ...)
 ```
 
 ## Arguments
 
 - x:
 
-  litfit object
+  a `litfit_bootstrap` object
 
 - coef.index:
 
-  coefficient number to plot from the `litfit` object, see order of
-  coefficients for that particular model. Default is to plot the first
-  parameter for that model
+  which column(s) to plot: a number, a column name such as `"k"` or
+  `"steady_state"`, a vector of either, or `"all"`. Several columns are
+  drawn in a grid of panels. With `"all"`, columns without at least two
+  finite values (e.g. an always-infinite steady state) are skipped with
+  a warning.
 
 - bw:
 
-  bandwidth (or bandwidth algorithm see
+  bandwidth (or bandwidth rule, see
   [`density`](https://rdrr.io/r/stats/density.html)) for the density
-  plot
+
+- conf.level:
+
+  width of the shaded central interval (default 0.95)
 
 - ...:
 
-  additional arguments passed to plot.default
+  additional arguments passed to
+  [`plot.default`](https://rdrr.io/r/graphics/plot.default.html)
 
 ## Value
 
-plot of litfit_bootstrap object, returns invisibly
+`x`, invisibly
 
 ## Details
 
-The grey fill goes from 0.025 quantile to the 0.975 quantile of the
-distribution. Red line shows the mean. Blue line shows the median.
+The grey fill covers the central `conf.level` interval of the
+distribution. The red dashed line shows the mean and the blue dashed
+line the median. Non-finite values (e.g. an infinite steady state) and
+failed replicates are ignored.
 
 ## See also
 
-[`fit_litter`](https://traitecoevo.github.io/litterfitter/reference/fit_litter.md)
-[`bootstrap_parameters`](https://traitecoevo.github.io/litterfitter/reference/bootstrap_parameters.md)
+[`bootstrap_parameters`](https://traitecoevo.github.io/litterfitter/reference/bootstrap_parameters.md),
 [`density`](https://rdrr.io/r/stats/density.html)
 
 ## Author
@@ -53,10 +62,12 @@ James Weedon
 ## Examples
 
 ``` r
-fit <- fit_litter(time=pineneedles$Year,
-mass.remaining=pineneedles$Mass.remaining, model='neg.exp', iters=200)
-#> Number of successful fits:  200  out of 200
-boot1 <- bootstrap_parameters(fit, nboot = 500)
-plot(boot1)
+fit <- fit_litter(
+  time = pineneedles$Year, mass.remaining = pineneedles$Mass.remaining,
+  model = "weibull", iters = 100, quiet = TRUE
+)
+boot <- bootstrap_parameters(fit, nboot = 200)
+plot(boot)
+plot(boot, coef.index = "all")
 
 ```

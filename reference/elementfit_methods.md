@@ -12,9 +12,6 @@ remaining values.
 print(x, ...)
 
 # S3 method for class 'elementfit'
-plot(x, ...)
-
-# S3 method for class 'elementfit'
 coef(object, ...)
 
 # S3 method for class 'elementfit'
@@ -50,9 +47,7 @@ augment(x, newdata = NULL, boot = NULL, conf.level = 0.95, ...)
 
 - ...:
 
-  further arguments; for
-  [`plot()`](https://rdrr.io/r/graphics/plot.default.html) passed to
-  [`plot.default`](https://rdrr.io/r/graphics/plot.default.html)
+  unused
 
 - newdata:
 

@@ -33,9 +33,9 @@
     </div>
 
     <div class="section level2">
-      <h2 id="all-functions">All functions<a class="anchor" aria-label="anchor" href="#all-functions"></a></h2>
+      <h2 id="fitting-mass-loss">Fitting mass loss<a class="anchor" aria-label="anchor" href="#fitting-mass-loss"></a></h2>
 
-
+      <div class="section-desc"><p>Fit decomposition models to single-cohort mass loss data.</p></div>
 
       <dl></dl></div><div class="section level2">
 
@@ -43,34 +43,6 @@
 
 
       <dl><dt>
-
-          <code><a href="as_litfit_list.html">as_litfit_list()</a></code>
-
-        </dt>
-        <dd>Combine existing fits into a litfit_list</dd>
-
-        <dt>
-
-          <code><a href="bootstrap_parameters.html">bootstrap_parameters()</a></code>
-
-        </dt>
-        <dd>Create a bootstrap distribution of a particular coefficient from a model fit</dd>
-
-        <dt>
-
-          <code><a href="elementfit_methods.html">print(<i>&lt;elementfit&gt;</i>)</a></code> <code><a href="elementfit_methods.html">plot(<i>&lt;elementfit&gt;</i>)</a></code> <code><a href="elementfit_methods.html">coef(<i>&lt;elementfit&gt;</i>)</a></code> <code><a href="elementfit_methods.html">fitted(<i>&lt;elementfit&gt;</i>)</a></code> <code><a href="elementfit_methods.html">residuals(<i>&lt;elementfit&gt;</i>)</a></code> <code><a href="elementfit_methods.html">nobs(<i>&lt;elementfit&gt;</i>)</a></code> <code><a href="elementfit_methods.html">logLik(<i>&lt;elementfit&gt;</i>)</a></code> <code><a href="elementfit_methods.html">predict(<i>&lt;elementfit&gt;</i>)</a></code> <code><a href="elementfit_methods.html">tidy(<i>&lt;elementfit&gt;</i>)</a></code> <code><a href="elementfit_methods.html">glance(<i>&lt;elementfit&gt;</i>)</a></code> <code><a href="elementfit_methods.html">augment(<i>&lt;elementfit&gt;</i>)</a></code>
-
-        </dt>
-        <dd>Methods for elementfit objects</dd>
-
-        <dt>
-
-          <code><a href="fit_element.html">fit_element()</a></code>
-
-        </dt>
-        <dd>Fit element (nutrient) dynamics during decomposition</dd>
-
-        <dt>
 
           <code><a href="fit_litter.html">fit_litter()</a></code>
 
@@ -86,59 +58,17 @@
 
         <dt>
 
+          <code><a href="as_litfit_list.html">as_litfit_list()</a></code>
+
+        </dt>
+        <dd>Combine existing fits into a litfit_list</dd>
+
+        <dt>
+
           <code><a href="litfit_list_methods.html">print(<i>&lt;litfit_list&gt;</i>)</a></code> <code><a href="litfit_list_methods.html">glance(<i>&lt;litfit_list&gt;</i>)</a></code> <code><a href="litfit_list_methods.html">tidy(<i>&lt;litfit_list&gt;</i>)</a></code> <code><a href="litfit_list_methods.html">augment(<i>&lt;litfit_list&gt;</i>)</a></code> <code><a href="litfit_list_methods.html">coef(<i>&lt;litfit_list&gt;</i>)</a></code> <code><a href="litfit_list_methods.html">`[`(<i>&lt;litfit_list&gt;</i>)</a></code>
 
         </dt>
         <dd>Methods for litfit_list objects</dd>
-
-        <dt>
-
-          <code><a href="litfit_tidiers.html">tidy(<i>&lt;litfit&gt;</i>)</a></code> <code><a href="litfit_tidiers.html">glance(<i>&lt;litfit&gt;</i>)</a></code> <code><a href="litfit_tidiers.html">augment(<i>&lt;litfit&gt;</i>)</a></code>
-
-        </dt>
-        <dd>Tidy, glance and augment methods for litfit objects</dd>
-
-        <dt>
-
-          <code><a href="litterfitter.html">litterfitter-package</a></code> <code><a href="litterfitter.html">litterfitter</a></code>
-
-        </dt>
-        <dd>litterfitter: methods for fitting curves to litter decomposition trajectories</dd>
-
-        <dt>
-
-          <code><a href="logLik.litfit.html">logLik(<i>&lt;litfit&gt;</i>)</a></code>
-
-        </dt>
-        <dd>Log-likelihood of a litfit object</dd>
-
-        <dt>
-
-          <code><a href="pineneedles.html">pineneedles</a></code>
-
-        </dt>
-        <dd>decomposition trajectory for pine needles</dd>
-
-        <dt>
-
-          <code><a href="plot.litfit.html">plot(<i>&lt;litfit&gt;</i>)</a></code>
-
-        </dt>
-        <dd>Plot Decomposition Trajectory and Curve Fit</dd>
-
-        <dt>
-
-          <code><a href="plot.litfit_bootstrap.html">plot(<i>&lt;litfit_bootstrap&gt;</i>)</a></code>
-
-        </dt>
-        <dd>Plot the bootstrap distribution for a parameter from a litfit object</dd>
-
-        <dt>
-
-          <code><a href="plot_multiple_fits.html">plot_multiple_fits()</a></code>
-
-        </dt>
-        <dd>Plot multiple fits on one graph with model selection results displayed</dd>
 
         <dt>
 
@@ -149,10 +79,72 @@
 
         <dt>
 
+          <code><a href="logLik.litfit.html">logLik(<i>&lt;litfit&gt;</i>)</a></code>
+
+        </dt>
+        <dd>Log-likelihood of a litfit object</dd>
+      </dl></div><div class="section level2">
+      <h2 id="element-dynamics">Element dynamics<a class="anchor" aria-label="anchor" href="#element-dynamics"></a></h2>
+
+      <div class="section-desc"><p>Fit element (nutrient) remaining as a function of mass remaining.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="fit_element.html">fit_element()</a></code>
+
+        </dt>
+        <dd>Fit element (nutrient) dynamics during decomposition</dd>
+
+        <dt>
+
+          <code><a href="elementfit_methods.html">print(<i>&lt;elementfit&gt;</i>)</a></code> <code><a href="elementfit_methods.html">coef(<i>&lt;elementfit&gt;</i>)</a></code> <code><a href="elementfit_methods.html">fitted(<i>&lt;elementfit&gt;</i>)</a></code> <code><a href="elementfit_methods.html">residuals(<i>&lt;elementfit&gt;</i>)</a></code> <code><a href="elementfit_methods.html">nobs(<i>&lt;elementfit&gt;</i>)</a></code> <code><a href="elementfit_methods.html">logLik(<i>&lt;elementfit&gt;</i>)</a></code> <code><a href="elementfit_methods.html">predict(<i>&lt;elementfit&gt;</i>)</a></code> <code><a href="elementfit_methods.html">tidy(<i>&lt;elementfit&gt;</i>)</a></code> <code><a href="elementfit_methods.html">glance(<i>&lt;elementfit&gt;</i>)</a></code> <code><a href="elementfit_methods.html">augment(<i>&lt;elementfit&gt;</i>)</a></code>
+
+        </dt>
+        <dd>Methods for elementfit objects</dd>
+      </dl></div><div class="section level2">
+      <h2 id="derived-quantities">Derived quantities<a class="anchor" aria-label="anchor" href="#derived-quantities"></a></h2>
+
+
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="time_to_prop_mass_remaining.html">time_to_prop_mass_remaining()</a></code>
+
+        </dt>
+        <dd>Get the predicted time until half mass loss for a litter decomposition trajectory</dd>
+
+        <dt>
+
           <code><a href="steady_state.html">steady_state()</a></code>
 
         </dt>
         <dd>Estimate Steady State Biomass</dd>
+      </dl></div><div class="section level2">
+      <h2 id="uncertainty">Uncertainty<a class="anchor" aria-label="anchor" href="#uncertainty"></a></h2>
+
+
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="bootstrap_parameters.html">bootstrap_parameters()</a></code>
+
+        </dt>
+        <dd>Create a bootstrap distribution of a particular coefficient from a model fit</dd>
 
         <dt>
 
@@ -160,6 +152,73 @@
 
         </dt>
         <dd>Summarise a bootstrap distribution of parameters from a litfit object</dd>
+      </dl></div><div class="section level2">
+      <h2 id="plotting">Plotting<a class="anchor" aria-label="anchor" href="#plotting"></a></h2>
+
+      <div class="section-desc"><p>Base graphics methods and ggplot2 <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot()</a></code> methods.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="plot.litfit.html">plot(<i>&lt;litfit&gt;</i>)</a></code>
+
+        </dt>
+        <dd>Plot a decomposition trajectory and its fitted curve</dd>
+
+        <dt>
+
+          <code><a href="plot.elementfit.html">plot(<i>&lt;elementfit&gt;</i>)</a></code>
+
+        </dt>
+        <dd>Plot an element fit</dd>
+
+        <dt>
+
+          <code><a href="plot.litfit_list.html">plot(<i>&lt;litfit_list&gt;</i>)</a></code>
+
+        </dt>
+        <dd>Plot several fits to the same data</dd>
+
+        <dt>
+
+          <code><a href="plot_multiple_fits.html">plot_multiple_fits()</a></code>
+
+        </dt>
+        <dd>Fit and plot several models on one graph with model selection results</dd>
+
+        <dt>
+
+          <code><a href="plot.litfit_bootstrap.html">plot(<i>&lt;litfit_bootstrap&gt;</i>)</a></code>
+
+        </dt>
+        <dd>Plot bootstrap distributions</dd>
+
+        <dt>
+
+          <code><a href="litterfitter_autoplot.html">autoplot(<i>&lt;litfit&gt;</i>)</a></code> <code><a href="litterfitter_autoplot.html">autoplot(<i>&lt;elementfit&gt;</i>)</a></code> <code><a href="litterfitter_autoplot.html">autoplot(<i>&lt;litfit_list&gt;</i>)</a></code> <code><a href="litterfitter_autoplot.html">autoplot(<i>&lt;litfit_bootstrap&gt;</i>)</a></code>
+
+        </dt>
+        <dd>ggplot2 plots of litterfitter fits</dd>
+      </dl></div><div class="section level2">
+      <h2 id="tidy-output">Tidy output<a class="anchor" aria-label="anchor" href="#tidy-output"></a></h2>
+
+      <div class="section-desc"><p>Results as data frames, following the conventions of the broom package.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="litfit_tidiers.html">tidy(<i>&lt;litfit&gt;</i>)</a></code> <code><a href="litfit_tidiers.html">glance(<i>&lt;litfit&gt;</i>)</a></code> <code><a href="litfit_tidiers.html">augment(<i>&lt;litfit&gt;</i>)</a></code>
+
+        </dt>
+        <dd>Tidy, glance and augment methods for litfit objects</dd>
 
         <dt>
 
@@ -170,12 +229,36 @@
 
         <dt>
 
-          <code><a href="time_to_prop_mass_remaining.html">time_to_prop_mass_remaining()</a></code>
+          <code><a href="reexports.html">reexports</a></code> <code><a href="reexports.html">tidy</a></code> <code><a href="reexports.html">glance</a></code> <code><a href="reexports.html">augment</a></code>
 
         </dt>
-        <dd>Get the predicted time until half mass loss for a litter decomposition trajectory</dd>
+        <dd>Objects exported from other packages</dd>
+      </dl></div><div class="section level2">
+      <h2 id="data-and-package">Data and package<a class="anchor" aria-label="anchor" href="#data-and-package"></a></h2>
+
+
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="pineneedles.html">pineneedles</a></code>
+
+        </dt>
+        <dd>decomposition trajectory for pine needles</dd>
+
+        <dt>
+
+          <code><a href="litterfitter.html">litterfitter-package</a></code> <code><a href="litterfitter.html">litterfitter</a></code>
+
+        </dt>
+        <dd>litterfitter: methods for fitting curves to litter decomposition trajectories</dd>
       </dl></div>
-  </main></div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">

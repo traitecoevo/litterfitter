@@ -79,7 +79,59 @@ statistics for the fit.
 #> BIC:  -3.9965
 ```
 
-From the `litfit` object you can then see the uncertainty in the
-parameter estimate by bootstrapping
+Bootstrapping shows the uncertainty in the parameter estimates and in
+the fitted curve:
+
+``` r
+
+boot <- bootstrap_parameters(fit, nboot = 500)
+plot(fit, boot = boot)
+```
 
 ![](reference/figures/README-unnamed-chunk-8-1.png)
+
+### Comparing models and tidy output
+
+[`fit_litter_all()`](https://traitecoevo.github.io/litterfitter/reference/fit_litter_all.md)
+fits several models at once, and
+[`glance()`](https://generics.r-lib.org/reference/glance.html) gives a
+model comparison table.
+[`tidy()`](https://generics.r-lib.org/reference/tidy.html),
+[`glance()`](https://generics.r-lib.org/reference/glance.html) and
+[`augment()`](https://generics.r-lib.org/reference/augment.html) return
+results as data frames for further analysis or custom plots:
+
+``` r
+
+fits <- fit_litter_all(
+  time = c(0, 1, 2, 3, 4, 5, 6),
+  mass.remaining = c(1, 0.9, 1.01, 0.4, 0.6, 0.2, 0.01),
+  models = c("neg.exp", "weibull", "cont.quality"),
+  iters = 500
+)
+glance(fits)[, c("fit", "nparams", "AICc", "delta_AICc", "time_to_50")]
+#>            fit nparams         AICc delta_AICc time_to_50
+#> 1      weibull       2 -0.888323046  0.0000000   3.608246
+#> 2      neg.exp       1  0.007982282  0.8963053   3.191964
+#> 3 cont.quality       2  4.234370138  5.1226932   3.187782
+```
+
+With ggplot2 installed,
+[`autoplot()`](https://ggplot2.tidyverse.org/reference/autoplot.html)
+draws fits, model comparisons and bootstrap distributions as ggplot
+objects:
+
+``` r
+
+library(ggplot2)
+autoplot(fits) + theme_bw()
+```
+
+![](reference/figures/README-unnamed-chunk-10-1.png)
+
+### Element dynamics
+
+[`fit_element()`](https://traitecoevo.github.io/litterfitter/reference/fit_element.md)
+fits how the proportion of an element remaining (e.g. nitrogen) changes
+as mass is lost, using the model of Parton et al. (2007). See the
+vignette for details.
