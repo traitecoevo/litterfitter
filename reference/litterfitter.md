@@ -25,7 +25,7 @@ Soil Biology and Biochemistry, 50, 66-76.
 
 Useful links:
 
-- <http://traitecoevo.github.io/litterfitter/>
+- <https://traitecoevo.github.io/litterfitter/>
 
 - <https://github.com/traitecoevo/litterfitter>
 
@@ -37,6 +37,9 @@ Useful links:
 ([ORCID](https://orcid.org/0000-0003-4080-4073))
 
 Authors:
+
+- Will Cornwell <wcornwell@gmail.com>
+  ([ORCID](https://orcid.org/0000-0003-4080-4073))
 
 - James Weedon
 

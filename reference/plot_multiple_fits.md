@@ -22,7 +22,7 @@ plot_multiple_fits(time,mass.remaining,model,color,iters,bty,...)
 - model:
 
   vector of models to fit and plot (see
-  [`fit_litter`](http://traitecoevo.github.io/litterfitter/reference/fit_litter.md))
+  [`fit_litter`](https://traitecoevo.github.io/litterfitter/reference/fit_litter.md))
 
 - color:
 
@@ -31,7 +31,7 @@ plot_multiple_fits(time,mass.remaining,model,color,iters,bty,...)
 - iters:
 
   parameter passed to
-  [`fit_litter`](http://traitecoevo.github.io/litterfitter/reference/fit_litter.md)
+  [`fit_litter`](https://traitecoevo.github.io/litterfitter/reference/fit_litter.md)
 
 - bty:
 
@@ -44,7 +44,7 @@ plot_multiple_fits(time,mass.remaining,model,color,iters,bty,...)
 
 ## Value
 
-plot of multiple fits, returns invisibly
+plot of multiple fits; invisibly returns the list of `litfit` objects
 
 ## Details
 
@@ -53,8 +53,8 @@ and with AIC and BIC simultaneously
 
 ## See also
 
-[`fit_litter`](http://traitecoevo.github.io/litterfitter/reference/fit_litter.md)
-[`plot.litfit`](http://traitecoevo.github.io/litterfitter/reference/plot.litfit.md)
+[`fit_litter`](https://traitecoevo.github.io/litterfitter/reference/fit_litter.md)
+[`plot.litfit`](https://traitecoevo.github.io/litterfitter/reference/plot.litfit.md)
 
 ## Author
 
@@ -71,8 +71,5 @@ plot_multiple_fits(
   bty = "n", model = c("neg.exp", "weibull"),
   xlab = "Time", ylab = "Proportion mass remaining", iters = 200
 )
-#> Number of successful fits:  193  out of 200 
-#> Number of successful fits:  200  out of 200 
-#> Warning: May not have found global best fit; increase iterations
 
 ```

@@ -28,5 +28,5 @@ otherwise.
 
 ## See also
 
-[`fit_litter`](http://traitecoevo.github.io/litterfitter/reference/fit_litter.md),
-[`pineneedles`](http://traitecoevo.github.io/litterfitter/reference/pineneedles.md)
+[`fit_litter`](https://traitecoevo.github.io/litterfitter/reference/fit_litter.md),
+[`pineneedles`](https://traitecoevo.github.io/litterfitter/reference/pineneedles.md)

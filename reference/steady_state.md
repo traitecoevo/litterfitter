@@ -24,8 +24,8 @@ steady_state(x = NULL, pars = NULL, model = NULL)
 
   A character string specifying the decomposition model. Must be one of
   the following: "neg.exp", "weibull", "discrete.parallel",
-  "discrete.series", or "cont.quality2". Only needed if `x` is not
-  provided.
+  "discrete.series", "cont.quality" or "neg.exp.limit". Only needed if
+  `x` is not provided.
 
 ## Value
 
@@ -37,12 +37,14 @@ from the specified model.
 Computes the steady state biomass, as a proportion of the annual input,
 based on a given model fit or parameters.
 
-Currently, the function supports a subset of decomposition models. New
-model support is planned for future updates.
+For `neg.exp.limit`, a fraction \\B\\ of the litter never decomposes, so
+the implied steady state is infinite whenever \\B \> 0\\. Because \\B\\
+is bounded just above zero during fitting, values of \\B \< 10^{-4}\\
+are treated as zero and the steady state is \\A / k\\.
 
 ## See also
 
-[`fit_litter`](http://traitecoevo.github.io/litterfitter/reference/fit_litter.md)
+[`fit_litter`](https://traitecoevo.github.io/litterfitter/reference/fit_litter.md)
 for generating `litfit` objects.
 
 ## Author
@@ -59,7 +61,8 @@ fit <- fit_litter(
   model = "neg.exp",
   iters = 250
 )
-#> Number of successful fits:  248  out of 250 
+#> Warning: 1 of 7 mass remaining values are above 1 (max 1.01), i.e. apparent mass gain. They are kept in the fit and treated as measurement error.
+#> Number of successful fits:  250  out of 250
 steady_state(fit)
 #> neg.exp 
 #> 4.60503 

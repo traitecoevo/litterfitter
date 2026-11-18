@@ -5,11 +5,19 @@
 
 ### Installation
 
+Install the released version from CRAN:
+
 ``` r
-  #install.packages("remotes")
-  remotes::install_github("cornwell-lab-unsw/litterfitter")
-  
-library(litterfitter)
+
+install.packages("litterfitter")
+```
+
+or the development version from GitHub:
+
+``` r
+
+# install.packages("remotes")
+remotes::install_github("traitecoevo/litterfitter")
 ```
 
 ### Getting started
@@ -19,10 +27,13 @@ fit 6 different types of decomposition trajectories. Note that the
 fitted object is a `litfit` object
 
 ``` r
-fit <- fit_litter(time=c(0,1,2,3,4,5,6),
-                  mass.remaining =c(1,0.9,1.01,0.4,0.6,0.2,0.01),
-                  model="weibull",
-                  iters=500)
+
+fit <- fit_litter(
+  time = c(0, 1, 2, 3, 4, 5, 6),
+  mass.remaining = c(1, 0.9, 1.01, 0.4, 0.6, 0.2, 0.01),
+  model = "weibull",
+  iters = 500
+)
 
 class(fit)
 ```
@@ -31,22 +42,26 @@ You can visually compare the fits of different non-linear equations with
 the `plot_multiple_fits` function:
 
 ``` r
-plot_multiple_fits(time=c(0,1,2,3,4,5,6),
-                   mass.remaining=c(1,0.9,1.01,0.4,0.6,0.2,0.01),
-                   model=c("neg.exp","weibull"),
-                   iters=500)
+
+plot_multiple_fits(
+  time = c(0, 1, 2, 3, 4, 5, 6),
+  mass.remaining = c(1, 0.9, 1.01, 0.4, 0.6, 0.2, 0.01),
+  model = c("neg.exp", "weibull"),
+  iters = 500
+)
 ```
 
-![](reference/figures/README-unnamed-chunk-4-1.png)
+![](reference/figures/README-unnamed-chunk-5-1.png)
 
 Calling `plot` on a `litfit` object will show you the data, the curve
 fit, and even the equation, with the estimated coefficients:
 
 ``` r
-   plot(fit)
+
+plot(fit)
 ```
 
-![](reference/figures/README-unnamed-chunk-5-1.png)
+![](reference/figures/README-unnamed-chunk-6-1.png)
 
 The summary of a `litfit` object will show you some of the summary
 statistics for the fit.
@@ -55,8 +70,8 @@ statistics for the fit.
 #> Summary of litFit object
 #> Model type: weibull 
 #> Number of observations:  7 
-#> Parameter fits: 4.19 
-#> Parameter fits: 2.47 
+#> Parameter fit (beta): 4.19
+#> Parameter fit (alpha): 2.47
 #> Time to 50% mass loss: 3.61 
 #> Implied steady state litter mass: 3.71 in units of yearly input 
 #> AIC:  -3.8883 
@@ -67,4 +82,4 @@ statistics for the fit.
 From the `litfit` object you can then see the uncertainty in the
 parameter estimate by bootstrapping
 
-![](reference/figures/README-unnamed-chunk-7-1.png)
+![](reference/figures/README-unnamed-chunk-8-1.png)

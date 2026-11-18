@@ -15,6 +15,7 @@ fit_litter(
   iters = 500,
   upper = NULL,
   lower = NULL,
+  quiet = FALSE,
   ...
 )
 ```
@@ -27,11 +28,15 @@ fit_litter(
 
 - mass.remaining:
 
-  proportional mass loss, that is, mi/m0
+  proportional mass remaining, that is, mi/m0. Values above 1 (apparent
+  mass gain, up to 2) or slightly below 0 (down to -0.1) are kept and
+  treated as measurement error, with an informative warning (see
+  Details).
 
 - model:
 
-  there are five models currently implemented (see below)
+  there are six models currently implemented (see below); defaults to
+  `"neg.exp"`
 
 - iters:
 
@@ -44,6 +49,11 @@ fit_litter(
   **Optional** user specified values for the upper and lower bounds used
   by `optim` in the fitting procedure. Use with care, only minimal
   sanity checking is currently implemented.
+
+- quiet:
+
+  if `TRUE`, suppress the message reporting the number of successful
+  fits
 
 - ...:
 
@@ -61,7 +71,7 @@ returns a litfit object with the following elements:
 
 - **time:** vector of time (same as input)
 
-- **mass:** vector os mass remaining (same as input)
+- **mass:** vector of mass remaining (same as input)
 
 - **predicted:** predicted values from the model for each of the points
   within time
@@ -86,6 +96,9 @@ be used within optim can be specified through the control object (i.e.,
 control\$method). The default method is L-BFGS-B with bounds specific to
 each model. Each model
 
+- **neg.exp** The classic negative exponential model–one parameter
+  (Olson 1963)
+
 - **weibull** The Weibull residence time model–two parameters (Frechet
   1927)
 
@@ -99,10 +112,13 @@ each model. Each model
 - **cont.quality** (Ågren and Bosatta 1996, see also Manzoni et al.
   2012)
 
+- **neg.exp.limit** A negative exponential decaying towards a non-zero
+  asymptote (\\A e^{-kt} + B\\)–three parameters
+
 *Warning*: difficulty in finding the optimal solution is determined by
 an interaction between the nature and complexity of the likelihood space
 (which is both data- and model-dependent) as well as the optimization
-methods. There is can never be a guarantee that the optimal solution is
+methods. There can never be a guarantee that the optimal solution is
 found, but using many random starting points will increase these odds.
 It should be noted that there is significant variation among models in
 identifiability, with some models inherently less identifiable likely
@@ -110,8 +126,24 @@ due to a tendency to form for flat ridges in likelihood space. The
 confidence in the fit should be very low in these cases (see Cornwell
 and Weedon 2013). A number of random starting points are used in
 optimization and are given through the iters. The function checks
-whether the the top 10 optimizations have converged on the same
-likelihood, and if they have not this function will return a warning.
+whether the best 5 optimizations have converged on the same likelihood,
+and if they have not this function will return a warning.
+
+*Values outside 0–1*: measurement error, especially early in
+decomposition or when decomposition is slow, can produce proportional
+mass remaining values slightly above 1 (i.e. negative mass loss). These
+values are kept in the fit, since removing or truncating them would bias
+the estimates, but `fit_litter` warns (class
+`litterfitter_mass_above_one`). If the data also show little overall
+mass loss, the warning notes that parameters may be poorly constrained
+and that derived quantities such as
+[`time_to_prop_mass_remaining`](https://traitecoevo.github.io/litterfitter/reference/time_to_prop_mass_remaining.md)
+and
+[`steady_state`](https://traitecoevo.github.io/litterfitter/reference/steady_state.md)
+are extrapolations. Slightly negative values (down to -0.1) are
+similarly kept with a warning (class `litterfitter_mass_below_zero`).
+Use `suppressWarnings(..., classes = ...)` to silence these once
+checked.
 
 ## References
 
@@ -136,8 +168,8 @@ likelihood, and if they have not this function will return a warning.
 ## See also
 
 [`optim`](https://rdrr.io/r/stats/optim.html),
-[`steady_state`](http://traitecoevo.github.io/litterfitter/reference/steady_state.md),
-[`plot.litfit`](http://traitecoevo.github.io/litterfitter/reference/plot.litfit.md)
+[`steady_state`](https://traitecoevo.github.io/litterfitter/reference/steady_state.md),
+[`plot.litfit`](https://traitecoevo.github.io/litterfitter/reference/plot.litfit.md)
 
 ## Author
 
@@ -151,5 +183,5 @@ fit <- fit_litter(
   time = pineneedles$Year, mass.remaining = pineneedles$Mass.remaining,
   model = "neg.exp", iters = 1000
 )
-#> Number of successful fits:  980  out of 1000 
+#> Number of successful fits:  1000  out of 1000
 ```

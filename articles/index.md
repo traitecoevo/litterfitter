@@ -2,4 +2,4 @@
 
 ### All vignettes
 
-- [litterfitter](http://traitecoevo.github.io/litterfitter/articles/litterfitter.md):
+- [litterfitter](https://traitecoevo.github.io/litterfitter/articles/litterfitter.md):

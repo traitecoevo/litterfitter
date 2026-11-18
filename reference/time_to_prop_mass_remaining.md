@@ -29,8 +29,8 @@ this function finds the time to a specified mass loss percentage
 
 ## See also
 
-[`fit_litter`](http://traitecoevo.github.io/litterfitter/reference/fit_litter.md)
-[`plot.litfit`](http://traitecoevo.github.io/litterfitter/reference/plot.litfit.md)
+[`fit_litter`](https://traitecoevo.github.io/litterfitter/reference/fit_litter.md)
+[`plot.litfit`](https://traitecoevo.github.io/litterfitter/reference/plot.litfit.md)
 
 ## Author
 
@@ -39,11 +39,12 @@ Will Cornwell
 ## Examples
 
 ``` r
+
 fit <- fit_litter(
   time = pineneedles$Year, mass.remaining = pineneedles$Mass.remaining,
   model = "neg.exp", iters = 1000
 )
-#> Number of successful fits:  974  out of 1000 
+#> Number of successful fits:  1000  out of 1000
 time_to_prop_mass_remaining(fit, threshold.mass = 0.5)
-#> [1] 2.4932
+#> [1] 2.493138
 ```

@@ -40,7 +40,7 @@ curve fit. The formula for the fit is displayed on the plot.
 
 ## See also
 
-[`fit_litter`](http://traitecoevo.github.io/litterfitter/reference/fit_litter.md)
+[`fit_litter`](https://traitecoevo.github.io/litterfitter/reference/fit_litter.md)
 for generating `litfit` objects.
 
 ## Author
@@ -56,7 +56,8 @@ fit <- fit_litter(
   "neg.exp",
   iters = 250
 )
-#> Number of successful fits:  246  out of 250 
+#> Warning: 1 of 7 mass remaining values are above 1 (max 1.01), i.e. apparent mass gain. They are kept in the fit and treated as measurement error.
+#> Number of successful fits:  250  out of 250
 plot(fit)
 
 ```
