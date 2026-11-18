@@ -63,7 +63,7 @@ test_that("order of observations does not affect the fit", {
 test_that("model argument defaults to import.model and rejects others", {
   set.seed(1)
   expect_equal(quiet_element(pineneedles$Mass.remaining, ex_element, iters = 10)$model, "import.model")
-  expect_error(fit_element(pineneedles$Mass.remaining, ex_element, model = "stoch.model"), "should be")
+  expect_error(fit_element(pineneedles$Mass.remaining, ex_element, model = "exp.model"), "should be")
 })
 
 # ---- input validation ----

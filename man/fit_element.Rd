@@ -7,7 +7,7 @@
 fit_element(
   mass.remaining,
   element.remaining,
-  model = c("import.model"),
+  model = c("import.model", "stoch.model"),
   iters = 500,
   upper = NULL,
   lower = NULL,
@@ -23,7 +23,9 @@ fit_element(
 \item{element.remaining}{proportional element remaining, \eqn{N/N_0}. Values above 1
 (net immobilisation) are expected.}
 
-\item{model}{the element model; currently only \code{"import.model"} (see Details)}
+\item{model}{the element model: \code{"import.model"} (see Details), or the
+experimental \code{"stoch.model"} (Manzoni et al. 2008; import-devel branch only,
+see issue #30)}
 
 \item{iters}{number of random starts for the fitting}
 

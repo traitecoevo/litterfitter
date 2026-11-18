@@ -10,7 +10,9 @@
 #'   \code{\link{fit_litter}}).
 #' @param element.remaining proportional element remaining, \eqn{N/N_0}. Values above 1
 #'   (net immobilisation) are expected.
-#' @param model the element model; currently only \code{"import.model"} (see Details)
+#' @param model the element model: \code{"import.model"} (see Details), or the
+#'   experimental \code{"stoch.model"} (Manzoni et al. 2008; import-devel branch only,
+#'   see issue #30)
 #' @param iters number of random starts for the fitting
 #' @param upper,lower optional bounds for the parameters, in the order given in Details
 #' @param quiet if \code{TRUE}, suppress the message reporting the number of successful fits
@@ -59,7 +61,7 @@
 #' glance(fit)
 #'
 #' @export
-fit_element <- function(mass.remaining, element.remaining, model = c("import.model"),
+fit_element <- function(mass.remaining, element.remaining, model = c("import.model", "stoch.model"),
                         iters = 500, upper = NULL, lower = NULL, quiet = FALSE, ...) {
   model <- match.arg(model)
 
