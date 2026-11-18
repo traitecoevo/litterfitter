@@ -78,23 +78,29 @@ test_that("fixed-start litter fits agree across time units and gradient methods"
     units <- expected_param_names[[m]]
     day_scale <- ifelse(units == "beta", 365,
                         ifelse(units %in% c("k", "K1", "K2", "b"), 1/365, 1))
-    # Tight stopping: cont.quality has a shallow minimum, and the default
-    # factr leaves platform-dependent slack along it (~1e-5 on Windows).
-    fit <- function(time, scale, analytic) {
+    fit <- function(time, scale, analytic, factr) {
       run_optim(p * scale, make_objective(m, time, y),
                 model_bounds(m, "lower") * scale, model_bounds(m, "upper") * scale,
                 gr = if (analytic) make_gradient(m, time, y),
-                control = list(parscale = scale, maxit = 500, factr = 1e3,
+                control = list(parscale = scale, maxit = 500, factr = factr,
                                ndeps = rep(1e-6, length(p))))
     }
-    years <- fit(t, rep(1, length(p)), TRUE)
-    days <- fit(t * 365, day_scale, TRUE)
-    fd <- fit(t * 365, day_scale, FALSE)
-    expect_equal(c(years$convergence, days$convergence, fd$convergence), c(0, 0, 0))
-    expect_equal(years$value, days$value, tolerance = 1e-7)
-    expect_equal(days$value, fd$value, tolerance = 1e-7)
+    # Years vs days compares predictions, so stop tightly: cont.quality has a
+    # shallow minimum, and the default factr leaves platform-dependent slack
+    # along it (~1e-5 on Windows).
+    years <- fit(t, rep(1, length(p)), TRUE, 1e3)
+    days <- fit(t * 365, day_scale, TRUE, 1e3)
+    # Finite differences are too noisy for that precision, so compare the
+    # gradient methods at optim's default stopping rule.
+    an <- fit(t * 365, day_scale, TRUE, 1e7)
+    fd <- fit(t * 365, day_scale, FALSE, 1e7)
+    expect_equal(c(years = years$convergence, days = days$convergence,
+                   an = an$convergence, fd = fd$convergence),
+                 c(years = 0, days = 0, an = 0, fd = 0), info = m)
+    expect_equal(years$value, days$value, tolerance = 1e-7, info = m)
+    expect_equal(an$value, fd$value, tolerance = 1e-7, info = m)
     expect_equal(predict_from_fit(m, years$par, t), predict_from_fit(m, days$par, t * 365),
-                 tolerance = 1e-6)
+                 tolerance = 1e-6, info = m)
   }
 })
 
