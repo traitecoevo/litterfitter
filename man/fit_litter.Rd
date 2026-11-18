@@ -12,21 +12,25 @@ fit_litter(
   iters = 500,
   upper = NULL,
   lower = NULL,
+  quiet = FALSE,
   ...
 )
 }
 \arguments{
 \item{time}{time since decomposition began, that is, ti-t0}
 
-\item{mass.remaining}{proportional mass loss, that is, mi/m0}
+\item{mass.remaining}{proportional mass remaining, that is, mi/m0. Values slightly above 1
+or slightly below 0 (down to -0.1) are allowed, to accommodate measurement error.}
 
-\item{model}{there are five models currently implemented (see below)}
+\item{model}{there are six models currently implemented (see below); defaults to \code{"neg.exp"}}
 
 \item{iters}{Number of random starts for the fitting.  Use higher numbers for models with larger numbers of parameters and for models that inherently tend to be less identifiable.}
 
 \item{upper, lower}{\bold{Optional} user specified values for the upper and lower bounds used by
 \code{optim} in the fitting procedure. Use with care, only minimal sanity checking is currently
 implemented.}
+
+\item{quiet}{if \code{TRUE}, suppress the message reporting the number of successful fits}
 
 \item{...}{Additional arguments passed to \code{\link{optim}}}
 }
@@ -55,13 +59,15 @@ to more complex.
 \details{
 the model likelihood is maximized using methods available in \code{\link[stats]{optim}}.  Optimization methods to be used within optim can be specified through the control object (i.e., control$method).  The default method is L-BFGS-B with bounds specific to each model. Each model
 \itemize{
+\item{\bold{neg.exp} The classic negative exponential model--one parameter (Olson 1963)}
 \item{\bold{weibull} The Weibull residence time model--two parameters (Frechet 1927)}
 \item{\bold{discrete.parallel} Two pools in parallel with a term for the fraction of initial mass in each pool--three parameter (Manzoni et al. 2012)}
 \item{\bold{discrete.series} A three parameter model in which there is the possibility of two sequential pools (Manzoni et al. 2012)}
 \item{\bold{cont.quality} (Ågren and Bosatta 1996, see also Manzoni et al. 2012)}
+\item{\bold{neg.exp.limit} A negative exponential decaying towards a non-zero asymptote (\eqn{A e^{-kt} + B})--three parameters}
 }
 \emph{Warning}: difficulty in finding the optimal solution is determined by an interaction between the nature and complexity of the
-likelihood space (which is both data- and model-dependent) as well as the optimization methods.  There is can never be a guarantee that the optimal solution is found, but using many random starting points will increase these odds.  It should be noted that there is significant variation among models in identifiability, with some models inherently less identifiable likely due to a tendency to form for flat ridges in likelihood space.  The confidence in the fit should be very low in these cases (see Cornwell and Weedon 2013).   A number of random starting points are used in optimization and are given through the iters.  The function checks whether the the top 10 optimizations have converged on the same likelihood, and if they have not this function will return a warning.
+likelihood space (which is both data- and model-dependent) as well as the optimization methods.  There is can never be a guarantee that the optimal solution is found, but using many random starting points will increase these odds.  It should be noted that there is significant variation among models in identifiability, with some models inherently less identifiable likely due to a tendency to form for flat ridges in likelihood space.  The confidence in the fit should be very low in these cases (see Cornwell and Weedon 2013).   A number of random starting points are used in optimization and are given through the iters.  The function checks whether the best 5 optimizations have converged on the same likelihood, and if they have not this function will return a warning.
 }
 \examples{
 data(pineneedles)

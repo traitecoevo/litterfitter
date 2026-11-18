@@ -74,10 +74,50 @@ cont.quality.steadystate <- function(b, a) {
   1 / b * 1 / (a - 1)
 }
 
+# A fraction B never decomposes, so steady state is unbounded when B > 0.
+# When B == 0 the decomposing pool (A) behaves like a negative exponential.
+neg.exp.limit.steadystate <- function(k, A, B) {
+  if (B > 0) Inf else A / k
+}
+
+
+# penalty returned for parameter values where the model cannot be evaluated;
+# large but finite so finite-difference gradients stay finite
+obj_penalty <- 1e10
 
 obj_func <- function(x, ind, dep, curve) {
-  try(predicted <- do.call(curve, (c(list(ind), as.list(x)))))
-  return(sum((predicted - dep)^2))
+  make_objective(curve, ind, dep)(x)
+}
+
+# Build the objective (sum of squared errors) once per fit. Calling the model
+# function directly, rather than via do.call()/as.list()/tryCatch() on every
+# evaluation, removes most of the per-evaluation overhead inside optim().
+make_objective <- function(curve, ind, dep) {
+  f <- if (is.character(curve)) get(curve, envir = topenv(), mode = "function") else curve
+  sse <- function(pred) {
+    s <- sum((pred - dep)^2)
+    # L-BFGS-B cannot handle non-finite values; return a large penalty so
+    # the optimiser moves away from problematic regions of parameter space
+    if (is.finite(s)) s else obj_penalty
+  }
+  switch(length(model_param_names(f)),
+    function(p) sse(f(ind, p[1])),
+    function(p) sse(f(ind, p[1], p[2])),
+    function(p) sse(f(ind, p[1], p[2], p[3])),
+    stop("models with more than 3 parameters are not supported")
+  )
+}
+
+# Names of the free parameters for a given model function
+model_param_names <- function(model) {
+  args <- names(formals(model))
+  args[-c(1, length(args) - 1, length(args))]
+}
+
+# Default bounds for a given model function
+model_bounds <- function(model, which = c("upper", "lower")) {
+  which <- match.arg(which)
+  eval(formals(model)[[which]])
 }
 
 
@@ -101,40 +141,41 @@ calculateBIC <- function(LL, nparams, samplesize) {
 
 multioptimFit <- function(
   time_data, mass_data, model, iters = 200, upper = NULL,
-  lower = NULL, ...
+  lower = NULL, quiet = FALSE, ...
 ) {
-  nArgs <- length(formals(model)) - 3
-  # need this to allow variation in number of parameters (changed to 3 because
-  # 'upper' and 'lower' are now formal arguments)
-  fit <- list()
-  ifelse(!is.null(upper), upper_bounds <- upper, upper_bounds <- eval(as.list(formals(model))$upper))
+  nArgs <- length(model_param_names(model))
+  upper_bounds <- if (!is.null(upper)) upper else model_bounds(model, "upper")
+  lower_bounds <- if (!is.null(lower)) lower else model_bounds(model, "lower")
 
-  ifelse(!is.null(lower), lower_bounds <- lower, lower_bounds <- eval(as.list(formals(model))$lower))
-
-  for (i in 1:iters) {
-    starter <- runif(nArgs, min = lower_bounds, max = lower_bounds + 0.9998)
+  objective <- make_objective(model, time_data, mass_data)
+  fit <- vector("list", iters)
+  for (i in seq_len(iters)) {
     # always start near lower bound--empirically works better
-    fit[[i]] <- tryCatch(stats::optim(starter, obj_func,
-      ind = time_data, dep = mass_data,
-      curve = model, method = "L-BFGS-B", lower = lower_bounds, upper = upper_bounds,
+    starter <- runif(nArgs,
+      min = lower_bounds,
+      max = pmin(lower_bounds + 0.9998, upper_bounds)
+    )
+    fit[[i]] <- tryCatch(stats::optim(starter, objective,
+      method = "L-BFGS-B", lower = lower_bounds, upper = upper_bounds,
       ...
     ), error = function(e) NULL)
   }
-  successes <- unlist(sapply(fit, function(x) {
-    ifelse(is.null(x), return(FALSE), return(x$convergence == 0))
-  }))
-  message(paste("Number of successful fits: ", sum(successes), " out of", iters, "\n"))
+  successes <- vapply(fit, function(x) {
+    !is.null(x) && x$convergence == 0 && x$value < obj_penalty
+  }, logical(1))
+  if (!quiet) {
+    message(paste("Number of successful fits: ", sum(successes), " out of", iters))
+  }
   if (sum(successes) == 0) {
     stop("All attempts failed to converge")
   }
-  s.fit <- subset(fit, successes)
-  likes <- unlist(sapply(s.fit, function(x) x$value))
-  likes[likes == 0] <- NA
-  if (sd(sort(likes, decreasing = TRUE)[1:5]) > 0.01) {
+  s.fit <- fit[successes]
+  likes <- vapply(s.fit, function(x) x$value, numeric(1))
+  # check whether the best few fits converged on the same solution
+  if (length(likes) >= 5 && sd(sort(likes)[1:5]) > 0.01) {
     warning("May not have found global best fit; increase iterations")
   }
-  best.one <- which.min(likes[likes > 0])
-  return(s.fit[[best.one]])
+  s.fit[[which.min(likes)]]
 }
 
 are.within.ten.percent.of <- function(x, y) {
@@ -164,10 +205,10 @@ simulate_and_check <- function(model) {
     time = litterfitter::pineneedles$Year, mass.remaining = litterfitter::pineneedles$Mass.remaining,
     model = model, iters = 1000
   ))
-  mass.with.error <- litterfitter::pineneedles$Mass.remaining + rnorm(
+  mass.with.error <- pmax(litterfitter::pineneedles$Mass.remaining + rnorm(
     length(predict(fit)), 0,
     1e-03
-  )
+  ), 0)
   suppressWarnings(simulated.fit <- fit_litter(
     time = litterfitter::pineneedles$Year, mass.remaining = mass.with.error,
     model = model, iters = 1000

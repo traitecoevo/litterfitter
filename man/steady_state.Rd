@@ -12,7 +12,7 @@ steady_state(x = NULL, pars = NULL, model = NULL)
 \item{pars}{A numeric vector of parameters for the model. Only needed if \code{x} is not provided.}
 
 \item{model}{A character string specifying the decomposition model. Must be one of the following:
-"neg.exp", "weibull", "discrete.parallel", "discrete.series", or "cont.quality2".
+"neg.exp", "weibull", "discrete.parallel", "discrete.series", "cont.quality" or "neg.exp.limit".
 Only needed if \code{x} is not provided.}
 }
 \value{
@@ -24,8 +24,8 @@ Estimate Steady State Biomass
 \details{
 Computes the steady state biomass, as a proportion of the annual input, based on a given model fit or parameters.
 
-Currently, the function supports a subset of decomposition models. New model support is planned
-for future updates.
+For \code{neg.exp.limit}, a fraction \eqn{B} of the litter never decomposes, so
+the implied steady state is infinite whenever \eqn{B > 0}.
 }
 \examples{
 # Example with litfit object

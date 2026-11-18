@@ -7,15 +7,18 @@
 #'
 #' @param time time since decomposition began, that is, ti-t0
 #'
-#' @param  mass.remaining proportional mass loss, that is, mi/m0
+#' @param  mass.remaining proportional mass remaining, that is, mi/m0. Values slightly above 1
+#'   or slightly below 0 (down to -0.1) are allowed, to accommodate measurement error.
 #'
-#' @param model there are five models currently implemented (see below)
+#' @param model there are six models currently implemented (see below); defaults to \code{"neg.exp"}
 #'
 #' @param iters Number of random starts for the fitting.  Use higher numbers for models with larger numbers of parameters and for models that inherently tend to be less identifiable.
 #'
 #' @param upper,lower \bold{Optional} user specified values for the upper and lower bounds used by
 #' \code{optim} in the fitting procedure. Use with care, only minimal sanity checking is currently
 #'  implemented.
+#'
+#' @param quiet if \code{TRUE}, suppress the message reporting the number of successful fits
 #'
 #' @param ...  Additional arguments passed to \code{\link{optim}}
 #'
@@ -39,15 +42,15 @@
 #'
 #' @details the model likelihood is maximized using methods available in \code{\link[stats]{optim}}.  Optimization methods to be used within optim can be specified through the control object (i.e., control$method).  The default method is L-BFGS-B with bounds specific to each model. Each model
 #' \itemize{
-## ` \item{\bold{neg.exp} The classic negative exponential model--one parameter
-## (Olsen 1963)}
+#' \item{\bold{neg.exp} The classic negative exponential model--one parameter (Olson 1963)}
 #' \item{\bold{weibull} The Weibull residence time model--two parameters (Frechet 1927)}
 #' \item{\bold{discrete.parallel} Two pools in parallel with a term for the fraction of initial mass in each pool--three parameter (Manzoni et al. 2012)}
 #' \item{\bold{discrete.series} A three parameter model in which there is the possibility of two sequential pools (Manzoni et al. 2012)}
 #' \item{\bold{cont.quality} (Ågren and Bosatta 1996, see also Manzoni et al. 2012)}
+#' \item{\bold{neg.exp.limit} A negative exponential decaying towards a non-zero asymptote (\eqn{A e^{-kt} + B})--three parameters}
 #' }
 #' \emph{Warning}: difficulty in finding the optimal solution is determined by an interaction between the nature and complexity of the
-#' likelihood space (which is both data- and model-dependent) as well as the optimization methods.  There is can never be a guarantee that the optimal solution is found, but using many random starting points will increase these odds.  It should be noted that there is significant variation among models in identifiability, with some models inherently less identifiable likely due to a tendency to form for flat ridges in likelihood space.  The confidence in the fit should be very low in these cases (see Cornwell and Weedon 2013).   A number of random starting points are used in optimization and are given through the iters.  The function checks whether the the top 10 optimizations have converged on the same likelihood, and if they have not this function will return a warning.
+#' likelihood space (which is both data- and model-dependent) as well as the optimization methods.  There is can never be a guarantee that the optimal solution is found, but using many random starting points will increase these odds.  It should be noted that there is significant variation among models in identifiability, with some models inherently less identifiable likely due to a tendency to form for flat ridges in likelihood space.  The confidence in the fit should be very low in these cases (see Cornwell and Weedon 2013).   A number of random starting points are used in optimization and are given through the iters.  The function checks whether the best 5 optimizations have converged on the same likelihood, and if they have not this function will return a warning.
 #'
 #' @author Will Cornwell and James Weedon
 #'
@@ -72,39 +75,66 @@ fit_litter <- function(
     "neg.exp", "weibull", "discrete.parallel",
     "discrete.series", "cont.quality", "neg.exp.limit"
   ), iters = 500,
-  upper = NULL, lower = NULL, ...
+  upper = NULL, lower = NULL, quiet = FALSE, ...
 ) {
+  model <- match.arg(model)
+
   if (length(time) != length(mass.remaining)) {
     stop("Time vector must have the same length and correspond to the mass remaining vector")
   }
-  if (min(mass.remaining) > 1 | max(mass.remaining) > 2) {
-    stop("Check mass remaining vector; must be in proportional mass remaining.")
+  if (!is.numeric(time) || !is.numeric(mass.remaining)) {
+    stop("time and mass.remaining must be numeric vectors")
+  }
+
+  missing_obs <- is.na(time) | is.na(mass.remaining)
+  if (any(missing_obs)) {
+    warning(paste(sum(missing_obs), "observation(s) with missing time or mass removed"))
+    time <- time[!missing_obs]
+    mass.remaining <- mass.remaining[!missing_obs]
+  }
+
+  if (any(mass.remaining < -0.1) || max(mass.remaining) > 2) {
+    stop("Check mass remaining vector; must be in proportional mass remaining (between 0 and ~1).")
+  }
+  if (any(mass.remaining < 0)) {
+    # small negative values can arise from measurement error when little mass
+    # remains; they are kept so the error structure is not biased (issue #21)
+    warning("Slightly negative mass remaining values detected; treating them as measurement error")
   }
 
   if (min(time) < 0) {
     stop("Check time vector; negative values detected.")
   }
 
-  # test that if user supplied bounds, there are enough of them
-
-  if (!is.null(upper)) {
-    if (length(upper) != length(eval(formals(get(model))$upper))) {
-      stop(paste("Incorrect number of upper bounds supplied, should be:", length(eval(formals(get(model))$upper))))
-    }
+  nparams_model <- length(model_param_names(model))
+  if (length(time) <= nparams_model) {
+    stop(paste(
+      "Too few observations to fit model", model, "- need more than",
+      nparams_model, "data points"
+    ))
   }
-  if (!is.null(lower)) {
-    if (length(lower) != length(eval(formals(get(model))$lower))) {
-      stop(paste("Incorrect number of lower bounds supplied, should be:", length(eval(formals(get(model))$lower))))
-    }
+
+  # test that if user supplied bounds, there are enough of them
+  default_upper <- model_bounds(model, "upper")
+  default_lower <- model_bounds(model, "lower")
+  if (!is.null(upper) && length(upper) != length(default_upper)) {
+    stop(paste("Incorrect number of upper bounds supplied, should be:", length(default_upper)))
+  }
+  if (!is.null(lower) && length(lower) != length(default_lower)) {
+    stop(paste("Incorrect number of lower bounds supplied, should be:", length(default_lower)))
+  }
+  test.upper <- if (is.null(upper)) default_upper else upper
+  test.lower <- if (is.null(lower)) default_lower else lower
+  if (any(test.lower >= test.upper)) {
+    stop("Each lower bound must be smaller than the corresponding upper bound")
   }
 
   fit <- multioptimFit(time, mass.remaining, model,
     iters = iters, upper = upper,
-    lower = lower, ...
+    lower = lower, quiet = quiet, ...
   )
-  if (is.null(fit)) {
-    return(NULL)
-  }
+  names(fit$par) <- model_param_names(model)
+
   predicted_vals <- do.call(model, c(list(time), as.list(fit$par)))
   LL <- calculateLL(predicted_vals, mass.remaining, sqrt(fit$value / length(time)))
   nps <- length(fit$par)
@@ -118,10 +148,7 @@ fit_litter <- function(
   )
   class(fit.out) <- "litfit"
 
-  # create objects for testing if best fits are on boundary values
-  test.lower <- if (is.null(lower)) eval(formals(get(model))$lower) else lower
-  test.upper <- if (is.null(upper)) eval(formals(get(model))$upper) else upper
-
+  # test if best fits are on boundary values
   if (any(fit.out$optimFit$par == test.lower | fit.out$optimFit$par == test.upper)) {
     warning("one or more parameters fit on the boundary, check fit closely")
   }

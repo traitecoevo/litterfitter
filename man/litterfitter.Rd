@@ -24,7 +24,7 @@ Manzoni, S., Pineiro, G., Jackson, R. B., Jobbagy, E. G., Kim, J. H., & Porporat
 \seealso{
 Useful links:
 \itemize{
-  \item \url{http://traitecoevo.github.io/litterfitter/}
+  \item \url{https://traitecoevo.github.io/litterfitter/}
   \item \url{https://github.com/traitecoevo/litterfitter}
   \item Report bugs at \url{https://github.com/traitecoevo/litterfitter/issues}
 }
@@ -35,6 +35,7 @@ Useful links:
 
 Authors:
 \itemize{
+  \item Will Cornwell \email{wcornwell@gmail.com} (\href{https://orcid.org/0000-0003-4080-4073}{ORCID})
   \item James Weedon
 }
 
