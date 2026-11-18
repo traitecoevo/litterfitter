@@ -20,7 +20,6 @@ library(litterfitter)
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/traitecoevo/litterfitter/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/traitecoevo/litterfitter/actions/workflows/R-CMD-check.yaml)
-[![Codecov test coverage](https://codecov.io/gh/traitecoevo/litterfitter/branch/master/graph/badge.svg)](https://app.codecov.io/gh/traitecoevo/litterfitter?branch=master)
 ```{r, echo = FALSE, results = 'asis'}
 # On CI/pkgdown/GitHub: show a clickable badge
 if (identical(Sys.getenv("IN_PKGDOWN"), "true") || identical(Sys.getenv("NOT_CRAN"), "true")) {
