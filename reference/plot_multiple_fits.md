@@ -83,6 +83,7 @@ plot_multiple_fits(
 fits <- fit_litter_all(pineneedles$Year, pineneedles$Mass.remaining,
   models = c("neg.exp", "cont.quality"), iters = 100
 )
+#> Warning: cont.quality: one or more parameters fit on the boundary (a), check fit closely
 plot_multiple_fits(fits)
 
 ```

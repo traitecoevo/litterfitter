@@ -65,6 +65,7 @@ plot(fit)
 
 
 boot <- bootstrap_parameters(fit, nboot = 100)
+#> Warning: 1 of 100 bootstrap replicates failed and are recorded as NA
 plot(fit, boot = boot, main = "Weibull fit with 95% band")
 
 ```

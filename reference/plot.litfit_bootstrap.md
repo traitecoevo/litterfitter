@@ -67,6 +67,7 @@ fit <- fit_litter(
   model = "weibull", iters = 100, quiet = TRUE
 )
 boot <- bootstrap_parameters(fit, nboot = 200)
+#> Warning: 1 of 200 bootstrap replicates failed and are recorded as NA
 plot(boot)
 plot(boot, coef.index = "all")
 

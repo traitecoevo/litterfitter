@@ -71,5 +71,6 @@ fits <- fit_litter_all(
   time = pineneedles$Year, mass.remaining = pineneedles$Mass.remaining,
   models = c("neg.exp", "weibull", "cont.quality"), iters = 100
 )
+#> Warning: cont.quality: one or more parameters fit on the boundary (a), check fit closely
 plot(fits)
 ```

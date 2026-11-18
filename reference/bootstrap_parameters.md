@@ -51,4 +51,5 @@ fit <- fit_litter(
 )
 #> Number of successful fits:  100  out of 100
 boot1 <- bootstrap_parameters(fit, nboot = 500)
+#> Warning: 11 of 500 bootstrap replicates failed and are recorded as NA
 ```

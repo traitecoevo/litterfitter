@@ -121,9 +121,9 @@ the implied steady state) as a mean with quantiles:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">post</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                  mean     2.5%      50%     97.5%</span></span>
-<span><span class="co">#&gt; beta         4.145287 3.026793 4.250955  5.150702</span></span>
-<span><span class="co">#&gt; alpha        4.236101 1.109011 2.653679 10.000000</span></span>
-<span><span class="co">#&gt; steady_state 3.801138 2.873050 3.790378  4.900035</span></span></code></pre></div>
+<span><span class="co">#&gt; beta         4.145207 3.026793 4.254169  5.150706</span></span>
+<span><span class="co">#&gt; alpha        4.239639 1.108681 2.664013 10.000000</span></span>
+<span><span class="co">#&gt; steady_state 3.801316 2.873050 3.791254  4.900035</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="working-with-fitted-models">Working with fitted models<a class="anchor" aria-label="anchor" href="#working-with-fitted-models"></a>
@@ -142,8 +142,8 @@ would expect:</p>
 <span><span class="co">#&gt;     beta    alpha </span></span>
 <span><span class="co">#&gt; 4.185250 2.470686</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/residuals.html" class="external-link">residuals</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1]  0.00000000 -0.07131745  0.15897526 -0.24450225  0.19105538 -0.01185021</span></span>
-<span><span class="co">#&gt; [7] -0.07760267</span></span>
+<span><span class="co">#&gt; [1]  0.00000000 -0.07131745  0.15897526 -0.24450225  0.19105537 -0.01185021</span></span>
+<span><span class="co">#&gt; [7] -0.07760268</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit</span>, newdata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">7</span>, <span class="fl">8</span>, <span class="fl">9</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 0.028335593 0.007037663 0.001319326</span></span></code></pre></div>
 <p>Two quantities that are often of ecological interest can be derived
@@ -178,13 +178,13 @@ best model (<code>delta_AICc</code>). Here we use the
 <span><span class="co">#&gt;              model nparams logLik    AICc delta_AICc</span></span>
 <span><span class="co">#&gt;            neg.exp       1  9.197 -15.395      0.000</span></span>
 <span><span class="co">#&gt;            weibull       2  9.459 -10.918      4.477</span></span>
-<span><span class="co">#&gt;       cont.quality       2  9.193 -10.385      5.010</span></span>
+<span><span class="co">#&gt;       cont.quality       2  9.197 -10.394      5.001</span></span>
 <span><span class="co">#&gt;  discrete.parallel       3  9.227  -0.454     14.940</span></span>
 <span><span class="fu"><a href="https://generics.r-lib.org/reference/glance.html" class="external-link">glance</a></span><span class="op">(</span><span class="va">fits</span><span class="op">)</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fit"</span>, <span class="st">"nparams"</span>, <span class="st">"logLik"</span>, <span class="st">"AICc"</span>, <span class="st">"delta_AICc"</span>, <span class="st">"time_to_50"</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="co">#&gt;                 fit nparams   logLik        AICc delta_AICc time_to_50</span></span>
 <span><span class="co">#&gt; 1           neg.exp       1 9.197395 -15.3947904   0.000000   2.493138</span></span>
 <span><span class="co">#&gt; 2           weibull       2 9.458945 -10.9178902   4.476900   2.517099</span></span>
-<span><span class="co">#&gt; 3      cont.quality       2 9.192621 -10.3852413   5.009549   2.486052</span></span>
+<span><span class="co">#&gt; 3      cont.quality       2 9.196866 -10.3937318   5.001059   2.490919</span></span>
 <span><span class="co">#&gt; 4 discrete.parallel       3 9.227192  -0.4543834  14.940407   2.467509</span></span></code></pre></div>
 <p>Because <code>litfit</code> objects have a <code>logLik</code>
 method, the base R functions <code><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">AIC()</a></code> and <code><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">BIC()</a></code>
@@ -240,18 +240,20 @@ grid of times, and with a bootstrap it adds a pointwise uncertainty band
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">best</span> <span class="op">&lt;-</span> <span class="va">fits</span><span class="op">$</span><span class="va">neg.exp</span></span>
 <span><span class="va">boot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bootstrap_parameters.html">bootstrap_parameters</a></span><span class="op">(</span><span class="va">best</span>, nboot <span class="op">=</span> <span class="fl">500</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in bootstrap_parameters(best, nboot = 500): 5 of 500 bootstrap</span></span>
+<span><span class="co">#&gt; replicates failed and are recorded as NA</span></span>
 <span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy</a></span><span class="op">(</span><span class="va">best</span>, boot <span class="op">=</span> <span class="va">boot</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   term estimate  std.error  conf.low conf.high</span></span>
-<span><span class="co">#&gt; 1    k 0.278022 0.01965681 0.2365035 0.3137168</span></span>
+<span><span class="co">#&gt; 1    k 0.278022 0.01975556 0.2364451 0.3140112</span></span>
 <span><span class="va">grid</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/augment.html" class="external-link">augment</a></span><span class="op">(</span><span class="va">best</span>, newdata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">5</span>, length.out <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>, boot <span class="op">=</span> <span class="va">boot</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">grid</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         time   .fitted    .lower    .upper</span></span>
 <span><span class="co">#&gt; 1 0.00000000 1.0000000 1.0000000 1.0000000</span></span>
-<span><span class="co">#&gt; 2 0.05050505 0.9860566 0.9842806 0.9881264</span></span>
-<span><span class="co">#&gt; 3 0.10101010 0.9723076 0.9688083 0.9763938</span></span>
-<span><span class="co">#&gt; 4 0.15151515 0.9587504 0.9535792 0.9648006</span></span>
-<span><span class="co">#&gt; 5 0.20202020 0.9453821 0.9385895 0.9533450</span></span>
-<span><span class="co">#&gt; 6 0.25252525 0.9322003 0.9238354 0.9420253</span></span></code></pre></div>
+<span><span class="co">#&gt; 2 0.05050505 0.9860566 0.9842659 0.9881293</span></span>
+<span><span class="co">#&gt; 3 0.10101010 0.9723076 0.9687795 0.9763996</span></span>
+<span><span class="co">#&gt; 4 0.15151515 0.9587504 0.9535366 0.9648091</span></span>
+<span><span class="co">#&gt; 5 0.20202020 0.9453821 0.9385336 0.9533562</span></span>
+<span><span class="co">#&gt; 6 0.25252525 0.9322003 0.9237667 0.9420392</span></span></code></pre></div>
 <p>These data frames make it straightforward to build your own figures,
 for example with ggplot2:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">

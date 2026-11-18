@@ -86,9 +86,9 @@ implied steady state) as a mean with quantiles:
 
 summary(post)
 #>                  mean     2.5%      50%     97.5%
-#> beta         4.145287 3.026793 4.250955  5.150702
-#> alpha        4.236101 1.109011 2.653679 10.000000
-#> steady_state 3.801138 2.873050 3.790378  4.900035
+#> beta         4.145207 3.026793 4.254169  5.150706
+#> alpha        4.239639 1.108681 2.664013 10.000000
+#> steady_state 3.801316 2.873050 3.791254  4.900035
 ```
 
 ### Working with fitted models
@@ -108,8 +108,8 @@ coef(fit)
 #>     beta    alpha 
 #> 4.185250 2.470686
 residuals(fit)
-#> [1]  0.00000000 -0.07131745  0.15897526 -0.24450225  0.19105538 -0.01185021
-#> [7] -0.07760267
+#> [1]  0.00000000 -0.07131745  0.15897526 -0.24450225  0.19105537 -0.01185021
+#> [7] -0.07760268
 predict(fit, newdata = c(7, 8, 9))
 #> [1] 0.028335593 0.007037663 0.001319326
 ```
@@ -151,13 +151,13 @@ fits
 #>              model nparams logLik    AICc delta_AICc
 #>            neg.exp       1  9.197 -15.395      0.000
 #>            weibull       2  9.459 -10.918      4.477
-#>       cont.quality       2  9.193 -10.385      5.010
+#>       cont.quality       2  9.197 -10.394      5.001
 #>  discrete.parallel       3  9.227  -0.454     14.940
 glance(fits)[, c("fit", "nparams", "logLik", "AICc", "delta_AICc", "time_to_50")]
 #>                 fit nparams   logLik        AICc delta_AICc time_to_50
 #> 1           neg.exp       1 9.197395 -15.3947904   0.000000   2.493138
 #> 2           weibull       2 9.458945 -10.9178902   4.476900   2.517099
-#> 3      cont.quality       2 9.192621 -10.3852413   5.009549   2.486052
+#> 3      cont.quality       2 9.196866 -10.3937318   5.001059   2.490919
 #> 4 discrete.parallel       3 9.227192  -0.4543834  14.940407   2.467509
 ```
 
@@ -247,18 +247,20 @@ adds a pointwise uncertainty band (`.lower`, `.upper`):
 
 best <- fits$neg.exp
 boot <- bootstrap_parameters(best, nboot = 500)
+#> Warning in bootstrap_parameters(best, nboot = 500): 5 of 500 bootstrap
+#> replicates failed and are recorded as NA
 tidy(best, boot = boot)
 #>   term estimate  std.error  conf.low conf.high
-#> 1    k 0.278022 0.01965681 0.2365035 0.3137168
+#> 1    k 0.278022 0.01975556 0.2364451 0.3140112
 grid <- augment(best, newdata = seq(0, 5, length.out = 100), boot = boot)
 head(grid)
 #>         time   .fitted    .lower    .upper
 #> 1 0.00000000 1.0000000 1.0000000 1.0000000
-#> 2 0.05050505 0.9860566 0.9842806 0.9881264
-#> 3 0.10101010 0.9723076 0.9688083 0.9763938
-#> 4 0.15151515 0.9587504 0.9535792 0.9648006
-#> 5 0.20202020 0.9453821 0.9385895 0.9533450
-#> 6 0.25252525 0.9322003 0.9238354 0.9420253
+#> 2 0.05050505 0.9860566 0.9842659 0.9881293
+#> 3 0.10101010 0.9723076 0.9687795 0.9763996
+#> 4 0.15151515 0.9587504 0.9535366 0.9648091
+#> 5 0.20202020 0.9453821 0.9385336 0.9533562
+#> 6 0.25252525 0.9322003 0.9237667 0.9420392
 ```
 
 These data frames make it straightforward to build your own figures, for

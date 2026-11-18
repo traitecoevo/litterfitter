@@ -34,12 +34,13 @@ fit <- fit_litter(
   model = "neg.exp", iters = 50, quiet = TRUE
 )
 boot <- bootstrap_parameters(fit, nboot = 50)
+#> Warning: 2 of 50 bootstrap replicates failed and are recorded as NA
 head(tidy(boot))
 #>   replicate term     value
 #> 1         1    k 0.2743558
-#> 2         2    k 0.2637692
+#> 2         2    k 0.2637691
 #> 3         3    k 0.2846005
-#> 4         4    k 0.2625795
+#> 4         4    k 0.2625794
 #> 5         5    k 0.2846005
 #> 6         6    k 0.2804885
 ```

@@ -40,8 +40,9 @@ fit <- fit_litter(
 )
 #> Number of successful fits:  100  out of 100
 boot1 <- bootstrap_parameters(fit, nboot = 200)
+#> Warning: 2 of 200 bootstrap replicates failed and are recorded as NA
 summary(boot1)
 #>                   mean      2.5%       50%     97.5%
-#> k            0.2790103 0.2362142 0.2802469 0.3131491
-#> steady_state 3.6047357 3.1933743 3.5682853 4.2335203
+#> k            0.2790202 0.2359009 0.2805891 0.3132986
+#> steady_state 3.6048157 3.1918633 3.5639307 4.2392797
 ```

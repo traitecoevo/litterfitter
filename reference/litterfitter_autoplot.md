@@ -103,5 +103,6 @@ autoplot(boot)
 fits <- fit_litter_all(pineneedles$Year, pineneedles$Mass.remaining,
   models = c("neg.exp", "weibull", "cont.quality"), iters = 100
 )
+#> Warning: cont.quality: one or more parameters fit on the boundary (a), check fit closely
 autoplot(fits) + theme_bw()
 ```
