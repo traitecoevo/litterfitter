@@ -1,4 +1,7 @@
-# litterfitter (development version, to be released as 0.3.0)
+# litterfitter 0.3.0
+
+This is the first CRAN release since 0.1.4. It also includes all changes from 0.1.5 and
+0.2.0 (listed below), which were not released to CRAN.
 
 ## New features
 
@@ -45,7 +48,7 @@
 
 * `fit_litter()` again fits a single harvest, or replicates at a single time,
   for models whose curve starts at mass 1 at time 0 (all except
-  `neg.exp.limit`), as 0.1.x did. 0.2.0 rejected these data, which broke
+  `neg.exp.limit`), as 0.1.x did. The unreleased 0.2.0 rejected these data, which broke
   workflows that fit `neg.exp` k for each species and site. A fit is now
   allowed when there are at least as many distinct harvest times after
   time 0 as parameters. Fits that are possible only because of this rule
@@ -134,7 +137,7 @@
 
 # litterfitter 0.1.4
 
-* removed plyr dependency for long term ease of maintanance 
+* removed plyr dependency for long term ease of maintenance 
 * updated testing framework to testthat v3 style
 * fixed a testing instability that was causing occasional warnings
 * updating doi syntax
