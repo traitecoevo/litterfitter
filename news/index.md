@@ -1,5 +1,106 @@
 # Changelog
 
+## litterfitter 0.3.0
+
+This is the first CRAN release since 0.1.4. It also includes all changes
+from 0.1.5 and 0.2.0 (listed below), which were not released to CRAN.
+
+### New features
+
+- New [`tidy()`](https://generics.r-lib.org/reference/tidy.html),
+  [`glance()`](https://generics.r-lib.org/reference/glance.html) and
+  [`augment()`](https://generics.r-lib.org/reference/augment.html)
+  methods (from the `generics` package, compatible with `broom`) return
+  fits as data frames
+  ([\#29](https://github.com/traitecoevo/litterfitter/issues/29)):
+  - [`tidy()`](https://generics.r-lib.org/reference/tidy.html):
+    parameter estimates, with bootstrap standard errors and percentile
+    intervals when a
+    [`bootstrap_parameters()`](https://traitecoevo.github.io/litterfitter/reference/bootstrap_parameters.md)
+    result is supplied.
+  - [`glance()`](https://generics.r-lib.org/reference/glance.html): a
+    one-row summary with information criteria, time to 50% mass loss and
+    steady state.
+  - [`augment()`](https://generics.r-lib.org/reference/augment.html):
+    data with fitted values and residuals, or predictions at new times,
+    with an optional bootstrap uncertainty band (`.lower`, `.upper`).
+  - [`tidy()`](https://generics.r-lib.org/reference/tidy.html) for
+    bootstrap output gives the replicates in long format.
+- New
+  [`fit_litter_all()`](https://traitecoevo.github.io/litterfitter/reference/fit_litter_all.md)
+  fits several models to the same data and returns a `litfit_list`;
+  [`as_litfit_list()`](https://traitecoevo.github.io/litterfitter/reference/as_litfit_list.md)
+  combines existing fits.
+  [`glance()`](https://generics.r-lib.org/reference/glance.html) on a
+  `litfit_list` gives a model comparison table sorted by AICc with
+  `delta_AICc`;
+  [`tidy()`](https://generics.r-lib.org/reference/tidy.html),
+  [`augment()`](https://generics.r-lib.org/reference/augment.html),
+  [`coef()`](https://rdrr.io/r/stats/coef.html),
+  [`print()`](https://rdrr.io/r/base/print.html) and `[` also work on
+  it.
+- New
+  [`fit_element()`](https://traitecoevo.github.io/litterfitter/reference/fit_element.md)
+  fits element (nutrient) dynamics: proportional element remaining
+  (e.g. N/N0) as a function of proportional mass remaining, using the
+  Parton et al. (2007) import model (reparameterised for proportional
+  mass). It returns an `elementfit` object with `print`, `plot`, `coef`,
+  `fitted`, `residuals`, `predict`, `nobs`, `logLik`, `tidy`, `glance`
+  (including the peak element remaining and the mass at the peak) and
+  `augment` methods, and is supported by
+  [`bootstrap_parameters()`](https://traitecoevo.github.io/litterfitter/reference/bootstrap_parameters.md).
+  Based on work by Baptiste Wijas on the `import` branch
+  ([\#30](https://github.com/traitecoevo/litterfitter/issues/30)).
+- Plotting has been modernised
+  ([\#28](https://github.com/traitecoevo/litterfitter/issues/28)):
+  - New
+    [`autoplot()`](https://ggplot2.tidyverse.org/reference/autoplot.html)
+    methods (ggplot2, in Suggests) for `litfit`, `elementfit`,
+    `litfit_list` and `litfit_bootstrap` objects, with optional
+    bootstrap uncertainty bands, the fitted equation as subtitle, models
+    labelled by their difference in AICc, and bootstrap distributions of
+    all parameters in facets.
+  - [`plot()`](https://rdrr.io/r/graphics/plot.default.html) for
+    `litfit` and `elementfit` objects accepts `boot` to draw an
+    uncertainty band; user arguments such as `xlab` or `main` override
+    the defaults; the equation is placed in a corner so it no longer
+    overlaps the data.
+  - New [`plot()`](https://rdrr.io/r/graphics/plot.default.html) method
+    for `litfit_list` with a colour-blind safe (Okabe-Ito) palette and
+    an aligned table of AIC, AICc and BIC.
+  - [`plot_multiple_fits()`](https://traitecoevo.github.io/litterfitter/reference/plot_multiple_fits.md)
+    keeps its interface but now uses
+    [`fit_litter_all()`](https://traitecoevo.github.io/litterfitter/reference/fit_litter_all.md)
+    and the new [`plot()`](https://rdrr.io/r/graphics/plot.default.html)
+    method, returns a `litfit_list`, and can plot existing fits without
+    refitting.
+  - [`plot()`](https://rdrr.io/r/graphics/plot.default.html) on a
+    bootstrap can show several columns by number or name, or all of them
+    (`coef.index = "all"`), and the shaded interval is set by
+    `conf.level`.
+  - Base plots now look slightly different (palette, legend layout,
+    equation position).
+- The missing-value warning from
+  [`fit_litter()`](https://traitecoevo.github.io/litterfitter/reference/fit_litter.md)
+  now has class `litterfitter_missing_removed`.
+- New dependencies: `generics` and `utils` (Imports); `ggplot2` and
+  `vdiffr` (Suggests).
+
+### Behaviour changes
+
+- [`fit_litter()`](https://traitecoevo.github.io/litterfitter/reference/fit_litter.md)
+  again fits a single harvest, or replicates at a single time, for
+  models whose curve starts at mass 1 at time 0 (all except
+  `neg.exp.limit`), as 0.1.x did. The unreleased 0.2.0 rejected these
+  data, which broke workflows that fit `neg.exp` k for each species and
+  site. A fit is now allowed when there are at least as many distinct
+  harvest times after time 0 as parameters. Fits that are possible only
+  because of this rule give a once-per-session warning of class
+  `litterfitter_origin_only`.
+- AICc is `NA` when it is undefined (fewer than the number of parameters
+  plus two observations), instead of a value with a zero or negative
+  denominator.
+
 ## litterfitter 0.2.0 (GitHub only; not released to CRAN)
 
 ### Behaviour changes
@@ -128,7 +229,7 @@
 
 CRAN release: 2025-08-21
 
-- removed plyr dependency for long term ease of maintanance
+- removed plyr dependency for long term ease of maintenance
 - updated testing framework to testthat v3 style
 - fixed a testing instability that was causing occasional warnings
 - updating doi syntax

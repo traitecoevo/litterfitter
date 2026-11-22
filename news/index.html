@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">litterfitter</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,6 +33,44 @@
       <small>Source: <a href="https://github.com/traitecoevo/litterfitter/blob/master/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.3.0" id="litterfitter-030">litterfitter 0.3.0<a class="anchor" aria-label="anchor" href="#litterfitter-030"></a></h2>
+<p>This is the first CRAN release since 0.1.4. It also includes all changes from 0.1.5 and 0.2.0 (listed below), which were not released to CRAN.</p>
+<div class="section level3">
+<h3 id="new-features-0-3-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-3-0"></a></h3>
+<ul><li>New <code><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy()</a></code>, <code><a href="https://generics.r-lib.org/reference/glance.html" class="external-link">glance()</a></code> and <code><a href="https://generics.r-lib.org/reference/augment.html" class="external-link">augment()</a></code> methods (from the <code>generics</code> package, compatible with <code>broom</code>) return fits as data frames (<a href="https://github.com/traitecoevo/litterfitter/issues/29" class="external-link">#29</a>):
+<ul><li>
+<code><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy()</a></code>: parameter estimates, with bootstrap standard errors and percentile intervals when a <code><a href="../reference/bootstrap_parameters.html">bootstrap_parameters()</a></code> result is supplied.</li>
+<li>
+<code><a href="https://generics.r-lib.org/reference/glance.html" class="external-link">glance()</a></code>: a one-row summary with information criteria, time to 50% mass loss and steady state.</li>
+<li>
+<code><a href="https://generics.r-lib.org/reference/augment.html" class="external-link">augment()</a></code>: data with fitted values and residuals, or predictions at new times, with an optional bootstrap uncertainty band (<code>.lower</code>, <code>.upper</code>).</li>
+<li>
+<code><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy()</a></code> for bootstrap output gives the replicates in long format.</li>
+</ul></li>
+<li>New <code><a href="../reference/fit_litter_all.html">fit_litter_all()</a></code> fits several models to the same data and returns a <code>litfit_list</code>; <code><a href="../reference/as_litfit_list.html">as_litfit_list()</a></code> combines existing fits. <code><a href="https://generics.r-lib.org/reference/glance.html" class="external-link">glance()</a></code> on a <code>litfit_list</code> gives a model comparison table sorted by AICc with <code>delta_AICc</code>; <code><a href="https://generics.r-lib.org/reference/tidy.html" class="external-link">tidy()</a></code>, <code><a href="https://generics.r-lib.org/reference/augment.html" class="external-link">augment()</a></code>, <code><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef()</a></code>, <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> and <code>[</code> also work on it.</li>
+<li>New <code><a href="../reference/fit_element.html">fit_element()</a></code> fits element (nutrient) dynamics: proportional element remaining (e.g. N/N0) as a function of proportional mass remaining, using the Parton et al. (2007) import model (reparameterised for proportional mass). It returns an <code>elementfit</code> object with <code>print</code>, <code>plot</code>, <code>coef</code>, <code>fitted</code>, <code>residuals</code>, <code>predict</code>, <code>nobs</code>, <code>logLik</code>, <code>tidy</code>, <code>glance</code> (including the peak element remaining and the mass at the peak) and <code>augment</code> methods, and is supported by <code><a href="../reference/bootstrap_parameters.html">bootstrap_parameters()</a></code>. Based on work by Baptiste Wijas on the <code>import</code> branch (<a href="https://github.com/traitecoevo/litterfitter/issues/30" class="external-link">#30</a>).</li>
+<li>Plotting has been modernised (<a href="https://github.com/traitecoevo/litterfitter/issues/28" class="external-link">#28</a>):
+<ul><li>New <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot()</a></code> methods (ggplot2, in Suggests) for <code>litfit</code>, <code>elementfit</code>, <code>litfit_list</code> and <code>litfit_bootstrap</code> objects, with optional bootstrap uncertainty bands, the fitted equation as subtitle, models labelled by their difference in AICc, and bootstrap distributions of all parameters in facets.</li>
+<li>
+<code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> for <code>litfit</code> and <code>elementfit</code> objects accepts <code>boot</code> to draw an uncertainty band; user arguments such as <code>xlab</code> or <code>main</code> override the defaults; the equation is placed in a corner so it no longer overlaps the data.</li>
+<li>New <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> method for <code>litfit_list</code> with a colour-blind safe (Okabe-Ito) palette and an aligned table of AIC, AICc and BIC.</li>
+<li>
+<code><a href="../reference/plot_multiple_fits.html">plot_multiple_fits()</a></code> keeps its interface but now uses <code><a href="../reference/fit_litter_all.html">fit_litter_all()</a></code> and the new <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> method, returns a <code>litfit_list</code>, and can plot existing fits without refitting.</li>
+<li>
+<code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> on a bootstrap can show several columns by number or name, or all of them (<code>coef.index = "all"</code>), and the shaded interval is set by <code>conf.level</code>.</li>
+<li>Base plots now look slightly different (palette, legend layout, equation position).</li>
+</ul></li>
+<li>The missing-value warning from <code><a href="../reference/fit_litter.html">fit_litter()</a></code> now has class <code>litterfitter_missing_removed</code>.</li>
+<li>New dependencies: <code>generics</code> and <code>utils</code> (Imports); <code>ggplot2</code> and <code>vdiffr</code> (Suggests).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="behaviour-changes-0-3-0">Behaviour changes<a class="anchor" aria-label="anchor" href="#behaviour-changes-0-3-0"></a></h3>
+<ul><li>
+<code><a href="../reference/fit_litter.html">fit_litter()</a></code> again fits a single harvest, or replicates at a single time, for models whose curve starts at mass 1 at time 0 (all except <code>neg.exp.limit</code>), as 0.1.x did. The unreleased 0.2.0 rejected these data, which broke workflows that fit <code>neg.exp</code> k for each species and site. A fit is now allowed when there are at least as many distinct harvest times after time 0 as parameters. Fits that are possible only because of this rule give a once-per-session warning of class <code>litterfitter_origin_only</code>.</li>
+<li>AICc is <code>NA</code> when it is undefined (fewer than the number of parameters plus two observations), instead of a value with a zero or negative denominator.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.0" id="litterfitter-020-github-only-not-released-to-cran">litterfitter 0.2.0 (GitHub only; not released to CRAN)<a class="anchor" aria-label="anchor" href="#litterfitter-020-github-only-not-released-to-cran"></a></h2>
 <div class="section level3">
@@ -99,7 +137,7 @@
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.4" id="litterfitter-014">litterfitter 0.1.4<a class="anchor" aria-label="anchor" href="#litterfitter-014"></a></h2><p class="text-muted">CRAN release: 2025-08-21</p>
-<ul><li>removed plyr dependency for long term ease of maintanance</li>
+<ul><li>removed plyr dependency for long term ease of maintenance</li>
 <li>updated testing framework to testthat v3 style</li>
 <li>fixed a testing instability that was causing occasional warnings</li>
 <li>updating doi syntax</li>
