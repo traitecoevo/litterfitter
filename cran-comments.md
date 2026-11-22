@@ -20,7 +20,8 @@ In this version I have:
 
 - local macOS (aarch64), R 4.6.1
 - win-builder: R-devel
-- macOS builder: R-release
+- GitHub Actions: macOS-latest (R-release), windows-latest (R-release),
+  ubuntu-latest (R-release, R-oldrel-1)
 
 ## R CMD check results
 
