@@ -94,9 +94,13 @@ test_that("fixed-start litter fits agree across time units and gradient methods"
     # gradient methods at optim's default stopping rule.
     an <- fit(t * 365, day_scale, TRUE, 1e7)
     fd <- fit(t * 365, day_scale, FALSE, 1e7)
-    expect_equal(c(years = years$convergence, days = days$convergence,
-                   an = an$convergence, fd = fd$convergence),
-                 c(years = 0, days = 0, an = 0, fd = 0), info = m)
+    # At factr = 1e3 L-BFGS-B can stop with code 52 (line search cannot improve)
+    # once it reaches machine precision; this happens on some BLAS/CPU builds
+    # (BLIS, arm64, macOS). The value and prediction checks below are the test.
+    expect_true(years$convergence %in% c(0, 52), info = m)
+    expect_true(days$convergence %in% c(0, 52), info = m)
+    expect_equal(c(an = an$convergence, fd = fd$convergence),
+                 c(an = 0, fd = 0), info = m)
     expect_equal(years$value, days$value, tolerance = 1e-7, info = m)
     expect_equal(an$value, fd$value, tolerance = 1e-7, info = m)
     expect_equal(predict_from_fit(m, years$par, t), predict_from_fit(m, days$par, t * 365),

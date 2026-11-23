@@ -3,10 +3,13 @@
 test_that("bootstrap recovers the fitted parameter", {
   set.seed(789)
   fit <- quiet_fit(ex_time, ex_mass, "neg.exp", iters = 200)
-  out <- bootstrap_parameters(fit, nboot = 300)
+  # A few replicates on this small data set can fail on some platforms (noLD,
+  # arm64); they are recorded as NA with a warning.
+  out <- suppressWarnings(bootstrap_parameters(fit, nboot = 300))
   expect_s3_class(out, "litfit_bootstrap")
   expect_equal(dim(out), c(300, 2))
-  expect_true(unname(are.within.ten.percent.of(median(out[, 1]), coef(fit))))
+  expect_lt(mean(is.na(out[, 1])), 0.05)
+  expect_true(unname(are.within.ten.percent.of(median(out[, 1], na.rm = TRUE), coef(fit))))
 })
 
 test_that("bootstrap output has named columns for every model", {
