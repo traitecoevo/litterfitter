@@ -1,27 +1,26 @@
 ## Submission
 
-This is an update from 0.1.4 (the current CRAN version) to 0.3.0. Versions
-0.1.5 and 0.2.0 were not released to CRAN; their changes are included here.
-In this version I have:
+This is a patch release (0.3.0 -> 0.3.1) that fixes the test failures shown on
+the CRAN check page (r-oldrel-macos-arm64, r-oldrel-macos-x86_64) and in the
+additional issues (BLIS, noLD, linux-arm64). It changes only the tests; the
+package code is the same.
 
-- Fixed the README DOI link that gave a NOTE on CRAN's r-devel Debian checks
-  ("possibly invalid file URI").
-- Fixed several bugs (default model selection, convergence check, steady
-  state for the `neg.exp.limit` model, bootstrap failures, time-to-threshold
-  calculation).
-- Added `tidy()`, `glance()` and `augment()` methods, `fit_litter_all()` for
-  model comparison, and `fit_element()` for element (nutrient) dynamics.
-- Added `autoplot()` methods and modernised the base plots.
-- Used analytic gradients for model fitting.
-- New dependencies: `generics` and `utils` (Imports); `ggplot2` and `vdiffr`
-  (Suggests, used conditionally).
+- `test-gradients.R`: a check that uses a very tight optimiser tolerance
+  (`factr = 1e3`) now also accepts L-BFGS-B convergence code 52. On some
+  BLAS/CPU combinations the line search stops there at machine precision. The
+  test still checks the fitted objective values and predictions.
+- `test-bootstrap.R`: a few bootstrap replicates on a small example data set
+  can fail on some platforms and are stored as `NA`, as documented. The test now
+  ignores `NA`s when it takes the median and checks that fewer than 5% of
+  replicates failed.
 
 ## Test environments
 
 - local macOS (aarch64), R 4.6.1
 - win-builder: R-devel
-- GitHub Actions: macOS-latest (R-release), windows-latest (R-release),
-  ubuntu-latest (R-release, R-oldrel-1)
+- GitHub Actions: macOS-latest (R-release, R-oldrel-1), windows-latest
+  (R-release), ubuntu-latest (R-release, R-oldrel-1), ubuntu-24.04-arm
+  (R-release)
 
 ## R CMD check results
 

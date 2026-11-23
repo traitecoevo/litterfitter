@@ -1,7 +1,7 @@
 Package: litterfitter
 Type: Package
 Title: Fits a Collection of Curves to Single-Cohort Decomposition Data
-Version: 0.3.0
+Version: 0.3.1
 Date: 2026-11-20
 Authors@R: 
     c(person(given = "Will",
