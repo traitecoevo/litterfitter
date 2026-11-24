@@ -121,9 +121,9 @@ the implied steady state) as a mean with quantiles:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">post</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                  mean     2.5%      50%     97.5%</span></span>
-<span><span class="co">#&gt; beta         4.145287 3.026793 4.250955  5.150702</span></span>
-<span><span class="co">#&gt; alpha        4.236101 1.109011 2.653679 10.000000</span></span>
-<span><span class="co">#&gt; steady_state 3.801138 2.873050 3.790378  4.900035</span></span></code></pre></div>
+<span><span class="co">#&gt; beta         4.145207 3.026793 4.254169  5.150706</span></span>
+<span><span class="co">#&gt; alpha        4.239639 1.108681 2.664013 10.000000</span></span>
+<span><span class="co">#&gt; steady_state 3.801316 2.873050 3.791254  4.900035</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="working-with-fitted-models">Working with fitted models<a class="anchor" aria-label="anchor" href="#working-with-fitted-models"></a>
@@ -142,8 +142,8 @@ would expect:</p>
 <span><span class="co">#&gt;     beta    alpha </span></span>
 <span><span class="co">#&gt; 4.185250 2.470686</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/residuals.html" class="external-link">residuals</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1]  0.00000000 -0.07131745  0.15897526 -0.24450225  0.19105538 -0.01185021</span></span>
-<span><span class="co">#&gt; [7] -0.07760267</span></span>
+<span><span class="co">#&gt; [1]  0.00000000 -0.07131745  0.15897526 -0.24450225  0.19105537 -0.01185021</span></span>
+<span><span class="co">#&gt; [7] -0.07760268</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit</span>, newdata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">7</span>, <span class="fl">8</span>, <span class="fl">9</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 0.028335593 0.007037663 0.001319326</span></span></code></pre></div>
 <p>Two quantities that are often of ecological interest can be derived
