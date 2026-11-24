@@ -21,10 +21,14 @@ package code is the same.
 - GitHub Actions: macOS-latest (R-release, R-oldrel-1), windows-latest
   (R-release), ubuntu-latest (R-release, R-oldrel-1), ubuntu-24.04-arm
   (R-release)
+- R-hub: nold, atlas
 
 ## R CMD check results
 
-0 errors | 0 warnings | 0 notes
+0 errors | 0 warnings | 1 note
+
+- "Days since last update: 1": 0.3.0 was accepted yesterday. This update
+  fixes the check failures CRAN asked me to correct by 2026-12-14.
 
 ## Reverse dependencies
 
