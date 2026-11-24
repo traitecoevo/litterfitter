@@ -12,7 +12,7 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/traitecoevo/litterfitter/blob/master/inst/CITATION)
+[`inst/CITATION`](https://github.com/traitecoevo/litterfitter/blob/v0.3.0/inst/CITATION)
 
 Cornwell WK, Weedon JT (2014). “Decomposition trajectories of diverse
 litter types: a model selection analysis.” *Methods in Ecology and

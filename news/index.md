@@ -1,11 +1,5 @@
 # Changelog
 
-## litterfitter 0.3.1
-
-- Made two tests robust to platform-dependent optimiser behaviour
-  reported by CRAN (r-oldrel-macos, BLIS, noLD and linux-arm64 checks).
-  No changes to package code.
-
 ## litterfitter 0.3.0
 
 CRAN release: 2026-11-22
